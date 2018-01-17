@@ -1,0 +1,64 @@
+buildscript {
+    ext.kotlin_version = '1.2.10'
+    ext.orchidVersion = '0.7.6'
+    ext.orchidPluginVersion = 'v0.4.0'
+
+    repositories {
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "gradle.plugin.com.eden.orchidPlugin:buildSrc:$orchidPluginVersion"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+    }
+}
+
+group 'com.eden.krow'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'jacoco'
+    apply plugin: 'com.eden.orchidPlugin'
+    apply plugin: 'kotlin'
+
+    apply from: "$rootDir/gradle/javadoc.gradle"
+    apply from: "$rootDir/gradle/publish.gradle"
+
+    sourceCompatibility = 1.8
+
+    group = rootProject.group
+    version = rootProject.version
+
+    repositories {
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+
+    dependencies {
+        testCompile 'org.testng:testng:6.13.1'
+        testCompile 'org.hamcrest:hamcrest-library:1.3'
+        testCompile 'org.mockito:mockito-core:2.+'
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+        orchidCompile "io.github.javaeden.orchid:OrchidAll:${orchidVersion}"
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+    test { useTestNG() {} }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            html.enabled false
+        }
+    }
+    check.dependsOn jacocoTestReport
+}

@@ -1,0 +1,35 @@
+
+orchid {
+    version = "${project.version}"
+    theme   = "BsDoc"
+
+    if(project.hasProperty('env') && project.property('env') == 'prod') {
+        baseUrl = "https://javaeden.github.io/Krow/${project.version}"
+    }
+    else {
+        baseUrl = "http://localhost:8080"
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from project.sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+if(project.sourceSets.main.allJava.files?.empty) {
+    project.tasks.assemble.dependsOn orchidBuild
+    project.tasks.orchidBuild.mustRunAfter javadoc
+    project.tasks.orchidBuild.onlyIf {
+        !(project.hasProperty('noJavadoc') && project.property('noJavadoc')) && !project.orchid.noJavadoc
+    }
+}
