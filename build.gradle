@@ -1,65 +1,224 @@
+// Configure build
+//----------------------------------------------------------------------------------------------------------------------
+
 buildscript {
     ext.kotlin_version = '1.2.10'
-//    ext.orchidVersion = '0.7.6'
-//    ext.orchidPluginVersion = 'v0.4.0'
-
+    ext.orchidVersion = '0.7.9'
+    ext.orchidPluginVersion = 'v0.4.0'
     repositories {
         jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//        classpath "gradle.plugin.com.eden.orchidPlugin:buildSrc:$orchidPluginVersion"
-//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath "gradle.plugin.com.eden.orchidPlugin:buildSrc:${orchidPluginVersion}"
+    }
+}
+apply plugin: "java"
+apply plugin: 'kotlin'
+apply plugin: "jacoco"
+apply plugin: "idea"
+apply plugin: "com.eden.orchidPlugin"
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+// Configure Project
+//----------------------------------------------------------------------------------------------------------------------
+
+group 'com.eden'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+repositories {
+    jcenter()
+    maven { url 'https://dl.bintray.com/javaeden/Orchid/' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile 'org.apache.commons:commons-lang3:3.7'
+
+    orchidCompile "io.github.javaeden.orchid:OrchidCore:${orchidVersion}"
+    orchidCompile "io.github.javaeden.orchid:OrchidBsDoc:${orchidVersion}"
+    orchidCompile "io.github.javaeden.orchid:OrchidPages:${orchidVersion}"
+    orchidCompile "io.github.javaeden.orchid:OrchidWiki:${orchidVersion}"
+    orchidCompile "io.github.javaeden.orchid:OrchidChangelog:${orchidVersion}"
+}
+
+// Javadoc and Orchid
+//----------------------------------------------------------------------------------------------------------------------
+
+orchid {
+    version = "${project.version}"
+    theme = "BsDoc"
+
+    if(System.getenv('JITPACK')) {
+        baseUrl = "https://jitpack.io/com/github/JavaEden/Krow/${System.getenv('VERSION')}/javadoc"
+    }
+    else if(project.hasProperty('env') && project.property('env') == 'prod') {
+        baseUrl = "https://javaeden.github.io/Krow"
+    }
+    else {
+        baseUrl = "http://localhost:8080"
     }
 }
 
-apply plugin: 'base'
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from project.sourceSets.main.allSource
+}
 
-group 'com.eden.krow'
+task javadocJar(type: Jar, dependsOn: orchidBuild) {
+    classifier = 'javadoc'
+    from "${project.buildDir}/docs/orchid"
+}
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'jacoco'
-//    apply plugin: 'com.eden.orchidPlugin'
-    apply plugin: 'kotlin'
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
 
-    apply from: "$rootDir/gradle/javadoc.gradle"
-//    apply from: "$rootDir/gradle/publish.gradle"
-
-    sourceCompatibility = 1.8
-
-    group = rootProject.group
-    version = rootProject.version
-
-    repositories {
-        jcenter()
-        maven { url 'https://jitpack.io' }
+if(project.sourceSets.main.allJava.files?.empty) {
+    project.tasks.assemble.dependsOn orchidBuild
+    project.tasks.orchidBuild.mustRunAfter javadoc
+    project.tasks.orchidBuild.onlyIf {
+        !(project.hasProperty('noJavadoc') && project.property('noJavadoc')) && !project.orchid.noJavadoc
     }
+}
 
-    dependencies {
-        testCompile 'org.testng:testng:6.13.1'
-        testCompile 'org.hamcrest:hamcrest-library:1.3'
-        testCompile 'org.mockito:mockito-core:2.+'
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-//        orchidCompile "io.github.javaeden.orchid:OrchidAll:${orchidVersion}"
+// Jacoco Code Coverage
+//----------------------------------------------------------------------------------------------------------------------
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
     }
+}
+check.dependsOn jacocoTestReport
 
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+// Get release info
+//----------------------------------------------------------------------------------------------------------------------
+
+tag {
+    message { "Bump version to ${version}" }
+}
+
+task getReleaseName {
+    doLast {
+        println project.version.toString()
     }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
+}
 
-    test { useTestNG() {} }
+task getReleaseNotes {
+    doLast {
+        def versionFilename = project.version.toString().replaceAll("\\.", "_") + ".md"
+        def fullVersionFilename = "$projectDir/src/orchid/resources/changelog/$versionFilename"
+        def versionFile = file(fullVersionFilename)
 
-    jacocoTestReport {
-        reports {
-            xml.enabled true
-            html.enabled false
+        if(versionFile.exists()) {
+            println versionFile.text.split("---").last().trim()
+        }
+        else {
+            println "No release notes"
         }
     }
-    check.dependsOn jacocoTestReport
+}
+
+
+// Publish to Bintray
+//----------------------------------------------------------------------------------------------------------------------
+
+afterEvaluate { project ->
+    def pomConfig = {
+        scm {
+            url 'https://github.com/JavaEden/Krow.git'
+            connection 'https://github.com/JavaEden/Krow.git'
+            developerConnection 'https://github.com/JavaEden/Krow.git'
+        }
+        licenses {
+            license {
+                name 'MIT'
+                url 'https://opensource.org/licenses/mit'
+                distribution 'repo'
+            }
+        }
+        developers {
+            developer {
+                id 'JavaEden'
+                name 'Casey Brooks'
+                email 'cjbrooks12@gmail.com'
+            }
+        }
+    }
+
+    project.publishing {
+        publications {
+            KrowPublication(MavenPublication) {
+                from project.components.java
+                artifact project.sourcesJar
+                artifact project.javadocJar
+                groupId "${project.group}"
+                artifactId "${project.name}"
+                version "${project.version}"
+                pom.withXml {
+                    def root = asNode()
+                    root.appendNode('description', 'Simple yet powerful logging and string formatting for Java')
+                    root.appendNode('name', 'Krow')
+                    root.appendNode('url', 'https://javaeden.github.io/Krow')
+                    root.children().last() + pomConfig
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = "${project.properties['bintray_username']}"
+        key = "${project.properties['bintray_apiKey']}"
+        publications = ['KrowPublication']
+
+        dryRun = project.hasProperty('dryDeploy')
+        publish = !project.hasProperty('dryDeploy')
+        override = true
+
+        pkg {
+            repo = "Eden"
+            name = "${project.name}"
+            userOrg = 'javaeden'
+            licenses = ['MIT']
+            vcsUrl = 'https://github.com/JavaEden/Krow.git'
+
+            version {
+                name = "${project.version}"
+                desc = "Krow ${project.name} ${project.version}"
+                released = new Date()
+
+                gpg {
+                    sign = true
+                }
+                mavenCentralSync {
+                    sync = (project.hasProperty('includeMavenCentralSync'))
+                    user = "${project.properties['mavenCentral_username']}"
+                    password = "${project.properties['mavenCentral_password']}"
+                }
+            }
+        }
+    }
+}
+
+project.tasks.publish.dependsOn bintrayUpload
+
+task deploy {
+    dependsOn project.tasks.publish
+    doLast { }
 }

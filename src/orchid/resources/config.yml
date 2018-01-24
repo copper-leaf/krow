@@ -1,0 +1,38 @@
+
+site:
+  about:
+    siteName: Krow
+    siteDescription: Simple yet powerful logging and string formatting for Java
+
+theme:
+  social:
+    github: 'JavaEden/Krow'
+  primaryColor: '#2c2c2c'
+  secondaryColor: '#ff730f'
+  menu:
+    - type: 'link'
+      title: 'Home'
+      url: '/'
+    - type: 'wiki'
+      topLevel: false
+
+allPages:
+  components:
+    - type: pageContent
+      order: 10
+    - type: prism
+      githubTheme: 'darcula'
+      languages:
+        - 'yaml'
+        - 'java'
+        - 'groovy'
+        - 'markdown'
+      plugins:
+        - 'line-numbers'
+        - 'line-highlight'
+        - 'toolbar'
+        - 'show-language'
+        - 'copy-to-clipboard'
+
+staticPages:
+  layout: geopattern2

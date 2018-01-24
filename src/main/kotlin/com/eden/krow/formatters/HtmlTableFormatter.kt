@@ -3,7 +3,7 @@ package com.eden.krow.formatters
 import com.eden.krow.KrowTable
 import com.eden.krow.TableFormatter
 
-class HtmlTableFormatter : TableFormatter {
+class HtmlTableFormatter : TableFormatter<String> {
 
     override fun print(table: KrowTable): String {
         val allCells = table.tableCells

@@ -3,23 +3,23 @@ package com.eden.krow
 import java.util.regex.Pattern
 
 @DslMarker
-annotation class TableMarker
+public annotation class TableMarker
 
-enum class VerticalAlignment {
+public enum class VerticalAlignment {
     TOP, BOTTOM, CENTER
 }
 
-enum class HorizontalAlignment {
+public enum class HorizontalAlignment {
     LEFT, RIGHT, CENTER
 }
 
-fun krow(init: KrowTable.() -> Unit): KrowTable {
+public fun krow(init: KrowTable.() -> Unit): KrowTable {
     val table = KrowTable()
     table.init()
     return table
 }
 
-fun String?.wrap(width: Int): MutableList<String> {
+public fun String?.wrap(width: Int): MutableList<String> {
     val matchList = ArrayList<String>()
 
     if (this != null && this.isNotBlank()) {
@@ -42,7 +42,7 @@ fun String?.wrap(width: Int): MutableList<String> {
     return matchList
 }
 
-fun String.padCenter(size: Int, padChar: Char = ' '): String {
+public fun String.padCenter(size: Int, padChar: Char = ' '): String {
     var str = this
     if (size <= 0) {
         return str

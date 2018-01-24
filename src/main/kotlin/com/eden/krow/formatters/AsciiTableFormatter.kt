@@ -5,7 +5,7 @@ import com.eden.krow.KrowTable
 import com.eden.krow.TableFormatter
 import com.eden.krow.borders.SingleBorder
 
-class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter, BorderSet by borders {
+class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<String>, BorderSet by borders {
 
     override fun print(table: KrowTable): String {
         val allCells = table.tableCells

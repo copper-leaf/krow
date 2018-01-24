@@ -3,7 +3,7 @@ package com.eden.krow
 import com.eden.krow.formatters.AsciiTableFormatter
 
 @TableMarker
-class KrowTable(val formatter: TableFormatter = AsciiTableFormatter()) : TableFormatter by formatter {
+class KrowTable(val formatter: TableFormatter<String> = AsciiTableFormatter()) : TableFormatter<String> by formatter {
 
     var columnNames: MutableList<String> = ArrayList()
     var rowNames: MutableList<String> = ArrayList()
@@ -53,7 +53,7 @@ class KrowTable(val formatter: TableFormatter = AsciiTableFormatter()) : TableFo
         return print(this)
     }
 
-    fun print(tableFormatter: TableFormatter): String {
+    fun <T> print(tableFormatter: TableFormatter<T>): T {
         return tableFormatter.print(this)
     }
 
