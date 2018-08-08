@@ -3,54 +3,48 @@ dist: trusty
 sudo: false
 
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
-  directories:
+    directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
 branches:
-  only:
+    only:
     - master
     - dev
 
 jobs:
-  include:
-    - install: ./gradlew assemble -PnoJavadoc=true -Prelease=$TRAVIS_PULL_REQUEST
-      script: ./gradlew check -Prelease=$TRAVIS_PULL_REQUEST
+    include:
+    - install: ./gradlew assemble
+      script: ./gradlew check
       os: linux
       jdk: openjdk8
-    - install: ./gradlew assemble -PnoJavadoc=true -Prelease=$TRAVIS_PULL_REQUEST
-      script: ./gradlew check -Prelease=$TRAVIS_PULL_REQUEST
+    - install: ./gradlew assemble
+      script: ./gradlew check
       os: linux
       jdk: oraclejdk8
+    - install: ./gradlew assemble
+      script: ./gradlew check
+      os: osx
+      osx_image: xcode8.3
+
+    - stage: afterTests
+      install: ./gradlew assemble
+      script: ./gradlew codeCoverageReport sendCoverageToCodacy
+      os: linux
+      jdk: openjdk8
 
     - stage: release
       os: linux
       jdk: openjdk8
-      install: ./gradlew assemble -Penv=prod -Prelease
-      script: ./gradlew deploy -Penv=prod -Prelease
-      after_success:
-        - bash <(curl -s https://codecov.io/bash)
-        - git config --local user.name "Travis CI Deployment Bot"
-        - git config --local user.email "deploy@travis-ci.org"
-        - ./gradlew tag -Prelease
-        - export GRADLE_PROJECT_RELEASE_NAME=$(./gradlew getReleaseName --quiet)
-        - export GRADLE_PROJECT_RELEASE_NOTES=$(./gradlew getReleaseNotes --quiet)
-      deploy:
-        - provider: releases
-          skip_cleanup: true
-          api_key: $GITHUB_TOKEN
-          name: v${GRADLE_PROJECT_RELEASE_NAME} Release
-        - provider: pages
-          skip_cleanup: true
-          github_token: $GITHUB_TOKEN
-          local_dir: build/docs/orchid
-          target_branch: gh-pages
+      install: ./gradlew assemble -Penv=prod
+      script: ./gradlew deploy -Penv=prod
 
 stages:
-  - test
-  - name: release
-    if: branch = master AND tag IS blank AND type IN (push)
+- test
+- afterTests
+- name: release
+  if: branch = master AND tag IS blank AND type IN (push)
 

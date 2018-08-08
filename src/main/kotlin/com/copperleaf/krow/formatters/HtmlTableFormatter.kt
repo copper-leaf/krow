@@ -1,7 +1,7 @@
-package com.eden.krow.formatters
+package com.copperleaf.krow.formatters
 
-import com.eden.krow.KrowTable
-import com.eden.krow.TableFormatter
+import com.copperleaf.krow.KrowTable
+import com.copperleaf.krow.TableFormatter
 
 class HtmlTableFormatter : TableFormatter<String> {
 

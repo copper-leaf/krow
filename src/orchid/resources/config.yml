@@ -2,37 +2,36 @@
 site:
   about:
     siteName: Krow
-    siteDescription: Simple yet powerful logging and string formatting for Java
+    siteDescription: A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
 
 theme:
   social:
-    github: 'JavaEden/Krow'
-  primaryColor: '#2c2c2c'
-  secondaryColor: '#ff730f'
+    github: 'copper-leaf/krow'
+  primaryColor: '#449999'
+  bannerColor: '#449999'
   menu:
-    - type: 'link'
-      title: 'Home'
-      url: '/'
-    - type: 'wiki'
-      topLevel: false
+  - type: 'link'
+    title: 'Home'
+    url: '#{$0|baseUrl}/'
+  - type: 'wiki'
+  - type: 'link'
+    title: 'Api Docs'
+    url: '#{$0|baseUrl}/api'
+  trianglifyOptions:
+    x_colors: ['#88ffe0', '#000000', '#88ffe0']
+  useSidebarSearch: true
 
-allPages:
-  components:
-    - type: pageContent
-      order: 10
-    - type: prism
-      githubTheme: 'darcula'
-      languages:
-        - 'yaml'
-        - 'java'
-        - 'groovy'
-        - 'markdown'
-      plugins:
-        - 'line-numbers'
-        - 'line-highlight'
-        - 'toolbar'
-        - 'show-language'
-        - 'copy-to-clipboard'
+pages:
+  staticPages:
+    extraCss:
+    - 'assets/dokka/style.scss'
 
-staticPages:
-  layout: geopattern2
+services:
+  publications:
+    stages:
+      ghPages:
+        branch: gh-pages
+        latestDirName: latest
+        publishType: CleanBranch
+        username: copper-leaf
+        repo: krow

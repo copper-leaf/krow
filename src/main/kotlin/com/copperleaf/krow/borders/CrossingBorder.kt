@@ -1,6 +1,6 @@
-package com.eden.krow.borders
+package com.copperleaf.krow.borders
 
-import com.eden.krow.BorderSet
+import com.copperleaf.krow.BorderSet
 
 class CrossingBorder : BorderSet {
 

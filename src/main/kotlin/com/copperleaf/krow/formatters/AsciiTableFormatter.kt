@@ -1,9 +1,9 @@
-package com.eden.krow.formatters
+package com.copperleaf.krow.formatters
 
-import com.eden.krow.BorderSet
-import com.eden.krow.KrowTable
-import com.eden.krow.TableFormatter
-import com.eden.krow.borders.SingleBorder
+import com.copperleaf.krow.BorderSet
+import com.copperleaf.krow.KrowTable
+import com.copperleaf.krow.TableFormatter
+import com.copperleaf.krow.borders.SingleBorder
 
 class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<String>, BorderSet by borders {
 

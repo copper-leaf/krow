@@ -1,4 +1,4 @@
-package com.eden.krow
+package com.copperleaf.krow
 
 import java.util.regex.Pattern
 

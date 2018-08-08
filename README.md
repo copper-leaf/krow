@@ -1,7 +1,9 @@
 # Krow
-A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
+---
 
-### Building Tables
+> A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
+
+## Building Tables
 
 Tables are built with Kotlin's type-safe builder syntax. You open a `krow` closure, and are then able to call the 
 various methods and set properties that build your table. A complete example is shown below: 
@@ -43,7 +45,7 @@ they will be added at the end or added in place if the column or row already exi
 reorder columns or rows once they have been created, so if you need a specific order, set it before configuring any 
 individual cells, columns, or rows.
 
-### Formatting Tables
+## Formatting Tables
 
 Once a Table has been created like so:
 
