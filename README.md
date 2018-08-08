@@ -3,6 +3,10 @@
 
 > A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
 
+[![Build Status](https://travis-ci.org/copper-leaf/krow.svg?branch=master)](https://travis-ci.org/copper-leaf/krow)
+[![Codacy Project Grade](https://api.codacy.com/project/badge/Grade/37385c8388e6499793a509fc335fa21c)](https://www.codacy.com/app/cjbrooks12/krow?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=copper-leaf/krow&amp;utm_campaign=Badge_Grade)
+[![Code Coverage](https://api.codacy.com/project/badge/Coverage/37385c8388e6499793a509fc335fa21c)](https://www.codacy.com/app/cjbrooks12/krow?utm_source=github.com&utm_medium=referral&utm_content=copper-leaf/krow&utm_campaign=Badge_Coverage)
+
 ## Building Tables
 
 Tables are built with Kotlin's type-safe builder syntax. You open a `krow` closure, and are then able to call the 
