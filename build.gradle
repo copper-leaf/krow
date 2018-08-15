@@ -271,7 +271,7 @@ afterEvaluate { project ->
         }
         licenses {
             license {
-                name 'BSD-3-Clause'
+                name 'BSD 3-Clause'
                 url 'https://opensource.org/licenses/BSD-3-Clause'
                 distribution 'repo'
             }
@@ -318,7 +318,7 @@ afterEvaluate { project ->
             repo = "Eden"
             name = "${project.name}"
             userOrg = 'javaeden'
-            licenses = ['BSD-3-Clause']
+            licenses = ['BSD 3-Clause']
             vcsUrl = 'https://github.com/copper-leaf/krow.git'
 
             version {
