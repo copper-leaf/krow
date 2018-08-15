@@ -33,3 +33,8 @@ proguard/
 
 # Google Analytics
 /**/templates/meta.*
+
+
+# generated Dokka docs
+/src/orchid/resources/pages/api
+/src/orchid/resources/assets/dokka
