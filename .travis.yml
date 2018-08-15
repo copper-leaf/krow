@@ -17,16 +17,16 @@ branches:
 
 jobs:
     include:
-    - install: ./gradlew assemble
-      script: ./gradlew check
+    - install: ./gradlew assemble -Prelease=$TRAVIS_PULL_REQUEST
+      script: ./gradlew check -Prelease=$TRAVIS_PULL_REQUEST
       os: linux
       jdk: openjdk8
-    - install: ./gradlew assemble
-      script: ./gradlew check
+    - install: ./gradlew assemble -Prelease=$TRAVIS_PULL_REQUEST
+      script: ./gradlew check -Prelease=$TRAVIS_PULL_REQUEST
       os: linux
       jdk: oraclejdk8
-    - install: ./gradlew assemble
-      script: ./gradlew check
+    - install: ./gradlew assemble -Prelease=$TRAVIS_PULL_REQUEST
+      script: ./gradlew check -Prelease=$TRAVIS_PULL_REQUEST
       os: osx
       osx_image: xcode8.3
 
@@ -39,8 +39,8 @@ jobs:
     - stage: release
       os: linux
       jdk: openjdk8
-      install: ./gradlew assemble -Penv=prod
-      script: ./gradlew deploy -Penv=prod
+      install: ./gradlew assemble -Prelease -Penv=prod
+      script: ./gradlew deploy -Prelease -Penv=prod
       after_success:
         - git config --local user.name "Travis CI Deployment Bot"
         - git config --local user.email "deploy@travis-ci.org"
@@ -50,7 +50,7 @@ jobs:
       deploy:
         - provider: releases
           skip_cleanup: true
-          api_key: GITHUB_TOKEN
+          api_key: $GITHUB_TOKEN
           name: v${GRADLE_PROJECT_RELEASE_NAME} Release
 
 stages:

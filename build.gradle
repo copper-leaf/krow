@@ -1,3 +1,6 @@
+// Configure build
+//----------------------------------------------------------------------------------------------------------------------
+
 buildscript {
     ext.kotlin_version = '1.2.60'
     ext.dokka_version = '0.9.17'
@@ -12,7 +15,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
         classpath "gradle.plugin.com.eden:orchidPlugin:$orchid_version"
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }
 
@@ -24,8 +27,15 @@ apply plugin: 'com.eden.orchidPlugin'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-group = "com.copper-leaf"
-version = "0.1.0"
+// Configure Project
+//----------------------------------------------------------------------------------------------------------------------
+
+group 'com.eden'
+
+sourceCompatibility = JavaVersion.VERSION_1_6
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.6"
+}
 
 repositories {
     jcenter()
@@ -40,7 +50,7 @@ dependencies {
     // testing
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.0"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.0"
-    testCompile "io.strikt:strikt-core:0.9.0"
+    testCompile "io.strikt:strikt-core:0.11.0"
 
     // Orchid
     def orchid_version = '0.9.3'
@@ -54,21 +64,160 @@ dependencies {
     orchidRuntime "io.github.javaeden.orchid:OrchidWiki:$orchid_version"
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_6
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.6"
+// Javadoc and Orchid
+//----------------------------------------------------------------------------------------------------------------------
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from project.sourceSets.main.allSource
 }
+
+task javadocJar(type: Jar, dependsOn: orchidBuild) {
+    classifier = 'javadoc'
+    from "${project.buildDir}/docs/orchid"
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+if(project.sourceSets.main.allJava.files?.empty) {
+    project.tasks.assemble.dependsOn orchidBuild
+    project.tasks.orchidBuild.mustRunAfter javadoc
+}
+
+// Testing and Code Coverage
+//----------------------------------------------------------------------------------------------------------------------
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+check.dependsOn jacocoTestReport
+
 test {
     useJUnitPlatform()
     testLogging {
         showStandardStreams = true
     }
 }
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled false
+
+// Get release info
+//----------------------------------------------------------------------------------------------------------------------
+
+tag {
+    message { "Bump version to ${version}" }
+}
+
+task getReleaseName {
+    doLast {
+        println project.version.toString()
     }
+}
+
+task getReleaseNotes {
+    doLast {
+        def versionFilename = project.version.toString().replaceAll("\\.", "_") + ".md"
+        def fullVersionFilename = "$projectDir/src/orchid/resources/changelog/$versionFilename"
+        def versionFile = file(fullVersionFilename)
+
+        if(versionFile.exists()) {
+            println versionFile.text.split("---").last().trim()
+        }
+        else {
+            println "No release notes"
+        }
+    }
+}
+
+// Publish to Bintray
+//----------------------------------------------------------------------------------------------------------------------
+
+afterEvaluate { project ->
+    def pomConfig = {
+        scm {
+            url 'https://github.com/JavaEden/Krow.git'
+            connection 'https://github.com/JavaEden/Krow.git'
+            developerConnection 'https://github.com/JavaEden/Krow.git'
+        }
+        licenses {
+            license {
+                name 'MIT'
+                url 'https://opensource.org/licenses/mit'
+                distribution 'repo'
+            }
+        }
+        developers {
+            developer {
+                id 'JavaEden'
+                name 'Casey Brooks'
+                email 'cjbrooks12@gmail.com'
+            }
+        }
+    }
+
+    project.publishing {
+        publications {
+            KrowPublication(MavenPublication) {
+                from project.components.java
+                artifact project.sourcesJar
+                artifact project.javadocJar
+                groupId "${project.group}"
+                artifactId "${project.name}"
+                version "${project.version}"
+                pom.withXml {
+                    def root = asNode()
+                    root.appendNode('description', 'Simple yet powerful logging and string formatting for Java')
+                    root.appendNode('name', 'Krow')
+                    root.appendNode('url', 'https://javaeden.github.io/Krow')
+                    root.children().last() + pomConfig
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = "${project.properties['bintray_username']}"
+        key = "${project.properties['bintray_apiKey']}"
+        publications = ['KrowPublication']
+
+        dryRun = project.hasProperty('dryDeploy')
+        publish = !project.hasProperty('dryDeploy')
+        override = true
+
+        pkg {
+            repo = "Eden"
+            name = "${project.name}"
+            userOrg = 'javaeden'
+            licenses = ['MIT']
+            vcsUrl = 'https://github.com/JavaEden/Krow.git'
+
+            version {
+                name = "${project.version}"
+                desc = "Krow ${project.name} ${project.version}"
+                released = new Date()
+
+                gpg {
+                    sign = true
+                }
+                mavenCentralSync {
+                    sync = (project.hasProperty('includeMavenCentralSync'))
+                    user = "${project.properties['mavenCentral_username']}"
+                    password = "${project.properties['mavenCentral_password']}"
+                }
+            }
+        }
+    }
+}
+
+project.tasks.publish.dependsOn bintrayUpload
+
+task deploy {
+    dependsOn project.tasks.publish
+    doLast { }
 }
 
 // dokka config
@@ -148,11 +297,6 @@ task dokkaPostOrchid {
     }
 }
 
-task deploy {
-    dependsOn project.tasks.publish
-    doLast { }
-}
-
 // Orchid config
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -173,11 +317,14 @@ orchid {
 tasks.orchidBuild.dependsOn dokkaPreOrchid
 tasks.orchidServe.dependsOn dokkaPreOrchid
 tasks.orchidDeploy.dependsOn dokkaPreOrchid
+
 tasks.build.dependsOn orchidBuild
 tasks.clean.dependsOn dokkaPostOrchid
 tasks.check.dependsOn jacocoTestReport
+
 tasks.deploy.dependsOn orchidDeploy
-project.tasks.publish.dependsOn orchidDeploy
+tasks.orchidDeploy.dependsOn publish
+tasks.publish.dependsOn bintrayUpload
 
 // Code Coverage Reports
 //----------------------------------------------------------------------------------------------------------------------
@@ -212,131 +359,3 @@ task sendCoverageToCodacy(type: JavaExec) {
             "--language", "Kotlin"
     ]
 }
-
-// Generate jars
-//----------------------------------------------------------------------------------------------------------------------
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from project.sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: orchidBuild) {
-    classifier = 'javadoc'
-    from "${project.buildDir}/docs/orchid"
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-// Release message
-//----------------------------------------------------------------------------------------------------------------------
-
-tag {
-    message { "Bump version to ${version}" }
-}
-
-task getReleaseName {
-    doLast {
-        println project.version.toString()
-    }
-}
-
-task getReleaseNotes {
-    doLast {
-        def versionFilename = project.version.toString().replaceAll("\\.", "_") + ".md"
-        def fullVersionFilename = "$projectDir/src/orchid/resources/changelog/$versionFilename"
-        def versionFile = file(fullVersionFilename)
-
-        if(versionFile.exists()) {
-            println versionFile.text.split("---").last().trim()
-        }
-        else {
-            println "No release notes"
-        }
-    }
-}
-
-// Publish to Bintray
-//----------------------------------------------------------------------------------------------------------------------
-
-afterEvaluate { project ->
-    def pomConfig = {
-        scm {
-            url 'https://github.com/copper-leaf/krow.git'
-            connection 'https://github.com/copper-leaf/krow.git'
-            developerConnection 'https://github.com/copper-leaf/krow.git'
-        }
-        licenses {
-            license {
-                name 'BSD 3-Clause'
-                url 'https://opensource.org/licenses/BSD-3-Clause'
-                distribution 'repo'
-            }
-        }
-        developers {
-            developer {
-                id 'Copper Leaf'
-                name 'Casey Brooks'
-                email 'cjbrooks12@gmail.com'
-            }
-        }
-    }
-
-    project.publishing {
-        publications {
-            KrowPublication(MavenPublication) {
-                from project.components.java
-                artifact project.sourcesJar
-                artifact project.javadocJar
-                groupId "${project.group}"
-                artifactId "${project.name}"
-                version "${project.version}"
-                pom.withXml {
-                    def root = asNode()
-                    root.appendNode('description', 'A small library for generating tables in ASCII or HTML formats, built with Kotlin\'s type-safe builders')
-                    root.appendNode('name', 'krow')
-                    root.appendNode('url', 'https://copper-leaf.github.io/krow/')
-                    root.children().last() + pomConfig
-                }
-            }
-        }
-    }
-
-    bintray {
-        user = "${project.properties['bintray_username']}"
-        key = "${project.properties['bintray_apiKey']}"
-        publications = ['KrowPublication']
-
-        dryRun = project.hasProperty('dryDeploy')
-        publish = !project.hasProperty('dryDeploy')
-        override = true
-
-        pkg {
-            repo = "Eden"
-            name = "${project.name}"
-            userOrg = 'javaeden'
-            licenses = ['BSD 3-Clause']
-            vcsUrl = 'https://github.com/copper-leaf/krow.git'
-
-            version {
-                name = "${project.version}"
-                desc = "Krow ${project.name} ${project.version}"
-                released = new Date()
-
-                gpg {
-                    sign = true
-                }
-                mavenCentralSync {
-                    sync = (project.hasProperty('includeMavenCentralSync'))
-                    user = "${project.properties['mavenCentral_username']}"
-                    password = "${project.properties['mavenCentral_password']}"
-                }
-            }
-        }
-    }
-}
-
-project.tasks.publish.dependsOn bintrayUpload
