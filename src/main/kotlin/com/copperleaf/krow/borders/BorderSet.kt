@@ -8,6 +8,9 @@ interface BorderSet {
     /** Whether to print the horizontal non-header borders */
     val showH: Boolean get() = true
 
+    /** Whether to print the horizontal non-header borders */
+    val showHeader: Boolean get() = showH
+
     /** Whether to print the bottom border */
     val showB: Boolean get() = true
 
@@ -16,6 +19,9 @@ interface BorderSet {
 
     /** Whether to print the vertical non-leader borders */
     val showV: Boolean get() = true
+
+    /** Whether to print the vertical leader border */
+    val showLeader: Boolean get() = showV
 
     /** Whether to print the right border */
     val showR: Boolean get() = true

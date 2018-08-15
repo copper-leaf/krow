@@ -363,7 +363,6 @@ class TestKrow {
         val expected = """
             ┌──────┬──────┬──────┬──────┐
             │      │ col1 │ col2 │ col3 │
-            ├──────┼──────┼──────┼──────┤
             │ row1 │ 1-1  │ 2-1  │ 3-1  │
             │ row2 │ 1-2  │ 2-2  │ 3-2  │
             └──────┴──────┴──────┴──────┘
@@ -386,6 +385,26 @@ class TestKrow {
             │ row1 │ 1-1  │ 2-1  │ 3-1  │
             ├──────┼──────┼──────┼──────┤
             │ row2 │ 1-2  │ 2-2  │ 3-2  │
+        """.trimIndent().trim()
+
+        expect(output).isEqualTo(expected)
+    }
+
+    @Test
+    fun testHideHorizontalsShowHeader() {
+        val underTest = AsciiTableFormatter(object : SingleBorder() {
+            override val showH: Boolean get() = false
+            override val showHeader: Boolean get() = true
+        })
+        val output = underTest.print(input).trim()
+
+        val expected = """
+            ┌──────┬──────┬──────┬──────┐
+            │      │ col1 │ col2 │ col3 │
+            ├──────┼──────┼──────┼──────┤
+            │ row1 │ 1-1  │ 2-1  │ 3-1  │
+            │ row2 │ 1-2  │ 2-2  │ 3-2  │
+            └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
         expect(output).isEqualTo(expected)
@@ -419,13 +438,13 @@ class TestKrow {
         val output = underTest.print(input).trim()
 
         val expected = """
-            ┌──────┬──────────────────┐
-            │      │ col1  col2  col3 │
-            ├──────┼──────────────────┤
-            │ row1 │ 1-1   2-1   3-1  │
-            ├──────┼──────────────────┤
-            │ row2 │ 1-2   2-2   3-2  │
-            └──────┴──────────────────┘
+            ┌────────────────────────┐
+            │       col1  col2  col3 │
+            ├────────────────────────┤
+            │ row1  1-1   2-1   3-1  │
+            ├────────────────────────┤
+            │ row2  1-2   2-2   3-2  │
+            └────────────────────────┘
         """.trimIndent().trim()
 
         expect(output).isEqualTo(expected)
@@ -450,6 +469,27 @@ class TestKrow {
             ├──────┼──────┼──────┼──────
             │ row2 │ 1-2  │ 2-2  │ 3-2
             └──────┴──────┴──────┴──────
+        """.trimIndent().trim()
+
+        expect(output).isEqualTo(expected)
+    }
+
+    @Test
+    fun testHideVerticalsShowLeader() {
+        val underTest = AsciiTableFormatter(object : SingleBorder() {
+            override val showV: Boolean get() = false
+            override val showLeader: Boolean get() = true
+        })
+        val output = underTest.print(input).trim()
+
+        val expected = """
+            ┌──────┬──────────────────┐
+            │      │ col1  col2  col3 │
+            ├──────┼──────────────────┤
+            │ row1 │ 1-1   2-1   3-1  │
+            ├──────┼──────────────────┤
+            │ row2 │ 1-2   2-2   3-2  │
+            └──────┴──────────────────┘
         """.trimIndent().trim()
 
         expect(output).isEqualTo(expected)

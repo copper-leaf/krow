@@ -45,7 +45,7 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
                 if(showT) output += rowBlock.printTopLine()
             }
             else {
-                if(previousWasHeaderRow || showH) output += rowBlock.printMiddleLine(previousWasHeaderRow)
+                output += rowBlock.printMiddleLine(previousWasHeaderRow)
             }
             output += rowBlock.print()
             if(index == rowBlocks.size - 1) {
@@ -82,7 +82,12 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
                         if(showL) output += vl
                     }
                     else {
-                        output += if(previousWasLeaderCell) vld else if(showV) vc else ""
+                        if(previousWasLeaderCell) {
+                            output += if(showLeader) vld else ""
+                        }
+                        else {
+                            output += if(showV) vc else ""
+                        }
                     }
                     output += cellBlock.printAt(i)
                     previousWasLeaderCell = cellBlock.cell.leader
@@ -99,10 +104,10 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
 
         fun printMiddleLine(isHeaderRow: Boolean): String {
             return if(isHeaderRow) {
-                printLine(hl, hi, hr, hh, hld)
+                if(showHeader) printLine(hl, hi, hr, hh, hld) else ""
             }
             else {
-                printLine(cl, ci, cr, ch, cld)
+                if(showH) printLine(cl, ci, cr, ch, cld) else ""
             }
         }
 
@@ -118,7 +123,12 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
                     if(showL) output += if(previousWasLeaderCell) vld else l
                 }
                 else {
-                    output += if(previousWasLeaderCell) vld else if(showV) c else ""
+                    if(previousWasLeaderCell) {
+                        output += if(showLeader) vld else ""
+                    }
+                    else {
+                        output += if(showV) c else ""
+                    }
                 }
                 output += "".padStart(cellBlock.width, h)
 
