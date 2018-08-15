@@ -33,7 +33,6 @@ repositories {
 dependencies {
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
-    implementation 'org.apache.commons:commons-lang3:3.7'
 
     // testing
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.0"

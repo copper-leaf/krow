@@ -6,7 +6,9 @@ class Cell(
         var startColumn: Int,
         var endColumn: Int,
         var startRow: Int,
-        var endRow: Int
+        var endRow: Int,
+        val header: Boolean,
+        val leader: Boolean
 ) {
     var wrapTextAt: Int = 0
     var content: String = ""

@@ -1,8 +1,9 @@
 package com.copperleaf.krow.formatters
 
-import com.copperleaf.krow.BorderSet
+import com.copperleaf.krow.Cell
 import com.copperleaf.krow.KrowTable
 import com.copperleaf.krow.TableFormatter
+import com.copperleaf.krow.borders.BorderSet
 import com.copperleaf.krow.borders.SingleBorder
 
 class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<String>, BorderSet by borders {
@@ -30,7 +31,7 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
                     cell.alignedContent(maxWidth, rowHeight).forEach { line ->
                         contentRows.add(line)
                     }
-                    cellBlocks.add(CellBlock(maxWidth, rowHeight, contentRows))
+                    cellBlocks.add(CellBlock(maxWidth, rowHeight, cell, contentRows))
                 }
                 rowBlocks.add(RowBlock(rowHeight, cellBlocks))
             }
@@ -38,71 +39,95 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
 
         // render each block line-by-line
         var output = ""
+        var previousWasHeaderRow = false
         rowBlocks.forEachIndexed { index, rowBlock ->
             if(index == 0) {
-                output += rowBlock.printTopLine()
+                if(showT) output += rowBlock.printTopLine()
             }
             else {
-                output += rowBlock.printMiddleLine()
+                if(previousWasHeaderRow || showH) output += rowBlock.printMiddleLine(previousWasHeaderRow)
             }
             output += rowBlock.print()
             if(index == rowBlocks.size - 1) {
-                output += rowBlock.printBottomLine()
+                if(showB) output += rowBlock.printBottomLine()
             }
+            previousWasHeaderRow = rowBlock.isHeaderRow()
         }
 
         return output
     }
 
-    private inner class CellBlock(val width: Int, val height: Int, val contentRows: ArrayList<String>) {
+    private inner class CellBlock(val width: Int, val height: Int, val cell: Cell, val contentRows: ArrayList<String>) {
         fun printAt(index: Int): String {
             return contentRows[index]
         }
     }
 
     private inner class RowBlock(val height: Int, val cellBlocks: ArrayList<CellBlock>) {
+
+        fun isHeaderRow(): Boolean {
+            var header = true
+            for (cellBlock in cellBlocks) {
+                header = header && cellBlock.cell.header
+            }
+            return header
+        }
+
         fun print(): String {
             var output = ""
             for(i in 0 until height) {
+                var previousWasLeaderCell = false
                 cellBlocks.forEachIndexed { index, cellBlock ->
-                    output += v
+                    if(index == 0) {
+                        if(showL) output += vl
+                    }
+                    else {
+                        output += if(previousWasLeaderCell) vld else if(showV) vc else ""
+                    }
                     output += cellBlock.printAt(i)
+                    previousWasLeaderCell = cellBlock.cell.leader
                 }
-                output += "$v$nl"
+                output += if(showR) "$vr$nl" else "$nl"
             }
 
             return output
         }
 
         fun printTopLine(): String {
-            return printLine(tl, t, tr)
+            return printLine(tl, ti, tr, th, tld)
         }
 
-        fun printMiddleLine(): String {
-            return printLine(cl, c, cr)
+        fun printMiddleLine(isHeaderRow: Boolean): String {
+            return if(isHeaderRow) {
+                printLine(hl, hi, hr, hh, hld)
+            }
+            else {
+                printLine(cl, ci, cr, ch, cld)
+            }
         }
 
         fun printBottomLine(): String {
-            return printLine(bl, b, br)
+            return printLine(bl, bi, br, bh, bld)
         }
 
-        fun printLine(l: Char, c: Char, r: Char): String {
+        fun printLine(l: Char, c: Char, r: Char, h: Char, vld: Char): String {
             var output = ""
+            var previousWasLeaderCell = false
             cellBlocks.forEachIndexed { index, cellBlock ->
                 if(index == 0) {
-                    output += l
+                    if(showL) output += if(previousWasLeaderCell) vld else l
                 }
                 else {
-                    output += c
+                    output += if(previousWasLeaderCell) vld else if(showV) c else ""
                 }
                 output += "".padStart(cellBlock.width, h)
+
+                previousWasLeaderCell = cellBlock.cell.leader
             }
-            output += "$r$nl"
+            output += if(showR) "$r$nl" else "$nl"
 
             return output
         }
     }
-
-
 
 }

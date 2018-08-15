@@ -12,7 +12,7 @@ class KrowTable(val formatter: TableFormatter<String> = AsciiTableFormatter()) :
     var showHeaders = true
     var showLeaders = true
 
-    val basicCell = Cell(this, 0, 0, 0, 0)
+    val basicCell = Cell(this, 0, 0, 0, 0, false, false)
 
     val tableCells: List<List<Cell>>
         get() {
@@ -20,11 +20,11 @@ class KrowTable(val formatter: TableFormatter<String> = AsciiTableFormatter()) :
 
             if(showHeaders) {
                 val headerRow = ArrayList<Cell>()
-                val headerLeaderCell = Cell(this, 0, 0, 0, 0)
+                val headerLeaderCell = Cell(this, 0, 0, 0, 0, true, true)
                 initCell(headerLeaderCell)
                 headerRow.add(headerLeaderCell)
                 columnNames.forEachIndexed { i, name ->
-                    val headerCell = Cell(this, i, i, 0, 0)
+                    val headerCell = Cell(this, i, i, 0, 0, true, false)
                     headerCell.content = name
                     initCell(headerCell)
                     headerRow.add(headerCell)
@@ -36,7 +36,7 @@ class KrowTable(val formatter: TableFormatter<String> = AsciiTableFormatter()) :
                 val newRow = ArrayList<Cell>()
 
                 if(showLeaders) {
-                    val leaderCell = Cell(this, 0, 0, y, y)
+                    val leaderCell = Cell(this, 0, 0, y, y, false, true)
                     leaderCell.content = rowNames[y]
                     initCell(leaderCell)
                     newRow.add(leaderCell)
@@ -67,7 +67,7 @@ class KrowTable(val formatter: TableFormatter<String> = AsciiTableFormatter()) :
         rows.forEachIndexed { y, row ->
             if(width >= row.size) {
                 for(x in row.size .. width) {
-                    val cell = Cell(this, x, x, y, y)
+                    val cell = Cell(this, x, x, y, y, false, false)
                     initCell(cell)
                     row.add(cell)
                 }
