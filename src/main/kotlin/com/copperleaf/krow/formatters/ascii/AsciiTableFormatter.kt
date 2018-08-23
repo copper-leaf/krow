@@ -1,10 +1,8 @@
-package com.copperleaf.krow.formatters
+package com.copperleaf.krow.formatters.ascii
 
 import com.copperleaf.krow.Cell
 import com.copperleaf.krow.KrowTable
 import com.copperleaf.krow.TableFormatter
-import com.copperleaf.krow.borders.BorderSet
-import com.copperleaf.krow.borders.SingleBorder
 
 class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<String>, BorderSet by borders {
 

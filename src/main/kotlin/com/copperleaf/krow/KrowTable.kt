@@ -1,6 +1,6 @@
 package com.copperleaf.krow
 
-import com.copperleaf.krow.formatters.AsciiTableFormatter
+import com.copperleaf.krow.formatters.ascii.AsciiTableFormatter
 
 @TableMarker
 class KrowTable(val formatter: TableFormatter<String> = AsciiTableFormatter()) : TableFormatter<String> by formatter {

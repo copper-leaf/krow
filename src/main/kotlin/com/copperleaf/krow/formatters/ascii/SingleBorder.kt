@@ -1,4 +1,4 @@
-package com.copperleaf.krow.borders
+package com.copperleaf.krow.formatters.ascii
 
 open class SingleBorder : BorderSet {
 
