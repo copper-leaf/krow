@@ -1,0 +1,55 @@
+// More info for OSS licenses
+//----------------------------------------------------------------------------------------------------------------------
+
+rootProject.ext.ossLicenses = [
+        'MIT' : [
+                name: 'MIT',
+                url : 'https://opensource.org/licenses/MIT'
+        ],
+        'BSD' : [
+                name: 'BSD 3-Clause',
+                url : 'https://opensource.org/licenses/BSD-3-Clause'
+        ],
+        'LGPL': [
+                name: 'LGPL-3.0',
+                url : 'https://opensource.org/licenses/LGPL-3.0'
+        ],
+]
+
+// Config Values
+//----------------------------------------------------------------------------------------------------------------------
+
+rootProject.ext {
+    group = 'com.eden'
+    github_project = 'copper-leaf/krow'
+    java_javaVersion = JavaVersion.VERSION_1_6
+    kotlin_javaVersion = '1.6'
+
+    // Orchid
+    orchid_version = '0.10.1'
+    base_url = 'https://copper-leaf.github.io/krow'
+    github_token = project.hasProperty("github_token") ? project.property("github_token") : System.getenv('GITHUB_TOKEN')
+    environment = project.hasProperty('env') ? project.property('env') : 'debug'
+
+    // Bintray uploads
+    dry_deploy = project.hasProperty('dryDeploy')
+    bintray_username = "${project.properties['bintray_username']}"
+    bintray_api_key = "${project.properties['bintray_apiKey']}"
+    bintray_repo = 'Eden'
+    bintray_user_org = 'javaeden'
+
+    maven_central_sync = project.hasProperty('includeMavenCentralSync')
+    maven_central_username = "${project.properties['mavenCentral_username']}"
+    maven_central_password = "${project.properties['mavenCentral_password']}"
+
+    // Developer info
+    developer_id = 'JavaEden'
+    developer_name = 'Casey Brooks'
+    developer_email = 'cjbrooks12@gmail.com'
+
+    // Project info
+    project_name = 'Krow'
+    project_description = 'A small library for generating tables in ASCII or HTML formats'
+
+    license = rootProject.ext.ossLicenses['BSD']
+}

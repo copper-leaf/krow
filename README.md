@@ -1,5 +1,4 @@
 # Krow
----
 
 > A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
 

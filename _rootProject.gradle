@@ -1,0 +1,76 @@
+
+repositories {
+    jcenter()
+    maven { url 'https://dl.bintray.com/javaeden/Orchid/' }
+    maven { url 'https://jitpack.io' }
+}
+
+// Get release info
+//----------------------------------------------------------------------------------------------------------------------
+
+tag {
+    message { "Bump version to ${version}" }
+}
+
+task getReleaseName {
+    doLast {
+        println project.version.toString()
+    }
+}
+
+task getReleaseNotes {
+    doLast {
+        def versionFilename = project.version.toString().replaceAll("\\.", "_") + ".md"
+        def fullVersionFilename = "$projectDir/src/orchid/resources/changelog/$versionFilename"
+        def versionFile = file(fullVersionFilename)
+
+        if (versionFile.exists()) {
+            println versionFile.text.split("---").last().trim()
+        } else {
+            println "No release notes"
+        }
+    }
+}
+
+// Deploy
+//----------------------------------------------------------------------------------------------------------------------
+
+
+task deploy {
+    doLast {}
+}
+rootProject.tasks.deploy.dependsOn rootProject.ext.mainProjects*.publish
+
+// Code Coverage Reports
+//----------------------------------------------------------------------------------------------------------------------
+task codeCoverageReport(type: JacocoReport) {
+    dependsOn rootProject.ext.mainProjects*.test
+
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    sourceSets sourceSets.main
+
+    reports {
+        xml.enabled true
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        html.enabled false
+        csv.enabled false
+    }
+}
+
+configurations { codacy }
+dependencies {
+    codacy 'com.github.codacy:codacy-coverage-reporter:4.0.2'
+}
+task sendCoverageToCodacy(type: JavaExec) {
+    dependsOn codeCoverageReport
+
+    main = "com.codacy.CodacyCoverageReporter"
+    classpath = configurations.codacy
+    args = [
+            "report",
+            "-l", "Java",
+            "-r", "${buildDir}/reports/jacoco/report.xml",
+            "-t", "${System.getenv("CODACY_PROJECT_TOKEN")}",
+            "--language", "Kotlin"
+    ]
+}

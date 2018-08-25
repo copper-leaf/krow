@@ -1,0 +1,141 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'jacoco'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'com.eden.orchidPlugin'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+// Java/Kotlin
+//----------------------------------------------------------------------------------------------------------------------
+
+group project.ext.group
+version rootProject.version
+
+sourceCompatibility = project.ext.java_javaVersion
+compileKotlin {
+    kotlinOptions.jvmTarget = project.ext.kotlin_javaVersion
+}
+
+// Javadoc and Orchid
+//----------------------------------------------------------------------------------------------------------------------
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from project.sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: orchidBuild) {
+    classifier = 'javadoc'
+    from "${project.buildDir}/docs/orchid"
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+if (project.sourceSets.main.allJava.files?.empty) {
+    project.tasks.assemble.dependsOn orchidBuild
+    project.tasks.orchidBuild.mustRunAfter javadoc
+}
+
+// Testing and Code Coverage
+//----------------------------------------------------------------------------------------------------------------------
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+check.dependsOn jacocoTestReport
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+// Deployment
+//----------------------------------------------------------------------------------------------------------------------
+
+afterEvaluate { project ->
+    def pomConfig = {
+        scm {
+            url "https://github.com/${project.ext.github_project}.git"
+            connection "https://github.com/${project.ext.github_project}.git"
+            developerConnection "https://github.com/${project.ext.github_project}.git"
+        }
+        licenses {
+            license {
+                name project.ext.license.name
+                url project.ext.license.url
+                distribution 'repo'
+            }
+        }
+        developers {
+            developer {
+                id project.ext.developer_id
+                name project.ext.developer_name
+                email project.ext.developer_email
+            }
+        }
+    }
+
+    project.publishing {
+        publications {
+            KrowPublication(MavenPublication) {
+                from project.components.java
+                artifact project.sourcesJar
+                artifact project.javadocJar
+                groupId project.group
+                artifactId project.name
+                version project.version
+                pom.withXml {
+                    def root = asNode()
+                    root.appendNode('description', project.ext.project_description)
+                    root.appendNode('name', project.ext.project_name)
+                    root.appendNode('url', project.ext.base_url)
+                    root.children().last() + pomConfig
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = project.ext.bintray_username
+        key = project.ext.bintray_api_key
+        publications = ['KrowPublication']
+
+        dryRun = project.ext.dry_deploy
+        publish = !project.ext.dry_deploy
+        override = true
+
+        pkg {
+            repo = project.ext.bintray_repo
+            name = project.name
+            userOrg = project.ext.bintray_user_org
+            licenses = [project.ext.license.name]
+            vcsUrl = "https://github.com/${project.ext.github_project}.git"
+
+            version {
+                name = "${project.version}"
+                desc = "${project.name} ${project.version}"
+                released = new Date()
+
+                gpg {
+                    sign = true
+                }
+                mavenCentralSync {
+                    sync = project.ext.maven_central_sync
+                    user = project.ext.maven_central_username
+                    password = project.ext.maven_central_password
+                }
+            }
+        }
+    }
+}
+
+project.tasks.publish.dependsOn bintrayUpload

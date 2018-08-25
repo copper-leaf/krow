@@ -1,0 +1,106 @@
+// dokka config
+//----------------------------------------------------------------------------------------------------------------------
+
+def _dokkaRoot = "${project.buildDir}/docs/dokka"
+def _dokkaOrchidRoot = "${project.rootDir}/src/orchid/resources/pages/api"
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = _dokkaRoot
+    reportUndocumented = false
+
+    linkMapping {
+        dir = "src/main/kotlin"
+        url = "https://github.com/${project.ext.github_project}/blob/master/src/main/kotlin"
+        suffix = "#L"
+    }
+}
+task dokkaPreOrchid {
+    dependsOn dokka
+    doLast {
+        def outputExtension = 'html'
+
+        fileTree(_dokkaRoot).visit { FileVisitDetails details ->
+            if (details.isDirectory()) return
+            if (!details.path.endsWith(outputExtension)) return
+
+            def originalFile = details.file
+            def originalPath = originalFile.path
+            def newPath = originalPath
+            newPath = newPath.replaceAll("${_dokkaRoot}/${project.name}", '')
+            newPath = newPath.replaceAll('\\.' + outputExtension, '')
+            newPath = newPath.replaceAll('\\.', '/')
+            newPath = newPath + "." + outputExtension
+            newPath = _dokkaOrchidRoot + newPath
+
+            File newFile = new File(newPath)
+            if (!newFile.parentFile.exists()) {
+                newFile.parentFile.mkdirs()
+            }
+            newFile.createNewFile()
+
+            def originalText = originalFile.text
+            String newText = originalText
+            newText = newText.replaceAll("\\.md", ".html")
+            newText = newText.replaceAll("<HTML>", "")
+            newText = newText.replaceAll("</HTML>", "")
+            newText = newText.replaceAll("(?s)<HEAD>.*</HEAD>", "")
+            newText = newText.replaceAll("<BODY>", "")
+            newText = newText.replaceAll("</BODY>", "")
+            newText = '<div class="dokka-docs">' + newText + '</div>'
+
+            newFile << newText
+        }
+
+        def packageListFile = file("${_dokkaRoot}/${project.name}/package-list")
+        packageListFile.write '---\nrenderMode: raw\nusePrettyUrl: false\n---\n' + packageListFile.text
+        packageListFile.renameTo("${_dokkaOrchidRoot}/package-list")
+
+        copy {
+            from file("${_dokkaRoot}/style.css")
+            into file("${project.rootDir}/src/orchid/resources/assets/dokka/")
+            rename '(.+)\\.css', '$1.scss'
+
+            eachFile { fileCopyDetails ->
+                fileCopyDetails.file.write ".dokka-docs {\n" + fileCopyDetails.file.text + "\n}"
+            }
+        }
+    }
+}
+
+task dokkaPostOrchid {
+    doLast {
+        file(_dokkaOrchidRoot).deleteDir()
+        file("${project.rootDir}/src/orchid/resources/assets/dokka/style.scss").delete()
+    }
+}
+
+// Orchid config
+//----------------------------------------------------------------------------------------------------------------------
+
+orchid {
+    version = "${project.version}"
+    theme = "BsDoc"
+
+    if (project.ext.environment == 'prod') {
+        environment = 'prod'
+        baseUrl = project.ext.base_url
+    } else {
+        environment = 'debug'
+        baseUrl = "http://localhost:8080"
+    }
+
+    args = ['githubToken', project.ext.github_token]
+}
+tasks.orchidBuild.dependsOn dokkaPreOrchid
+tasks.orchidServe.dependsOn dokkaPreOrchid
+tasks.orchidDeploy.dependsOn dokkaPreOrchid
+
+tasks.build.dependsOn orchidBuild
+tasks.clean.dependsOn dokkaPostOrchid
+tasks.check.dependsOn jacocoTestReport
+
+tasks.publish.dependsOn bintrayUpload
+tasks.publish.dependsOn orchidDeploy
+tasks.orchidDeploy.dependsOn bintrayUpload
+
