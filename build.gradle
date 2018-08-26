@@ -1,50 +1,39 @@
-// Configure build
+// Buildscript
 //----------------------------------------------------------------------------------------------------------------------
 
 buildscript {
-    ext.kotlin_version = '1.2.60'
-    ext.dokka_version = '0.9.17'
-    ext.orchid_version = '0.10.1'
-
     repositories {
         jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
     }
-
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
-        classpath "gradle.plugin.com.eden:orchidPlugin:$orchid_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.60"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+        classpath "gradle.plugin.com.eden:orchidPlugin:0.10.1"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }
 
-rootProject.ext.mainProjects = [rootProject]
-rootProject.ext.docProjects  = [rootProject.ext.mainProjects]
-
-apply from: './_config.gradle'
-configure(project.ext.mainProjects) { apply from: './_mainProjects.gradle' }
-configure(project.ext.docProjects)  { apply from: './_docProjects.gradle'  }
-configure(rootProject)              { apply from: './_rootProject.gradle'  }
-
-// Configure Project
+// Config and Repositories
 //----------------------------------------------------------------------------------------------------------------------
 
-dependencies {
-    // kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
-
-    // testing
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.0"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.0"
-    testCompile "io.strikt:strikt-core:0.11.5"
-
-    orchidCompile "io.github.javaeden.orchid:OrchidCore:${project.ext.orchid_version}"
-    orchidRuntime "io.github.javaeden.orchid:OrchidChangelog:${project.ext.orchid_version}"
-    orchidRuntime "io.github.javaeden.orchid:OrchidBsDoc:${project.ext.orchid_version}"
-    orchidRuntime "io.github.javaeden.orchid:OrchidPages:${project.ext.orchid_version}"
-    orchidRuntime "io.github.javaeden.orchid:OrchidPluginDocs:${project.ext.orchid_version}"
-    orchidRuntime "io.github.javaeden.orchid:OrchidSearch:${project.ext.orchid_version}"
-    orchidRuntime "io.github.javaeden.orchid:OrchidSyntaxHighlighter:${project.ext.orchid_version}"
-    orchidRuntime "io.github.javaeden.orchid:OrchidWiki:${project.ext.orchid_version}"
+apply from: "${rootProject.rootDir}/_config.gradle"
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://dl.bintray.com/javaeden/Orchid/' }
+        maven { url 'https://jitpack.io' }
+    }
 }
+
+// Apply additional Gradle scripts
+//----------------------------------------------------------------------------------------------------------------------
+
+rootProject.ext.mainProjects = [project(':krow')]
+rootProject.ext.docProjects  = [project(':krow')]
+
+configure(rootProject.ext.mainProjects) { apply from: "${rootProject.rootDir}/_mainProjects.gradle" }
+configure(rootProject.ext.docProjects)  { apply from: "${rootProject.rootDir}/_docProjects.gradle"  }
+configure(rootProject)                  { apply from: "${rootProject.rootDir}/_rootProject.gradle"  }
+
+

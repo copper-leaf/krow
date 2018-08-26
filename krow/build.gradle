@@ -1,0 +1,19 @@
+
+dependencies {
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+
+    // testing
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.0"
+    testCompile "io.strikt:strikt-core:0.11.5"
+
+    orchidCompile "io.github.javaeden.orchid:OrchidCore:${rootProject.ext.orchid_version}"
+    orchidRuntime "io.github.javaeden.orchid:OrchidChangelog:${rootProject.ext.orchid_version}"
+    orchidRuntime "io.github.javaeden.orchid:OrchidBsDoc:${rootProject.ext.orchid_version}"
+    orchidRuntime "io.github.javaeden.orchid:OrchidPages:${rootProject.ext.orchid_version}"
+    orchidRuntime "io.github.javaeden.orchid:OrchidPluginDocs:${rootProject.ext.orchid_version}"
+    orchidRuntime "io.github.javaeden.orchid:OrchidSearch:${rootProject.ext.orchid_version}"
+    orchidRuntime "io.github.javaeden.orchid:OrchidSyntaxHighlighter:${rootProject.ext.orchid_version}"
+    orchidRuntime "io.github.javaeden.orchid:OrchidWiki:${rootProject.ext.orchid_version}"
+}

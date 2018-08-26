@@ -1,8 +1,11 @@
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'com.eden.orchidPlugin'
+
 // dokka config
 //----------------------------------------------------------------------------------------------------------------------
 
 def _dokkaRoot = "${project.buildDir}/docs/dokka"
-def _dokkaOrchidRoot = "${project.rootDir}/src/orchid/resources/pages/api"
+def _dokkaOrchidRoot = "${project.projectDir}/src/orchid/resources/pages/api"
 
 dokka {
     outputFormat = 'html'
@@ -11,7 +14,7 @@ dokka {
 
     linkMapping {
         dir = "src/main/kotlin"
-        url = "https://github.com/${project.ext.github_project}/blob/master/src/main/kotlin"
+        url = "https://github.com/${rootProject.ext.github_project}/blob/master/src/main/kotlin"
         suffix = "#L"
     }
 }
@@ -82,25 +85,22 @@ orchid {
     version = "${project.version}"
     theme = "BsDoc"
 
-    if (project.ext.environment == 'prod') {
+    if (rootProject.ext.environment == 'prod') {
         environment = 'prod'
-        baseUrl = project.ext.base_url
+        baseUrl = rootProject.ext.base_url
     } else {
         environment = 'debug'
         baseUrl = "http://localhost:8080"
     }
 
-    args = ['githubToken', project.ext.github_token]
+    args = ['githubToken', rootProject.ext.github_token]
 }
 tasks.orchidBuild.dependsOn dokkaPreOrchid
 tasks.orchidServe.dependsOn dokkaPreOrchid
 tasks.orchidDeploy.dependsOn dokkaPreOrchid
 
-tasks.build.dependsOn orchidBuild
+project.tasks.javadoc.dependsOn orchidBuild
 tasks.clean.dependsOn dokkaPostOrchid
-tasks.check.dependsOn jacocoTestReport
 
-tasks.publish.dependsOn bintrayUpload
-tasks.publish.dependsOn orchidDeploy
-tasks.orchidDeploy.dependsOn bintrayUpload
-
+project.tasks.publish.dependsOn orchidDeploy
+project.tasks.orchidDeploy.dependsOn bintrayUpload

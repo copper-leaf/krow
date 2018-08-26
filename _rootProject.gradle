@@ -1,9 +1,15 @@
-
-repositories {
-    jcenter()
-    maven { url 'https://dl.bintray.com/javaeden/Orchid/' }
-    maven { url 'https://jitpack.io' }
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.vladsch.flexmark:flexmark:0.34.18'
+    }
 }
+
+import com.vladsch.flexmark.html.HtmlRenderer
+import com.vladsch.flexmark.parser.Parser
+import com.vladsch.flexmark.util.options.MutableDataSet
 
 // Get release info
 //----------------------------------------------------------------------------------------------------------------------
@@ -20,21 +26,29 @@ task getReleaseName {
 
 task getReleaseNotes {
     doLast {
-        def versionFilename = project.version.toString().replaceAll("\\.", "_") + ".md"
-        def fullVersionFilename = "$projectDir/src/orchid/resources/changelog/$versionFilename"
+        def changelogProject = project(rootProject.ext.changelogProject)
+        def versionFilename = changelogProject.version.toString().replaceAll("\\.", "_") + ".md"
+        def fullVersionFilename = "${changelogProject.projectDir}/src/orchid/resources/changelog/$versionFilename"
         def versionFile = file(fullVersionFilename)
 
         if (versionFile.exists()) {
-            println versionFile.text.split("---").last().trim()
+            def changelogMarkdown = versionFile.text.split("---").last().trim()
+
+            def options = new MutableDataSet()
+            def parser = Parser.builder(options).build()
+            def renderer = HtmlRenderer.builder(options).build()
+
+            def changelogHtml = renderer.render(parser.parse(changelogMarkdown))
+            changelogHtml = changelogHtml.replaceAll("\n", " ")
+            println changelogHtml
         } else {
-            println "No release notes"
+            println "No release notes for $versionFilename"
         }
     }
 }
 
 // Deploy
 //----------------------------------------------------------------------------------------------------------------------
-
 
 task deploy {
     doLast {}
@@ -47,7 +61,9 @@ task codeCoverageReport(type: JacocoReport) {
     dependsOn rootProject.ext.mainProjects*.test
 
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-    sourceSets sourceSets.main
+    rootProject.ext.mainProjects.each {
+        sourceSets it.sourceSets.main
+    }
 
     reports {
         xml.enabled true

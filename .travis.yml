@@ -52,6 +52,7 @@ jobs:
           skip_cleanup: true
           api_key: $GITHUB_TOKEN
           name: v${GRADLE_PROJECT_RELEASE_NAME} Release
+          body: ${GRADLE_PROJECT_RELEASE_NOTES}
 
 stages:
 - test
