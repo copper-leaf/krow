@@ -16,4 +16,5 @@ dependencies {
     orchidRuntime "io.github.javaeden.orchid:OrchidSearch:${rootProject.ext.orchid_version}"
     orchidRuntime "io.github.javaeden.orchid:OrchidSyntaxHighlighter:${rootProject.ext.orchid_version}"
     orchidRuntime "io.github.javaeden.orchid:OrchidWiki:${rootProject.ext.orchid_version}"
+    orchidRuntime "io.github.javaeden.orchid:OrchidKotlindoc:${rootProject.ext.orchid_version}"
 }

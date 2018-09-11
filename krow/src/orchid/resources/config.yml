@@ -14,17 +14,11 @@ theme:
     title: 'Home'
     url: '#{$0|baseUrl}/'
   - type: 'wiki'
-  - type: 'link'
+  - type: 'kotlindocClasses'
     title: 'Api Docs'
-    url: '#{$0|baseUrl}/api'
   trianglifyOptions:
     x_colors: ['#88ffe0', '#000000', '#88ffe0']
   useSidebarSearch: true
-
-pages:
-  staticPages:
-    extraCss:
-    - 'assets/dokka/style.scss'
 
 services:
   publications:
