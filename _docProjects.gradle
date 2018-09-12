@@ -15,7 +15,7 @@ orchid {
         baseUrl = "http://localhost:8080"
     }
 
-    args = ['githubToken', rootProject.ext.github_token]
+    args = ["githubToken ${rootProject.ext.github_token}"]
 }
 
 project.tasks.javadoc.dependsOn orchidBuild
