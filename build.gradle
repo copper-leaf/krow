@@ -7,8 +7,8 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.61"
-        classpath "gradle.plugin.com.eden:orchidPlugin:0.11.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.70"
+        classpath "gradle.plugin.com.eden:orchidPlugin:0.12.1"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }

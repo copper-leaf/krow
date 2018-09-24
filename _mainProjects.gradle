@@ -14,6 +14,10 @@ sourceCompatibility = rootProject.ext.java_javaVersion
 compileKotlin {
     kotlinOptions.jvmTarget = rootProject.ext.kotlin_javaVersion
 }
+compileTestJava {
+    sourceCompatibility = rootProject.ext.java_javaVersion
+    targetCompatibility = rootProject.ext.java_javaVersion
+}
 
 // Javadoc and Orchid
 //----------------------------------------------------------------------------------------------------------------------

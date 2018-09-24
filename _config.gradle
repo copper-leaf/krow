@@ -26,7 +26,7 @@ rootProject.ext {
     kotlin_javaVersion = '1.6'
 
     // Orchid
-    orchid_version = '0.11.0'
+    orchid_version = '0.12.1'
     base_url = 'https://copper-leaf.github.io/krow'
     github_token = project.hasProperty("github_token") ? project.property("github_token") : System.getenv('GITHUB_TOKEN')
     environment = project.hasProperty('env') ? project.property('env') : 'debug'
