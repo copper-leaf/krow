@@ -1,0 +1,57 @@
+
+site:
+  about:
+    siteName: Krow
+    siteDescription: A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
+
+theme:
+  social:
+    other:
+      - link: 'https://copper-leaf.github.io/krow'
+        label: 'Home'
+        icon: 'fas fa-home'
+      - link: 'https://github.com/copper-leaf/krow'
+        label: 'Github'
+        icon: 'fab fa-github'
+      - link: 'https://twitter.com/OrchidSSG'
+        label: 'Twitter'
+        icon: 'fab fa-twitter'
+  menu:
+    - type: 'page'
+      title: 'Home'
+      itemId: 'Home'
+    - type: 'wikiSections'
+    - type: 'page'
+      itemId: 'Changelog'
+  sidebarBackground: 'primary'
+  sidebarBackgroundType: GRADIENT
+  colors:
+    orange: '#ffaa6d'
+  palette:
+    link: 'ORANGE'
+    primary: 'ORANGE'
+  useSidebarSearch: true
+
+services:
+  publications:
+    stages:
+      - type: ghPages
+        repo: 'copper-leaf/krow'
+        username: 'cjbrooks12'
+      - type: githubReleases
+        repo: 'copper-leaf/krow'
+
+allPages:
+  components:
+    - type: "pageContent"
+    - type: "prism"
+      githubTheme: 'duotone-light'
+      languages:
+        - kotlin
+        - java
+        - groovy
+  extraCss:
+    - 'inline:all.scss:
+      code.language-kotlin .token.number { margin: 0; padding: 0; background: none; border: none; font-size: 1em; min-width: 0; }
+      code.language-kotlin .token.operator { margin: 0; padding: 0; background: none; border: none; font-size: 1em; min-width: 0; }
+      '

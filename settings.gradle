@@ -11,3 +11,4 @@ apply plugin: 'net.vivin.gradle-semantic-build-versioning'
 rootProject.name = 'krow'
 
 include ':krow'
+include ':krow-docs'

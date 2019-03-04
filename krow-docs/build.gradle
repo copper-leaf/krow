@@ -1,0 +1,41 @@
+plugins {
+    id "com.eden.orchidPlugin" version "0.16.1"
+}
+
+group rootProject.group
+version rootProject.version
+
+repositories {
+    jcenter()
+    maven { url "https://kotlin.bintray.com/kotlinx" }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    orchidRuntime "io.github.javaeden.orchid:OrchidDocs:$orchid_version"
+    orchidRuntime "io.github.javaeden.orchid:OrchidBsDoc:$orchid_version"
+    orchidRuntime "io.github.javaeden.orchid:OrchidCopper:$orchid_version"
+    orchidRuntime "io.github.javaeden.orchid:OrchidPluginDocs:$orchid_version"
+}
+
+task publish {
+    doLast {}
+}
+
+// Orchid config
+//----------------------------------------------------------------------------------------------------------------------
+
+orchid {
+    version = "${project.version}"
+    theme = "Copper"
+    githubToken = rootProject.ext.github_token
+    baseUrl = rootProject.ext.base_url
+
+    if (project.hasProperty('env') && project.property('env') == 'prod') {
+        environment = 'prod'
+    } else {
+        environment = 'debug'
+    }
+}
+tasks.build.dependsOn orchidBuild
+tasks.publish.dependsOn orchidDeploy

@@ -1,16 +1,3 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.vladsch.flexmark:flexmark:0.34.18'
-    }
-}
-
-import com.vladsch.flexmark.html.HtmlRenderer
-import com.vladsch.flexmark.parser.Parser
-import com.vladsch.flexmark.util.options.MutableDataSet
-
 apply plugin: 'jacoco'
 
 // Get release info
@@ -18,35 +5,6 @@ apply plugin: 'jacoco'
 
 tag {
     message { "Bump version to ${version}" }
-}
-
-task getReleaseName {
-    doLast {
-        println project.version.toString()
-    }
-}
-
-task getReleaseNotes {
-    doLast {
-        def changelogProject = project(rootProject.ext.changelogProject)
-        def versionFilename = changelogProject.version.toString().replaceAll("\\.", "_") + ".md"
-        def fullVersionFilename = "${changelogProject.projectDir}/src/orchid/resources/changelog/$versionFilename"
-        def versionFile = file(fullVersionFilename)
-
-        if (versionFile.exists()) {
-            def changelogMarkdown = versionFile.text.split("---").last().trim()
-
-            def options = new MutableDataSet()
-            def parser = Parser.builder(options).build()
-            def renderer = HtmlRenderer.builder(options).build()
-
-            def changelogHtml = renderer.render(parser.parse(changelogMarkdown))
-            changelogHtml = changelogHtml.replaceAll("\n", " ")
-            println changelogHtml
-        } else {
-            println "No release notes for $versionFilename"
-        }
-    }
 }
 
 // Deploy

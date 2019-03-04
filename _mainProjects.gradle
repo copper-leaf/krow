@@ -27,14 +27,8 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from project.sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from "${project.buildDir}/docs/orchid"
-}
-
 artifacts {
     archives sourcesJar
-    archives javadocJar
 }
 
 // Testing and Code Coverage
@@ -85,7 +79,6 @@ publishing {
         ProjectPublication(MavenPublication) {
             from project.components.java
             artifact project.sourcesJar
-            artifact project.javadocJar
             groupId project.group
             artifactId project.name
             version project.version
