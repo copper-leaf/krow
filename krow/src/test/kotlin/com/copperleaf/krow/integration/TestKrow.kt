@@ -127,7 +127,6 @@ class TestKrow {
         expect(output).isEqualTo(expected)
     }
 
-
     @Test
     fun testKrowWhenContentIsLong_itShouldExpandColumnsToFitContent() {
         val underTest = krow {
@@ -168,6 +167,42 @@ class TestKrow {
             │      │                         │ then should wrap at the next   │
             │      │                         │ line because it is too long    │
             └──────┴─────────────────────────┴────────────────────────────────┘
+        """.trimIndent().trim()
+
+        expect(output).isEqualTo(expected)
+    }
+
+    @Test
+    fun testHidingHeader() {
+        input.showHeaders = false
+        val underTest = AsciiTableFormatter(SingleBorder())
+        val output = underTest.print(input).trim()
+
+        val expected = """
+            ┌──────┬─────┬─────┬─────┐
+            │ row1 │ 1-1 │ 2-1 │ 3-1 │
+            ├──────┼─────┼─────┼─────┤
+            │ row2 │ 1-2 │ 2-2 │ 3-2 │
+            └──────┴─────┴─────┴─────┘
+        """.trimIndent().trim()
+
+        expect(output).isEqualTo(expected)
+    }
+
+    @Test
+    fun testHidingLeader() {
+        input.showLeaders = false
+        val underTest = AsciiTableFormatter(SingleBorder())
+        val output = underTest.print(input).trim()
+
+        val expected = """
+            ┌──────┬──────┬──────┐
+            │ col1 │ col2 │ col3 │
+            ├──────┼──────┼──────┤
+            │ 1-1  │ 2-1  │ 3-1  │
+            ├──────┼──────┼──────┤
+            │ 1-2  │ 2-2  │ 3-2  │
+            └──────┴──────┴──────┘
         """.trimIndent().trim()
 
         expect(output).isEqualTo(expected)
