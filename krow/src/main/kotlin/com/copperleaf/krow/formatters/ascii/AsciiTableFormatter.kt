@@ -9,7 +9,7 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
     override fun print(table: KrowTable): String {
         val allCells = table.tableCells
         // determine the height of each row and the width of each column
-
+        fitToSize(allCells)
 
         // format cells to padded and aligned content blocks
         val rowBlocks = ArrayList<RowBlock>()
@@ -135,6 +135,20 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
             output += if(showR) "$r$nl" else "$nl"
 
             return output
+        }
+    }
+
+    private fun fitToSize(allCells: List<List<Cell>>) {
+        allCells.firstOrNull()?.let { columns ->
+            columns.forEachIndexed { index, cell ->
+                var columnWrap = allCells.map { it[index].wrapTextAt }.max()!!
+
+                if(columnWrap == 0) {
+                    columnWrap = allCells.map { it[index].content.length }.max()!!
+                }
+
+                allCells.map { it[index].wrapTextAt = columnWrap }
+            }
         }
     }
 

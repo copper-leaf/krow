@@ -127,4 +127,50 @@ class TestKrow {
         expect(output).isEqualTo(expected)
     }
 
+
+    @Test
+    fun testKrowWhenContentIsLong_itShouldExpandColumnsToFitContent() {
+        val underTest = krow {
+            cell("col1", "row1") { content = "this column should grow" }
+            cell("col2", "row1") { content = "this column should grow but then should not wrap at the next line even though it is it is so long" }
+        }
+
+        val output = AsciiTableFormatter(SingleBorder()).print(underTest).trim()
+
+        val expected = """
+            ┌──────┬─────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────────────────┐
+            │      │ col1                    │ col2                                                                                              │
+            ├──────┼─────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────┤
+            │ row1 │ this column should grow │ this column should grow but then should not wrap at the next line even though it is it is so long │
+            └──────┴─────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────┘
+        """.trimIndent().trim()
+
+        expect(output).isEqualTo(expected)
+    }
+
+    @Test
+    fun testKrowWhenContentIsLong_itShouldExpandColumnsToFitContentAndAlsoRespectSetColumnWidths() {
+        val underTest = krow {
+            cell("col1", "row1") { content = "this column should grow" }
+            cell("col2", "row1") {
+                content = "this column should grow but then should wrap at the next line because it is too long"
+                wrapTextAt = 30
+            }
+        }
+
+        val output = AsciiTableFormatter(SingleBorder()).print(underTest).trim()
+
+        val expected = """
+            ┌──────┬─────────────────────────┬────────────────────────────────┐
+            │      │ col1                    │ col2                           │
+            ├──────┼─────────────────────────┼────────────────────────────────┤
+            │ row1 │ this column should grow │ this column should grow but    │
+            │      │                         │ then should wrap at the next   │
+            │      │                         │ line because it is too long    │
+            └──────┴─────────────────────────┴────────────────────────────────┘
+        """.trimIndent().trim()
+
+        expect(output).isEqualTo(expected)
+    }
+
 }
