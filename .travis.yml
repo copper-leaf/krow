@@ -41,18 +41,10 @@ jobs:
       jdk: openjdk8
       install: ./gradlew assemble -Prelease -Penv=prod
       script: ./gradlew deploy -Prelease -Penv=prod
-      after_success:
+      before_script:
         - git config --local user.name "Travis CI Deployment Bot"
         - git config --local user.email "deploy@travis-ci.org"
         - ./gradlew tag -Prelease
-        - export GRADLE_PROJECT_RELEASE_NAME=$(./gradlew getReleaseName --quiet)
-        - export GRADLE_PROJECT_RELEASE_NOTES=$(./gradlew getReleaseNotes --quiet)
-      deploy:
-        - provider: releases
-          skip_cleanup: true
-          api_key: $GITHUB_TOKEN
-          name: v${GRADLE_PROJECT_RELEASE_NAME} Release
-          body: ${GRADLE_PROJECT_RELEASE_NOTES}
 
 stages:
 - test
