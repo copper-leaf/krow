@@ -140,7 +140,7 @@ class AsciiTableFormatter(borders: BorderSet = SingleBorder()) : TableFormatter<
 
     private fun fitToSize(allCells: List<List<Cell>>) {
         allCells.firstOrNull()?.let { columns ->
-            columns.forEachIndexed { index, cell ->
+            columns.forEachIndexed { index, _ ->
                 var columnWrap = allCells.map { it[index].wrapTextAt }.max()!!
 
                 if(columnWrap == 0) {

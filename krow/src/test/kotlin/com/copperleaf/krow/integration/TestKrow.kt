@@ -11,7 +11,7 @@ import com.copperleaf.krow.formatters.html.HtmlTableFormatter
 import com.copperleaf.krow.krow
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
 class TestKrow {
@@ -53,7 +53,7 @@ class TestKrow {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -71,7 +71,7 @@ class TestKrow {
             ╚══════╩══════╩══════╩══════╝
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -89,7 +89,7 @@ class TestKrow {
             +------+------+------+------+
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -124,7 +124,7 @@ class TestKrow {
             </table>
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -144,7 +144,7 @@ class TestKrow {
             └──────┴─────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -169,7 +169,7 @@ class TestKrow {
             └──────┴─────────────────────────┴────────────────────────────────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -186,7 +186,7 @@ class TestKrow {
             └──────┴─────┴─────┴─────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -205,7 +205,7 @@ class TestKrow {
             └──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
 }

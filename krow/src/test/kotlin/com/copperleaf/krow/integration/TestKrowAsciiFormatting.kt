@@ -4,14 +4,11 @@ import com.copperleaf.krow.HorizontalAlignment
 import com.copperleaf.krow.KrowTable
 import com.copperleaf.krow.VerticalAlignment
 import com.copperleaf.krow.formatters.ascii.AsciiTableFormatter
-import com.copperleaf.krow.formatters.ascii.CrossingBorder
-import com.copperleaf.krow.formatters.ascii.DoubleBorder
 import com.copperleaf.krow.formatters.ascii.SingleBorder
-import com.copperleaf.krow.formatters.html.HtmlTableFormatter
 import com.copperleaf.krow.krow
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
 class TestKrowAsciiFormatting {
@@ -64,7 +61,7 @@ class TestKrowAsciiFormatting {
             3──────6──────6──────6──────4
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -89,7 +86,7 @@ class TestKrowAsciiFormatting {
             └222222┴222222┴222222┴222222┘
         """.trimIndent().trim()
 
-        expect("\n\n$output\n\n").isEqualTo("\n\n$expected\n\n")
+        expectThat("\n\n$output\n\n").isEqualTo("\n\n$expected\n\n")
     }
 
     @Test
@@ -110,7 +107,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -131,7 +128,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -153,7 +150,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -173,7 +170,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -195,7 +192,7 @@ class TestKrowAsciiFormatting {
             └──────3──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -215,7 +212,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -236,7 +233,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
 // Test showing/hiding dividers
@@ -258,7 +255,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -276,7 +273,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -295,7 +292,7 @@ class TestKrowAsciiFormatting {
             │ row2 │ 1-2  │ 2-2  │ 3-2  │
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -315,7 +312,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -335,7 +332,7 @@ class TestKrowAsciiFormatting {
             ──────┴──────┴──────┴──────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -355,7 +352,7 @@ class TestKrowAsciiFormatting {
             └────────────────────────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -379,7 +376,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────┴──────┴──────
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
     @Test
@@ -400,7 +397,7 @@ class TestKrowAsciiFormatting {
             └──────┴──────────────────┘
         """.trimIndent().trim()
 
-        expect(output).isEqualTo(expected)
+        expectThat(output).isEqualTo(expected)
     }
 
 }
