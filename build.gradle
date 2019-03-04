@@ -19,6 +19,7 @@ apply from: "${rootProject.rootDir}/_config.gradle"
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
