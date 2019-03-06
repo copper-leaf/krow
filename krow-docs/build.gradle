@@ -1,5 +1,5 @@
 plugins {
-    id "com.eden.orchidPlugin" version "0.16.1"
+    id "com.eden.orchidPlugin" version "0.16.4"
 }
 
 group rootProject.group
@@ -20,15 +20,10 @@ dependencies {
 
 orchid {
     version = "${project.version}"
-    theme = "Copper"
+    theme = rootProject.ext.orchid_theme
     githubToken = rootProject.ext.github_token
     baseUrl = rootProject.ext.base_url
-
-    if (project.hasProperty('env') && project.property('env') == 'prod') {
-        environment = 'prod'
-    } else {
-        environment = 'debug'
-    }
+    environment = rootProject.ext.environment
 }
 tasks.build.dependsOn orchidBuild
-rootProject.tasks.deploy.dependsOn orchidDeploy
+task deploy { dependsOn orchidDeploy }
