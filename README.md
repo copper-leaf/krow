@@ -2,15 +2,9 @@
 
 > A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
 
-[![Build Status](https://travis-ci.org/copper-leaf/krow.svg?branch=master)](https://travis-ci.org/copper-leaf/krow)
-[![Latest Version](https://api.bintray.com/packages/javaeden/Eden/krow/images/download.svg) ](https://bintray.com/javaeden/Eden/krow/_latestVersion)
-[![Codacy Project Grade](https://api.codacy.com/project/badge/Grade/37385c8388e6499793a509fc335fa21c)](https://www.codacy.com/app/cjbrooks12/krow?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=copper-leaf/krow&amp;utm_campaign=Badge_Grade)
-[![Code Coverage](https://api.codacy.com/project/badge/Coverage/37385c8388e6499793a509fc335fa21c)](https://www.codacy.com/app/cjbrooks12/krow?utm_source=github.com&utm_medium=referral&utm_content=copper-leaf/krow&utm_campaign=Badge_Coverage)
-
-## Building Tables
-
-Tables are built with Kotlin's type-safe builder syntax. You open a `krow` closure, and are then able to call the 
-various methods and set properties that build your table. A complete example is shown below: 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/copper-leaf/krow)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.copper-leaf/krow-core)
+![Kotlin Version](https://img.shields.io/badge/Kotlin-1.4.32-orange)
 
 ```kotlin
 val table = krow {
@@ -31,95 +25,48 @@ val table = krow {
 }
 ```
 
-A Table is build of Cells arranged in a 2D grid.
+# Supported Platforms/Features
 
-The `cell()` method accepts a pair of keys for `column, row` index. If either of these two keys do not exist, then the 
-table will add a row or column accordingly, and then set the properties of that cell with the closure opened at that 
-cell.
+| Platform |
+| -------- |
+| Android  |
+| JVM      |
+| iOS      |
+| JS       |
 
-The `row()` method takes a key for a row, and applies the closure to all cells in that row. If the row does not exist, 
-the table will add the row before applying the closure to all its cells. In the same way, you can use the `column()` to
-setup an entire column of cells.
-
-the `table()` method applies the closure to every cell in the entire table.
-
-You can also set the ordering of rows and columns with the `columns()`, and `rows()` methods, which each take a list of
-Strings as the names of the columns or rows to add. Other rows or columns may be added later with the above methods, but
-they will be added at the end or added in place if the column or row already exists. At this time, it is not possible to 
-reorder columns or rows once they have been created, so if you need a specific order, set it before configuring any 
-individual cells, columns, or rows.
-
-## Formatting Tables
-
-Once a Table has been created like so:
+# Installation
 
 ```kotlin
-val table = krow {
-    ...
+repositories {
+    mavenCentral()
+}
+
+// for plain JVM or Android projects
+dependencies {
+    implementation("io.github.copper-leaf:krow-core:{{site.version}}")
+}
+
+// for multiplatform projects
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation("io.github.copper-leaf:krow-core:{{site.version}}")
+            }
+        }
+    }
 }
 ```
 
-You can then print the Table in any format you wish. Krow ships with Formatters that render the table as an HTML table, 
-or as an ASCII table for the command-line. Examples are shown below:
+# Documentation
 
-**SingleBorder AsciiTable**
-```
-┌──────┬──────┬──────┬──────┐
-│      │ col1 │ col2 │ col3 │
-├──────┼──────┼──────┼──────┤
-│ row1 │ 1-1  │ 2-1  │ 3-1  │
-├──────┼──────┼──────┼──────┤
-│ row2 │ 1-2  │ 2-2  │ 3-2  │
-└──────┴──────┴──────┴──────┘
-```
+See the [website](https://copper-leaf.github.io/krow/) for detailed documentation and usage instructions.
 
+# License
 
-**DoubleBorder AsciiTable**
-```
-╔══════╦══════╦══════╦══════╗
-║      ║ col1 ║ col2 ║ col3 ║
-╠══════╬══════╬══════╬══════╣
-║ row1 ║ 1-1  ║ 2-1  ║ 3-1  ║
-╠══════╬══════╬══════╬══════╣
-║ row2 ║ 1-2  ║ 2-2  ║ 3-2  ║
-╚══════╩══════╩══════╩══════╝
-```
+Krow is licensed under the BSD 3-Clause License, see [LICENSE.md](https://github.com/copper-leaf/krow/tree/master/LICENSE.md).
 
-**Crossing AsciiTable**
-```
-+------+------+------+------+
-|      | col1 | col2 | col3 |
-+------+------+------+------+
-| row1 | 1-1  | 2-1  | 3-1  |
-+------+------+------+------+
-| row2 | 1-2  | 2-2  | 3-2  |
-+------+------+------+------+
-```
+# References
 
-**HtmlTable**
-```
-<table>
-  <thead>
-  <tr>
-    <th></th>
-    <th>col1</th>
-    <th>col2</th>
-    <th>col3</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>row1</td>
-    <td>1-1</td>
-    <td>2-1</td>
-    <td>3-1</td>
-  </tr>
-  <tr>
-    <td>row2</td>
-    <td>1-2</td>
-    <td>2-2</td>
-    <td>3-2</td>
-  </tr>
-  </tbody>
-</table>
-```
+- [Parsec](https://github.com/haskell/parsec)
+- [JParsec](https://github.com/jparsec/jparsec)
