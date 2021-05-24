@@ -5,9 +5,9 @@ import com.copperleaf.krow.utils.createLineOf
 import com.copperleaf.krow.utils.padVertical
 import com.copperleaf.krow.utils.wrap
 
-val Krow.Row.colSpec: List<Int> get() = cells.map { it.intrinsicWidthWithPadding }
-val List<Krow.Row>.rowSpec: List<Int> get() = this.map { it.height }
-val Krow.Row.height: Int get() = cells.maxOf { it.intrinsicHeight }
+//val Krow.Row.colSpec: List<Int> get() = cells.map { it.intrinsicWidthWithPadding }
+//val List<Krow.Row>.rowSpec: Map<String, Int> get() = this.map { it.cells.maxOf { it.intrinsicHeight } }
+//val Krow.Row.height: Int get() = cells.maxOf { it.intrinsicHeight }
 
 val Krow.Cell.intrinsicWidthWithPadding: Int
     get() {

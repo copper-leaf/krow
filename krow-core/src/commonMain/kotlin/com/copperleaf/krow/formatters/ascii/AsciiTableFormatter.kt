@@ -34,8 +34,8 @@ class AsciiTableFormatter(
 // ---------------------------------------------------------------------------------------------------------------------
 
     private fun createBuffer(table: Krow.Table): MutableList<String> {
-        val totalWidth = table.colSpec.sum() + (table.colSpec.size + 1)
-        val totalHeight = table.rowSpec.sum() + (table.rowSpec.size + 1)
+        val totalWidth = table.colSpec.getFullMeasurement().totalSize
+        val totalHeight = table.rowSpec.getFullMeasurement().totalSize
 
         // create empty buffer
         return createLinesOf(
@@ -48,13 +48,11 @@ class AsciiTableFormatter(
 // ---------------------------------------------------------------------------------------------------------------------
 
     private fun measureCells(table: Krow.Table): List<MeasuredCell> {
-        return table.rows.flatMapIndexed { tableRowIndex, tableRow ->
-            tableRow.cells.mapIndexed { tableCellIndex, tableCell ->
+        return table.rows.flatMapIndexed { _, tableRow ->
+            tableRow.cells.mapIndexed { _, tableCell ->
                 measureCell(
                     cell = tableCell,
                     table = table,
-                    tableRowIndex = tableRowIndex,
-                    tableCellIndex = tableCellIndex
                 )
             }
         }
@@ -63,46 +61,35 @@ class AsciiTableFormatter(
     private fun measureCell(
         table: Krow.Table,
         cell: Krow.Cell,
-        tableRowIndex: Int,
-        tableCellIndex: Int,
     ): MeasuredCell {
-        val colSpan = cell.colSpan
-        val width = table.colSpec.subList(tableCellIndex, tableCellIndex + colSpan).sum() + (colSpan - 1)
-        val bufferColumn = table.colSpec.subList(0, tableCellIndex).sum() + tableCellIndex
+        val measuredHeight = table.rowSpec.measureRange(cell.rowName, cell.rowSpan)
+        val measuredWidth = table.colSpec.measureRange(cell.columnName, cell.colSpan)
 
-        val rowSpan = cell.rowSpan
-        val height = table.rowSpec.subList(tableRowIndex, tableRowIndex + rowSpan).sum() + (rowSpan - 1)
-        val bufferLine = table.rowSpec.subList(0, tableRowIndex).sum() + tableRowIndex
-
-        val startRowIndex = tableRowIndex
-        val rowStartDescriptor = if (startRowIndex == 0) {
+        val rowStartDescriptor = if (measuredHeight.startIndex == 0) {
             RowDescriptor.TOP
-        } else if (startRowIndex == table.rowSpec.size - 1) {
+        } else if (measuredHeight.startIndex == table.rowSpec.sizes.lastIndex) {
             RowDescriptor.BOTTOM
         } else {
             RowDescriptor.MIDDLE
         }
-        val endRowIndex = tableRowIndex + cell.rowSpan
-        val rowEndDescriptor = if (endRowIndex == 0) {
+        val rowEndDescriptor = if (measuredHeight.endIndex == 0) {
             RowDescriptor.TOP
-        } else if (endRowIndex == table.rowSpec.size) {
+        } else if (measuredHeight.endIndex == table.rowSpec.sizes.lastIndex) {
             RowDescriptor.BOTTOM
         } else {
             RowDescriptor.MIDDLE
         }
 
-        val startColumnIndex = tableCellIndex
-        val columnStartDescriptor = if (startColumnIndex == 0) {
+        val columnStartDescriptor = if (measuredWidth.startIndex == 0) {
             ColumnDescriptor.FIRST
-        } else if (startColumnIndex == table.colSpec.size - 1) {
+        } else if (measuredWidth.startIndex == table.colSpec.sizes.lastIndex) {
             ColumnDescriptor.LAST
         } else {
             ColumnDescriptor.MIDDLE
         }
-        val endColumnIndex = tableCellIndex + cell.colSpan
-        val columnEndDescriptor = if (endColumnIndex == 0) {
+        val columnEndDescriptor = if (measuredWidth.endIndex == 0) {
             ColumnDescriptor.FIRST
-        } else if (endColumnIndex == table.colSpec.size) {
+        } else if (measuredWidth.endIndex == table.colSpec.sizes.lastIndex) {
             ColumnDescriptor.LAST
         } else {
             ColumnDescriptor.MIDDLE
@@ -110,16 +97,8 @@ class AsciiTableFormatter(
 
         return MeasuredCell(
             cell = cell,
-            startRowIndex = startRowIndex,
-            endRowIndex = endRowIndex,
-            startColumnIndex = startColumnIndex,
-            endColumnIndex = endColumnIndex,
-            colSpan = colSpan,
-            rowSpan = rowSpan,
-            width = width,
-            height = height,
-            bufferLine = bufferLine,
-            bufferColumn = bufferColumn,
+            heightMeasurement = measuredHeight,
+            widthMeasurement = measuredWidth,
             rowStartDescriptor = rowStartDescriptor,
             rowEndDescriptor = rowEndDescriptor,
             columnStartDescriptor = columnStartDescriptor,
@@ -131,8 +110,8 @@ class AsciiTableFormatter(
         table: Krow.Table,
         cells: List<MeasuredCell>,
     ): List<MeasuredBorder> {
-        return (0..table.rowSpec.size).flatMapIndexed { tableRowBorderIndex, tableRowBorder ->
-            (0..table.colSpec.size).mapIndexed { tableCellBorderIndex, tableCellBorder ->
+        return (0..table.rowSpec.sizes.size).flatMapIndexed { tableRowBorderIndex, _ ->
+            (0..table.colSpec.sizes.size).mapIndexed { tableCellBorderIndex, _ ->
                 measureBorder(
                     table,
                     cells,
@@ -149,8 +128,10 @@ class AsciiTableFormatter(
         tableRowBorderIndex: Int,
         tableCellBorderIndex: Int,
     ): MeasuredBorder {
-        val bufferLine = table.rowSpec.subList(0, tableRowBorderIndex).sum() + tableRowBorderIndex
-        val bufferColumn = table.colSpec.subList(0, tableCellBorderIndex).sum() + tableCellBorderIndex
+        val rowMeasurement = table.rowSpec.measurePoint(tableRowBorderIndex)
+        val bufferLine = rowMeasurement.bufferPosition
+        val columnMeasurement = table.colSpec.measurePoint(tableCellBorderIndex)
+        val bufferColumn = columnMeasurement.bufferPosition
 
         val currentIndex: Pair<Int, Int> = tableRowBorderIndex to tableCellBorderIndex
         val topLeftCell: MeasuredCell? = cells[currentIndex + (-1 to -1)]
@@ -230,11 +211,12 @@ class AsciiTableFormatter(
 // ---------------------------------------------------------------------------------------------------------------------
 
     private fun MeasuredCell.drawCellContent(canvas: KrowCanvas) {
+        val cellContent = cell.printContentWithPadding(width, height)
         // Write the cell contents
         canvas.drawText(
-            bufferLine,
-            bufferColumn,
-            cell.printContentWithPadding(width, height)
+            bufferLine + 1,
+            bufferColumn + 1,
+            cellContent
         )
     }
 }

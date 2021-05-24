@@ -12,7 +12,13 @@ class KrowCanvas(
      * Overwrites a part of the specified line, starting from the specified index, with another string.
      */
     private fun draw(line: Int, startColumn: Int, replacement: String) {
-        buffer[line] = buffer[line].replaceRange(startColumn, startColumn + replacement.length, replacement)
+//        try {
+            buffer[line] = buffer[line].replaceRange(startColumn, startColumn + replacement.length, replacement)
+//        }
+//        catch (e: Exception) {
+//            println("Crash attempting to draw '$replacement' at (line=$line, column=$startColumn):")
+//            println(this)
+//        }
     }
 
     fun drawHorizontalLine(
@@ -44,9 +50,8 @@ class KrowCanvas(
         bufferColumn: Int,
         text: String
     ) {
-        val data = text.lines()
-        data.forEachIndexed { i, s ->
-            draw(bufferLine + i + 1, bufferColumn + 1, s)
+        text.lines().forEachIndexed { i, s ->
+            draw(bufferLine + i, bufferColumn, s)
         }
     }
 

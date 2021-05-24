@@ -17,11 +17,11 @@ interface TableScope {
 
     fun body(block: BodyScope.() -> Unit)
     fun row(rowName: String? = null, block: BodyRowScope.() -> Unit)
-    fun rows(vararg rows: Pair<String, List<String>>, block: BodyCellScope.() -> Unit = {})
-    fun rows(vararg rows: List<String>, block: BodyCellScope.() -> Unit = {})
+    fun rows(vararg rows: Pair<String, List<String>>, block: MutableBodyCellScope.() -> Unit = {})
+    fun rows(vararg rows: List<String>, block: MutableBodyCellScope.() -> Unit = {})
 
-    fun cell(columnName: String, rowName: String, block: BodyCellScope.() -> Unit): BodyCellScope
-    fun cell(columnIndex: Int, rowIndex: Int, block: BodyCellScope.() -> Unit): BodyCellScope
+    fun cell(columnName: String, rowName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope
+    fun cell(columnIndex: Int, rowIndex: Int, block: MutableBodyCellScope.() -> Unit): BodyCellScope
 }
 
 @TableMarker
@@ -40,21 +40,21 @@ interface HeaderRowScope {
 @TableMarker
 interface BodyScope {
     fun row(rowName: String? = null, block: BodyRowScope.() -> Unit)
-    fun rows(vararg rows: Pair<String, List<String>>, block: BodyCellScope.() -> Unit = {})
-    fun rows(vararg rows: List<String>, block: BodyCellScope.() -> Unit = {})
+    fun rows(vararg rows: Pair<String, List<String>>, block: MutableBodyCellScope.() -> Unit = {})
+    fun rows(vararg rows: List<String>, block: MutableBodyCellScope.() -> Unit = {})
 }
 
 @TableMarker
 interface BodyRowScope {
-    var rowName: String
-    fun cell(cellContent: String? = null, block: BodyCellScope.() -> Unit = {}): BodyCellScope
-    fun cells(vararg cellContents: String, block: BodyCellScope.() -> Unit = {})
+    val rowName: String
+    fun cell(cellContent: String? = null, block: MutableBodyCellScope.() -> Unit = {}): BodyCellScope
+    fun cells(vararg cellContents: String, block: MutableBodyCellScope.() -> Unit = {})
 }
 
 @TableMarker
 interface HeaderCellScope {
     var width: Int?
-    var columnName: String
+    val columnName: String
     var verticalAlignment: VerticalAlignment?
     var horizontalAlignment: HorizontalAlignment?
     var content: String
@@ -65,8 +65,14 @@ interface BodyCellScope {
     var verticalAlignment: VerticalAlignment?
     var horizontalAlignment: HorizontalAlignment?
     var content: String
-    var colSpan: Int
-    var rowSpan: Int
+    val colSpan: Int
+    val rowSpan: Int
+}
+
+@TableMarker
+interface MutableBodyCellScope : BodyCellScope {
+    override var colSpan: Int
+    override var rowSpan: Int
 }
 
 fun krow(block: TableScope.() -> Unit): Krow.Table {

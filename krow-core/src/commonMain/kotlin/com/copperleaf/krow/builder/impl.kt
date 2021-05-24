@@ -1,18 +1,22 @@
 package com.copperleaf.krow.builder
 
-import com.copperleaf.krow.formatters.ascii.colSpec
-import com.copperleaf.krow.formatters.ascii.rowSpec
+import com.copperleaf.krow.builder.KrowTableBuilderLayout.Companion.HEADER_ROW_NAME
+import com.copperleaf.krow.builder.KrowTableBuilderLayout.Companion.LEADING_COLUMN_NAME
+import com.copperleaf.krow.formatters.ascii.intrinsicHeight
+import com.copperleaf.krow.formatters.ascii.intrinsicWidthWithPadding
 import com.copperleaf.krow.model.HorizontalAlignment
 import com.copperleaf.krow.model.Krow
 import com.copperleaf.krow.model.VerticalAlignment
+import com.copperleaf.krow.model.toTableSpec
 
-class TableScopeImpl : TableScope {
+internal class TableScopeImpl(
+    private val layout: KrowTableBuilderLayout = KrowTableBuilderLayout(),
+    private val header: HeaderScopeImpl = HeaderScopeImpl(layout),
+    private val body: BodyScopeImpl = BodyScopeImpl(layout),
+) : TableScope {
 
     override var includeHeaderRow: Boolean = true
     override var includeLeadingColumn: Boolean = true
-
-    internal val header = HeaderScopeImpl()
-    internal val body = BodyScopeImpl()
 
     override fun header(block: HeaderScope.() -> Unit) {
         header.block()
@@ -30,48 +34,24 @@ class TableScopeImpl : TableScope {
         body.row(rowName, block)
     }
 
-    override fun rows(vararg rows: Pair<String, List<String>>, block: BodyCellScope.() -> Unit) {
+    override fun rows(vararg rows: Pair<String, List<String>>, block: MutableBodyCellScope.() -> Unit) {
         body.rows(*rows, block = block)
     }
 
-    override fun rows(vararg rows: List<String>, block: BodyCellScope.() -> Unit) {
+    override fun rows(vararg rows: List<String>, block: MutableBodyCellScope.() -> Unit) {
         body.rows(*rows, block = block)
     }
 
-    override fun cell(columnName: String, rowName: String, block: BodyCellScope.() -> Unit): BodyCellScope {
-        // see if we can find a cell at these coordinates by name
-        var column: HeaderCellScopeImpl? = header[columnName]
-        var row: BodyRowScopeImpl? = body[rowName]
-
-        if (column == null) {
-            // add a column
-            column = header.column(columnName) as HeaderCellScopeImpl?
-        }
-        if (row == null) {
-            // add a row, with empty cells until the column index
-            row = body.row(rowName) {
-                for (i in 1..column!!.columnIndex) {
-                    cell()
-                }
-            } as BodyRowScopeImpl?
-        }
-
-        return cell(column!!.columnIndex, row!!.rowIndex, block)
+    override fun cell(columnName: String, rowName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+        TODO()
     }
 
-    override fun cell(columnIndex: Int, rowIndex: Int, block: BodyCellScope.() -> Unit): BodyCellScope {
-        val column = header[columnIndex]
-        val row = body[rowIndex]
-
-        val cell = row.cells[columnIndex]
-
-        block(cell)
-
-        return cell
+    override fun cell(columnIndex: Int, rowIndex: Int, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+        TODO()
     }
 
     fun build(): Krow.Table {
-        val headerRow = header.build(includeLeadingColumn, body)
+        val headerRow = header.build(includeLeadingColumn)
         val bodyRows = body.build(header.headerRow, includeLeadingColumn)
 
         val displayedRows: List<Krow.Row> = if (includeHeaderRow) {
@@ -80,9 +60,43 @@ class TableScopeImpl : TableScope {
             bodyRows
         }
 
+        val cellsGroupedByColumn: Map<String, List<Krow.Cell>> = displayedRows
+            .flatMap { it.cells }
+            .groupBy { it.columnName }
+
+        // calculate column widths
+        val colSpec = headerRow
+            .cells
+            .map { columnCell ->
+                val columnWidth = if (columnCell.width != null) {
+                    // column has fixed width
+                    columnCell.width
+                } else {
+                    // auto-size column to the content width of the cells in this column that do not span multiple columns
+                    val cellsInColumn = cellsGroupedByColumn[columnCell.columnName]!!
+                    val cellsInColumnWithoutColSpan = cellsInColumn.filter { it.colSpan == 1 }
+
+                    val maxWidthInColumn: Int = cellsInColumnWithoutColSpan
+                        .maxOf { cell: Krow.Cell -> cell.intrinsicWidthWithPadding }
+
+                    maxWidthInColumn
+                }
+
+                columnCell.columnName to columnWidth
+            }
+            .toTableSpec()
+
+        // calculate row heights
+        val rowSpec = displayedRows
+            .map { tableRow ->
+                val rowHeight = tableRow.cells.maxOf { it.intrinsicHeight }
+                tableRow.rowName to rowHeight
+            }
+            .toTableSpec()
+
         return Krow.Table(
-            colSpec = headerRow.colSpec,
-            rowSpec = displayedRows.rowSpec,
+            colSpec = colSpec,
+            rowSpec = rowSpec,
             includeHeaderRow = includeHeaderRow,
             includeLeadingColumn = includeLeadingColumn,
             rows = displayedRows,
@@ -90,9 +104,10 @@ class TableScopeImpl : TableScope {
     }
 }
 
-class HeaderScopeImpl : HeaderScope {
-
-    internal val headerRow = HeaderRowScopeImpl()
+internal class HeaderScopeImpl(
+    val layout: KrowTableBuilderLayout,
+    val headerRow: HeaderRowScopeImpl = HeaderRowScopeImpl(layout)
+) : HeaderScope {
 
     override fun row(block: HeaderRowScope.() -> Unit) {
         headerRow.block()
@@ -106,41 +121,41 @@ class HeaderScopeImpl : HeaderScope {
         headerRow.columns(*columnNames, block = block)
     }
 
-    internal operator fun get(columnIndex: Int): HeaderCellScopeImpl {
-        return headerRow[columnIndex]
-    }
-
     internal operator fun get(columnName: String): HeaderCellScopeImpl? {
         return headerRow[columnName]
     }
 
-    fun build(includeLeadingColumn: Boolean, body: BodyScopeImpl): Krow.Row {
-        val cells = headerRow.build().cells
-
-        return if (includeLeadingColumn) {
-            val leadingColumnWidth = body.rows.maxOf { it.rowName.length }
-            val headerRowColumn = Krow.Cell(
-                data = "",
-                width = leadingColumnWidth
-            )
-
-            Krow.Row(listOf(headerRowColumn) + cells)
-        } else {
-            Krow.Row(cells)
-        }
+    fun build(includeLeadingColumn: Boolean): Krow.Row {
+        return headerRow.build(includeLeadingColumn)
     }
 }
 
-class HeaderRowScopeImpl : HeaderRowScope {
-    internal var autoincrement = 1
+internal class HeaderRowScopeImpl(
+    val layout: KrowTableBuilderLayout
+) : HeaderRowScope {
+
     internal val columns = mutableListOf<HeaderCellScopeImpl>()
 
     override fun column(columnName: String?, block: HeaderCellScope.() -> Unit): HeaderCellScope {
-        val newCell = HeaderCellScopeImpl(columnIndex = autoincrement, content = columnName ?: "$autoincrement")
-        newCell.block()
-        columns.add(newCell)
-        autoincrement++
-        return newCell
+        val (isNew, position) = layout.getOrCreateColumn(columnName)
+
+        return if (isNew) {
+            val cellId = layout.getCellAt(
+                rowName = HEADER_ROW_NAME,
+                columnName = layout.getColumnName(position),
+            )
+
+            val newCell = HeaderCellScopeImpl(
+                columnName = columnName ?: cellId.columnName,
+                content = columnName ?: cellId.columnName
+            )
+
+            columns.add(newCell)
+
+            newCell
+        } else {
+            columns[position]
+        }.apply(block)
     }
 
     override fun columns(vararg columnNames: String, block: HeaderCellScope.() -> Unit) {
@@ -149,33 +164,64 @@ class HeaderRowScopeImpl : HeaderRowScope {
         }
     }
 
-    internal operator fun get(columnIndex: Int): HeaderCellScopeImpl {
-        return columns[columnIndex]
-    }
-
     internal operator fun get(columnName: String): HeaderCellScopeImpl? {
         return columns.firstOrNull { it.columnName == columnName }
     }
 
-    fun build(): Krow.Row {
+    fun build(includeLeadingColumn: Boolean): Krow.Row {
+        val ownColumnCells = layout
+            .getRowCells(HEADER_ROW_NAME)
+            .map { cellId ->
+                // use preconfigured column, or create an empty one
+                columns
+                    .firstOrNull { it.columnName == cellId.columnName }
+                    ?: HeaderCellScopeImpl(
+                        columnName = cellId.columnName,
+                        content = cellId.columnName
+                    )
+            }
+            .map { it.build() }
+
+        val actualRowCells = if(includeLeadingColumn) {
+            val headerRowColumn = Krow.Cell(
+                data = "",
+                rowName = HEADER_ROW_NAME,
+                columnName = LEADING_COLUMN_NAME,
+            )
+
+            listOf(headerRowColumn) + ownColumnCells
+        } else {
+            ownColumnCells
+        }
+
         return Krow.Row(
-            columns.map { it.build() }
+            rowName = HEADER_ROW_NAME,
+            cells = actualRowCells
         )
     }
 }
 
-class BodyScopeImpl : BodyScope {
-    internal var autoincrement = 1
+internal class BodyScopeImpl(
+    private val layout: KrowTableBuilderLayout
+) : BodyScope {
     internal val rows = mutableListOf<BodyRowScopeImpl>()
 
     override fun row(rowName: String?, block: BodyRowScope.() -> Unit) {
-        val newRow = BodyRowScopeImpl(rowIndex = autoincrement, rowName = rowName ?: "$autoincrement")
-        newRow.block()
-        rows.add(newRow)
-        autoincrement++
+        val (isNew, rowIndex) = layout.getOrCreateRow(rowName)
+
+        if (isNew) {
+            val newRow = BodyRowScopeImpl(
+                layout = layout,
+                rowName = rowName ?: "$rowIndex"
+            )
+            rows.add(newRow)
+            newRow
+        } else {
+            rows.first { it.rowName == rowName }
+        }.block()
     }
 
-    override fun rows(vararg rows: Pair<String, List<String>>, block: BodyCellScope.() -> Unit) {
+    override fun rows(vararg rows: Pair<String, List<String>>, block: MutableBodyCellScope.() -> Unit) {
         for ((rowName, rowCells) in rows) {
             row(rowName) {
                 cells(*rowCells.toTypedArray(), block = block)
@@ -183,7 +229,7 @@ class BodyScopeImpl : BodyScope {
         }
     }
 
-    override fun rows(vararg rows: List<String>, block: BodyCellScope.() -> Unit) {
+    override fun rows(vararg rows: List<String>, block: MutableBodyCellScope.() -> Unit) {
         for (rowCells in rows) {
             row {
                 cells(*rowCells.toTypedArray(), block = block)
@@ -204,23 +250,34 @@ class BodyScopeImpl : BodyScope {
     }
 }
 
-class BodyRowScopeImpl(
-    val rowIndex: Int,
+internal class BodyRowScopeImpl(
+    private val layout: KrowTableBuilderLayout,
     override var rowName: String
 ) : BodyRowScope {
 
-    internal var autoincrement = 1
     internal val cells = mutableListOf<BodyCellScopeImpl>()
 
-    override fun cell(cellContent: String?, block: BodyCellScope.() -> Unit): BodyCellScope {
-        val newCell = BodyCellScopeImpl(columnIndex = autoincrement, content = cellContent ?: "$autoincrement")
+    override fun cell(cellContent: String?, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+        val newCell = MutableBodyCellScopeImpl(
+            rowName = rowName,
+            content = cellContent ?: ""
+        )
         newCell.block()
-        cells.add(newCell)
-        autoincrement += newCell.colSpan
-        return newCell
+
+        val position = layout.placeCellInRow(
+            rowName = rowName,
+            rowSpan = newCell.rowSpan,
+            colSpan = newCell.colSpan
+        )
+
+        val committedCell = newCell.commit(position.columnName)
+
+        cells.add(committedCell)
+
+        return committedCell
     }
 
-    override fun cells(vararg cellContents: String, block: BodyCellScope.() -> Unit) {
+    override fun cells(vararg cellContents: String, block: MutableBodyCellScope.() -> Unit) {
         for (cellContent in cellContents) {
             cell(cellContent, block)
         }
@@ -233,21 +290,27 @@ class BodyRowScopeImpl(
     fun build(headerRow: HeaderRowScopeImpl, includeLeadingColumn: Boolean): Krow.Row {
         val dataCells = cells.map { it.build(headerRow) }
         val cells = if (includeLeadingColumn) {
-            listOf(Krow.Cell(data = rowName)) + dataCells
+            listOf(
+                Krow.Cell(
+                    data = rowName,
+                    rowName = rowName,
+                    columnName = LEADING_COLUMN_NAME
+                )
+            ) + dataCells
         } else {
             dataCells
         }
 
         return Krow.Row(
-            cells
+            rowName = rowName,
+            cells = cells
         )
     }
 }
 
-class HeaderCellScopeImpl(
-    var columnIndex: Int,
+internal class HeaderCellScopeImpl(
+    override val columnName: String,
     override var content: String,
-    override var columnName: String = content,
     override var width: Int? = null,
     override var verticalAlignment: VerticalAlignment? = null,
     override var horizontalAlignment: HorizontalAlignment? = null,
@@ -258,27 +321,64 @@ class HeaderCellScopeImpl(
             width = width,
             horizontalAlignment = horizontalAlignment ?: HorizontalAlignment.LEFT,
             verticalAlignment = verticalAlignment ?: VerticalAlignment.TOP,
+            rowName = HEADER_ROW_NAME,
+            columnName = columnName
         )
     }
 }
 
-class BodyCellScopeImpl(
-    var columnIndex: Int,
+internal class BodyCellScopeImpl(
+    var rowName: String,
+    var columnName: String,
     override var content: String,
-    override var verticalAlignment: VerticalAlignment? = null,
-    override var horizontalAlignment: HorizontalAlignment? = null,
-    override var colSpan: Int = 1,
-    override var rowSpan: Int = 1
-) : BodyCellScope {
+    override var verticalAlignment: VerticalAlignment?,
+    override var horizontalAlignment: HorizontalAlignment?,
+    val initialColSpan: Int,
+    val initialRowSpan: Int
+) : MutableBodyCellScope {
+    override var colSpan: Int
+        get() = initialColSpan
+        set(value) {
+            error("colSpan cannot be changed after creation")
+        }
+    override var rowSpan: Int
+        get() = initialRowSpan
+        set(value) {
+            error("rowSpan cannot be changed after creation")
+        }
+
     fun build(headerRow: HeaderRowScopeImpl): Krow.Cell {
-        val columnCell = headerRow.columns[columnIndex - 1]
+        val columnCell = headerRow[columnName]
 
         return Krow.Cell(
             data = content,
             rowSpan = rowSpan,
             colSpan = colSpan,
-            horizontalAlignment = horizontalAlignment ?: columnCell.horizontalAlignment ?: HorizontalAlignment.LEFT,
-            verticalAlignment = verticalAlignment ?: columnCell.verticalAlignment ?: VerticalAlignment.TOP,
+            horizontalAlignment = horizontalAlignment ?: columnCell?.horizontalAlignment ?: HorizontalAlignment.LEFT,
+            verticalAlignment = verticalAlignment ?: columnCell?.verticalAlignment ?: VerticalAlignment.TOP,
+            rowName = rowName,
+            columnName = columnName
+        )
+    }
+}
+
+internal class MutableBodyCellScopeImpl(
+    var rowName: String,
+    override var content: String,
+    override var verticalAlignment: VerticalAlignment? = null,
+    override var horizontalAlignment: HorizontalAlignment? = null,
+    override var colSpan: Int = 1,
+    override var rowSpan: Int = 1
+) : MutableBodyCellScope {
+    fun commit(columnName: String): BodyCellScopeImpl {
+        return BodyCellScopeImpl(
+            rowName = rowName,
+            columnName = columnName,
+            content = content,
+            verticalAlignment = verticalAlignment,
+            horizontalAlignment = horizontalAlignment,
+            initialColSpan = colSpan,
+            initialRowSpan = rowSpan,
         )
     }
 }

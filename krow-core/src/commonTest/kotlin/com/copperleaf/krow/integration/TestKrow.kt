@@ -2,14 +2,33 @@ package com.copperleaf.krow.integration
 
 import com.copperleaf.krow.builder.krow
 import com.copperleaf.krow.formatters.ascii.AsciiTableFormatter
-import com.copperleaf.krow.utils.SingleBorder
 import com.copperleaf.krow.model.HorizontalAlignment
 import com.copperleaf.krow.model.VerticalAlignment
+import com.copperleaf.krow.utils.SingleBorder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 /* ktlint-disable max-line-length */
 class TestKrow {
+
+    @Test
+    fun testLayout() {
+        val input = krow {
+            header {
+                column("col1") {  }
+            }
+            body {
+                row("row1") {
+                    cell("1-1") {  }
+                    cell("1-2") {  }
+                }
+            }
+        }
+        val underTest = AsciiTableFormatter(SingleBorder())
+        val output = underTest.print(input).trim()
+
+        println(output)
+    }
 
     @Test
     fun testBuilderStyles() {
@@ -271,7 +290,7 @@ class TestKrow {
                     width = 15
                     verticalAlignment = VerticalAlignment.BOTTOM
                 }
-                column("col1") {
+                column("col3") {
                 }
             }
             row("row1") {
@@ -287,11 +306,11 @@ class TestKrow {
             }
             row("row3") { cells("3-1") }
             row("row4") {
-                cells("4-1") {
+                cell("4-1") {
                     horizontalAlignment = HorizontalAlignment.LEFT
                     colSpan = 2
                 }
-                cells("4-3") {
+                cell("4-3") {
                     horizontalAlignment = HorizontalAlignment.RIGHT
                 }
             }
