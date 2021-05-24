@@ -2,108 +2,55 @@ package com.copperleaf.krow.utils
 
 interface BorderSet {
 
-    /** Whether to print the top border */
-    val showT: Boolean get() = true
-
-    /** Whether to print the horizontal non-header borders */
-    val showH: Boolean get() = true
-
-    /** Whether to print the horizontal non-header borders */
-    val showHeader: Boolean get() = showH
-
-    /** Whether to print the bottom border */
-    val showB: Boolean get() = true
-
-    /** Whether to print the left border */
-    val showL: Boolean get() = true
-
-    /** Whether to print the vertical non-leader borders */
-    val showV: Boolean get() = true
-
-    /** Whether to print the vertical leader border */
-    val showLeader: Boolean get() = showV
-
-    /** Whether to print the right border */
-    val showR: Boolean get() = true
-
     /** Top-Left Corner */
-    val tl: String
+    val tl: Char
 
     /** Top Intersection */
-    val ti: String
+    val ti: Char
 
     /** Top-Right Corner */
-    val tr: String
+    val tr: Char
 
     /** Center Left-Side Intersection */
-    val cl: String
+    val cl: Char
 
     /** Center Intersection */
-    val ci: String
+    val ci: Char
 
     /** Center Right-Side Intersection */
-    val cr: String
+    val cr: Char
 
     /** Bottom-Left Corner */
-    val bl: String
+    val bl: Char
 
     /** Bottom Intersection */
-    val bi: String
+    val bi: Char
 
     /** Bottom-Corner Corner */
-    val br: String
+    val br: Char
 
     /** Default horizontal border */
-    val h: String
+    val h: Char
 
     /** Default vertical border */
-    val v: String
+    val v: Char
 
     /** Top Horizontal Line */
-    val th: String get() = h
-
-    /** Header Left-Side Intersection */
-    val hl: String get() = cl
-
-    /** Header Intersection */
-    val hi: String get() = ci
-
-    /** Header Right-Side Intersection */
-    val hr: String get() = cr
-
-    /** Header Horizontal Line */
-    val hh: String get() = ch
+    val th: Char get() = h
 
     /** Center Horizontal Line */
-    val ch: String get() = h
+    val ch: Char get() = h
 
     /** Bottom Horizontal Line */
-    val bh: String get() = h
+    val bh: Char get() = h
 
     /** Vertical Line on left edge */
-    val vl: String get() = v
+    val vl: Char get() = v
 
     /** Vertical Line on right edge */
-    val vr: String get() = v
+    val vr: Char get() = v
 
     /** Vertical Line in center */
-    val vc: String get() = v
+    val vc: Char get() = v
 
-    /** Vertical Line on left edge */
-    val tld: String get() = ti
-
-    /** Vertical Line on right edge */
-    val cld: String get() = ci
-
-    /** Vertical Line in center */
-    val bld: String get() = bi
-
-    /** Vertical Line in center */
-    val vld: String get() = vc
-
-    /** Vertical Line in center */
-    val hld: String get() = if (hi != ci) hi else if (cld != ci) cld else ci
-
-    /** Newline */
-    val nl: String get() = "\n"
 }

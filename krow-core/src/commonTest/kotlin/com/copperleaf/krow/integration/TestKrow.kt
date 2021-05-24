@@ -2,8 +2,11 @@ package com.copperleaf.krow.integration
 
 import com.copperleaf.krow.builder.krow
 import com.copperleaf.krow.formatters.ascii.AsciiTableFormatter
+import com.copperleaf.krow.formatters.html.HtmlTableFormatter
 import com.copperleaf.krow.model.HorizontalAlignment
 import com.copperleaf.krow.model.VerticalAlignment
+import com.copperleaf.krow.utils.CrossingBorder
+import com.copperleaf.krow.utils.DoubleBorder
 import com.copperleaf.krow.utils.SingleBorder
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -278,6 +281,7 @@ class TestKrow {
         assertEquals(expected, output)
     }
 
+    @ExperimentalStdlibApi
     @Test
     fun testKrowTableAlignment() {
         val input = krow {
@@ -295,6 +299,7 @@ class TestKrow {
             }
             row("row1") {
                 cells("1-1 colspans all 3") { colSpan = 3 }
+                cells("create column and span rows") { rowSpan = 4 }
             }
             row("row2") {
                 cells("2-1")
@@ -315,23 +320,94 @@ class TestKrow {
                 }
             }
         }
-        val underTest = AsciiTableFormatter(SingleBorder())
-        val output = underTest.print(input).trim()
 
-        val expected = """
-            +------+--------------+-----------------+------+
-            |      |         col1 | col2            | col1 |
-            +------+--------------+-----------------+------+
-            | row1 |                    1-1 colspans all 3 |
-            +------+--------------+------------------------+
-            | row2 |          2-1 |                        |
-            +------+--------------+                        |
-            | row3 |          3-1 |      2-2 colspan       |
-            +------+--------------+-----------------+------+
-            | row4 | 4-1                            |  4-3 |
-            +------+--------------------------------+------+
-        """.trimIndent().trim()
+        assertEquals(
+            """
+            ┌──────┬────────────┬───────────────┬──────┬─────────────────────────────┐
+            │      │       col1 │ col2          │ col3 │ 4                           │
+            ├──────┼────────────┴───────────────┴──────┼─────────────────────────────┤
+            │ row1 │                1-1 colspans all 3 │ create column and span rows │
+            ├──────┼────────────┬──────────────────────┤                             │
+            │ row2 │        2-1 │                      │                             │
+            ├──────┼────────────┤                      │                             │
+            │ row3 │        3-1 │     2-2 colspan      │                             │
+            ├──────┼────────────┴───────────────┬──────┤                             │
+            │ row4 │ 4-1                        │  4-3 │                             │
+            └──────┴────────────────────────────┴──────┴─────────────────────────────┘
+            """.trimIndent(),
+            AsciiTableFormatter(SingleBorder()).print(input).trim()
+        )
 
-        assertEquals(expected, output)
+        assertEquals(
+            """
+            ╔══════╦════════════╦═══════════════╦══════╦═════════════════════════════╗
+            ║      ║       col1 ║ col2          ║ col3 ║ 4                           ║
+            ╠══════╬════════════╩═══════════════╩══════╬═════════════════════════════╣
+            ║ row1 ║                1-1 colspans all 3 ║ create column and span rows ║
+            ╠══════╬════════════╦══════════════════════╣                             ║
+            ║ row2 ║        2-1 ║                      ║                             ║
+            ╠══════╬════════════╣                      ║                             ║
+            ║ row3 ║        3-1 ║     2-2 colspan      ║                             ║
+            ╠══════╬════════════╩═══════════════╦══════╣                             ║
+            ║ row4 ║ 4-1                        ║  4-3 ║                             ║
+            ╚══════╩════════════════════════════╩══════╩═════════════════════════════╝
+            """.trimIndent(),
+            AsciiTableFormatter(DoubleBorder()).print(input).trim()
+        )
+
+        assertEquals(
+            """
+            +------+------------+---------------+------+-----------------------------+
+            |      |       col1 | col2          | col3 | 4                           |
+            +------+------------+---------------+------+-----------------------------+
+            | row1 |                1-1 colspans all 3 | create column and span rows |
+            +------+------------+----------------------+                             |
+            | row2 |        2-1 |                      |                             |
+            +------+------------+                      |                             |
+            | row3 |        3-1 |     2-2 colspan      |                             |
+            +------+------------+---------------+------+                             |
+            | row4 | 4-1                        |  4-3 |                             |
+            +------+----------------------------+------+-----------------------------+
+            """.trimIndent(),
+            AsciiTableFormatter(CrossingBorder()).print(input).trim()
+        )
+
+        assertEquals(
+            """
+            <table>
+              <thead>
+              <tr>
+                <th></th>
+                <th>col1</th>
+                <th>col2</th>
+                <th>col3</th>
+                <th>4</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>row1</td>
+                <td colspan="3">1-1 colspans all 3</td>
+                <td rowspan="4">create column and span rows</td>
+              </tr>
+              <tr>
+                <td>row2</td>
+                <td>2-1</td>
+                <td rowspan="2" colspan="2">2-2 colspan</td>
+              </tr>
+              <tr>
+                <td>row3</td>
+                <td>3-1</td>
+              </tr>
+              <tr>
+                <td>row4</td>
+                <td colspan="2">4-1</td>
+                <td>4-3</td>
+              </tr>
+              </tbody>
+            </table>
+            """.trimIndent(),
+            HtmlTableFormatter().print(input).trim()
+        )
     }
 }

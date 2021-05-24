@@ -2,18 +2,18 @@ package com.copperleaf.krow.utils
 
 open class SingleBorder : BorderSet {
 
-    override val tl: String get() = "┌"
-    override val ti: String get() = "┬"
-    override val tr: String get() = "┐"
+    override val tl: Char get() = '┌'
+    override val ti: Char get() = '┬'
+    override val tr: Char get() = '┐'
 
-    override val cl: String get() = "├"
-    override val ci: String get() = "┼"
-    override val cr: String get() = "┤"
+    override val cl: Char get() = '├'
+    override val ci: Char get() = '┼'
+    override val cr: Char get() = '┤'
 
-    override val bl: String get() = "└"
-    override val bi: String get() = "┴"
-    override val br: String get() = "┘"
+    override val bl: Char get() = '└'
+    override val bi: Char get() = '┴'
+    override val br: Char get() = '┘'
 
-    override val v: String get() = "│"
-    override val h: String get() = "─"
+    override val v: Char get() = '│'
+    override val h: Char get() = '─'
 }

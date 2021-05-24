@@ -30,18 +30,18 @@ data class MeasuredCell(
     val columnEndDescriptor: ColumnDescriptor,
 ) {
     fun leftVerticalRule(borderSet: BorderSet): Char {
-        return borderSet.vl.first()
+        return borderSet.vl
     }
 
     fun rightVerticalRule(borderSet: BorderSet): Char {
-        return borderSet.vr.first()
+        return borderSet.vr
     }
 
     fun topHorizontalRule(borderSet: BorderSet): Char {
-        return borderSet.th.first()
+        return borderSet.th
     }
 
     fun bottomHorizontalRule(borderSet: BorderSet): Char {
-        return borderSet.bh.first()
+        return borderSet.bh
     }
 }

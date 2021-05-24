@@ -18,37 +18,37 @@ data class MeasuredBorder(
         }
         if (topCellsAreSame && bottomCellsAreSame) {
             // we are between two horizontally-expanded cells, use a horizontal rule
-            return borderSet.h.first()
+            return borderSet.h
         }
         if (leftCellsAreSame && rightCellsAreSame) {
             // we are between two vertically-expanded cells, use a vertical rule
-            return borderSet.v.first()
+            return borderSet.v
         }
         if (topCellsAreSame && leftCellsAreSame) {
-            return borderSet.tl.first()
+            return borderSet.tl
         }
         if (topCellsAreSame && rightCellsAreSame) {
-            return borderSet.tr.first()
+            return borderSet.tr
         }
         if (bottomCellsAreSame && leftCellsAreSame) {
-            return borderSet.bl.first()
+            return borderSet.bl
         }
         if (bottomCellsAreSame && rightCellsAreSame) {
-            return borderSet.br.first()
+            return borderSet.br
         }
         if (topCellsAreSame) {
-            return borderSet.ti.first()
+            return borderSet.ti
         }
         if (bottomCellsAreSame) {
-            return borderSet.bi.first()
+            return borderSet.bi
         }
         if (leftCellsAreSame) {
-            return borderSet.cl.first()
+            return borderSet.cl
         }
         if (rightCellsAreSame) {
-            return borderSet.cr.first()
+            return borderSet.cr
         }
 
-        return borderSet.ci.first()
+        return borderSet.ci
     }
 }
