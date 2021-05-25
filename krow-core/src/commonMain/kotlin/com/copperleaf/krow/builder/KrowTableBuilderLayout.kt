@@ -16,7 +16,7 @@ class CellId(
     }
 }
 
-@TableMarker
+@KrowTableDsl
 class KrowTableBuilderLayout {
     companion object {
         const val HEADER_ROW_NAME = "header"
@@ -134,7 +134,7 @@ class KrowTableBuilderLayout {
         rowSpan: Int,
         startColumnId: Int,
         colSpan: Int
-    ) : CellId {
+    ): CellId {
         for (rowId in startRowId until (startRowId + rowSpan)) {
             // go through the rows and mark the cells as occupied, creating new rows as needed
             if (rowId > rows.lastIndex) {

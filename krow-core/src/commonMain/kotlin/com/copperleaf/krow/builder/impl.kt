@@ -19,28 +19,8 @@ internal class TableScopeImpl(
         header.block()
     }
 
-    override fun headerColumns(vararg columnNames: String, block: HeaderCellScope.() -> Unit) {
-        header.columns(*columnNames, block = block)
-    }
-
     override fun body(block: BodyScope.() -> Unit) {
         body.block()
-    }
-
-    override fun row(rowName: String?, block: BodyRowScope.() -> Unit) {
-        body.row(rowName, block)
-    }
-
-    override fun rows(vararg rows: Pair<String, List<String>>, block: MutableBodyCellScope.() -> Unit) {
-        body.rows(*rows, block = block)
-    }
-
-    override fun rows(vararg rows: List<String>, block: MutableBodyCellScope.() -> Unit) {
-        body.rows(*rows, block = block)
-    }
-
-    override fun cellAt(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
-        return body.cellAt(rowName, columnName, block)
     }
 
     fun build(): Krow.Table {
@@ -64,14 +44,6 @@ internal class HeaderScopeImpl(
 
     override fun row(block: HeaderRowScope.() -> Unit) {
         headerRow.block()
-    }
-
-    override fun column(columnName: String?, block: HeaderCellScope.() -> Unit): HeaderCellScope {
-        return headerRow.column(columnName, block)
-    }
-
-    override fun columns(vararg columnNames: String, block: HeaderCellScope.() -> Unit) {
-        headerRow.columns(*columnNames, block = block)
     }
 
     internal operator fun get(columnName: String): HeaderCellScopeImpl? {
@@ -109,12 +81,6 @@ internal class HeaderRowScopeImpl(
         } else {
             columns[position]
         }.apply(block)
-    }
-
-    override fun columns(vararg columnNames: String, block: HeaderCellScope.() -> Unit) {
-        for (columnName in columnNames) {
-            column(columnName, block)
-        }
     }
 
     internal operator fun get(columnName: String): HeaderCellScopeImpl? {
@@ -174,31 +140,6 @@ internal class BodyScopeImpl(
         }.block()
     }
 
-    override fun rows(vararg rows: Pair<String, List<String>>, block: MutableBodyCellScope.() -> Unit) {
-        for ((rowName, rowCells) in rows) {
-            row(rowName) {
-                cells(*rowCells.toTypedArray(), block = block)
-            }
-        }
-    }
-
-    override fun rows(vararg rows: List<String>, block: MutableBodyCellScope.() -> Unit) {
-        for (rowCells in rows) {
-            row {
-                cells(*rowCells.toTypedArray(), block = block)
-            }
-        }
-    }
-
-    override fun cellAt(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
-        var cell: BodyCellScope? = null
-        row(rowName) {
-            cell = cell(columnName = columnName, cellContent = "", block)
-        }
-
-        return cell!!
-    }
-
     internal operator fun get(rowIndex: Int): BodyRowScopeImpl {
         return rows[rowIndex]
     }
@@ -239,7 +180,11 @@ internal class BodyRowScopeImpl(
         return committedCell
     }
 
-    override fun cell(columnName: String, cellContent: String?, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+    override fun cellAt(
+        columnName: String,
+        cellContent: String?,
+        block: MutableBodyCellScope.() -> Unit
+    ): BodyCellScope {
         val newCell = MutableBodyCellScopeImpl(
             rowName = rowName,
             content = cellContent ?: ""
@@ -258,12 +203,6 @@ internal class BodyRowScopeImpl(
         cells.add(committedCell)
 
         return committedCell
-    }
-
-    override fun cells(vararg cellContents: String, block: MutableBodyCellScope.() -> Unit) {
-        for (cellContent in cellContents) {
-            cell(cellContent, block)
-        }
     }
 
     internal operator fun get(columnIndex: Int): BodyCellScopeImpl {

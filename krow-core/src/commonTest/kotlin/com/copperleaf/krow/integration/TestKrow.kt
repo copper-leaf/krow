@@ -1,5 +1,11 @@
 package com.copperleaf.krow.integration
 
+import com.copperleaf.krow.builder.bodyRow
+import com.copperleaf.krow.builder.bodyRows
+import com.copperleaf.krow.builder.cellAt
+import com.copperleaf.krow.builder.cells
+import com.copperleaf.krow.builder.column
+import com.copperleaf.krow.builder.headerColumns
 import com.copperleaf.krow.builder.krow
 import com.copperleaf.krow.formatters.ascii.AsciiTableFormatter
 import com.copperleaf.krow.formatters.html.HtmlTableFormatter
@@ -30,7 +36,7 @@ class TestKrow {
                 column("col3") {
                 }
             }
-            row("row1") {
+            bodyRow("row1") {
                 cells(
                     "1-1 colspans all 3 and has much more content than would normally fit within this single cell " +
                         "so it must wrap several rows in order to fit but is still constrained by the available cell " +
@@ -38,7 +44,7 @@ class TestKrow {
                 ) { colSpan = 3 }
                 cells("create column and span rows") { rowSpan = 4 }
             }
-            row("row2") {
+            bodyRow("row2") {
                 cells("2-1")
                 cells("2-2 colspan") {
                     colSpan = 2
@@ -46,8 +52,8 @@ class TestKrow {
                     horizontalAlignment = HorizontalAlignment.CENTER
                 }
             }
-            row("row3") { cells("3-1") }
-            row("row4") {
+            bodyRow("row3") { cells("3-1") }
+            bodyRow("row4") {
                 cell("4-1") {
                     horizontalAlignment = HorizontalAlignment.LEFT
                     colSpan = 2
@@ -218,7 +224,7 @@ class TestKrow {
         assertEquals(
             """
             ┌──────┬────────────┬───────────────┬──────┬─────────────────────────────┐
-            │      │       col1 │ col2          │ col3 │ 4                           │
+            │      │       col1 │ col2          │ col3 │ col4                        │
             ├──────┼────────────┴───────────────┴──────┼─────────────────────────────┤
             │ row1 │   1-1 colspans all 3 and has much │ create column and span rows │
             │      │  more content than would normally │                             │
@@ -240,7 +246,7 @@ class TestKrow {
         assertEquals(
             """
             ╔══════╦════════════╦═══════════════╦══════╦═════════════════════════════╗
-            ║      ║       col1 ║ col2          ║ col3 ║ 4                           ║
+            ║      ║       col1 ║ col2          ║ col3 ║ col4                        ║
             ╠══════╬════════════╩═══════════════╩══════╬═════════════════════════════╣
             ║ row1 ║   1-1 colspans all 3 and has much ║ create column and span rows ║
             ║      ║  more content than would normally ║                             ║
@@ -262,7 +268,7 @@ class TestKrow {
         assertEquals(
             """
             +------+------------+---------------+------+-----------------------------+
-            |      |       col1 | col2          | col3 | 4                           |
+            |      |       col1 | col2          | col3 | col4                        |
             +------+------------+---------------+------+-----------------------------+
             | row1 |   1-1 colspans all 3 and has much | create column and span rows |
             |      |  more content than would normally |                             |
@@ -290,7 +296,7 @@ class TestKrow {
                 <th>col1</th>
                 <th>col2</th>
                 <th>col3</th>
-                <th>4</th>
+                <th>col4</th>
               </tr>
               </thead>
               <tbody>
@@ -326,13 +332,8 @@ class TestKrow {
             message = "Cell at position (row3:3, col3:2)! is already occupied!"
         ) {
             krow {
-                header {
-                    columns("col1", "col2", "col3", "col4")
-                }
-                row("row1") { }
-                row("row2") { }
-                row("row3") { }
-                row("row4") { }
+                headerColumns("col1", "col2", "col3", "col4")
+                bodyRows("row1", "row2", "row3", "row4")
 
                 cellAt("row1", "col1") {
                     rowSpan = 3
@@ -343,7 +344,7 @@ class TestKrow {
                     rowSpan = 2
                     colSpan = 2
                 }
-            }.also { println(AsciiTableFormatter().print(it)) }
+            }
         }
     }
 }
