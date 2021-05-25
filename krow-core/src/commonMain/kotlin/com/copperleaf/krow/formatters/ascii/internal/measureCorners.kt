@@ -61,15 +61,15 @@ private fun measureCorner(
     )
 }
 
-private operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>): Pair<Int, Int> {
+internal operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>): Pair<Int, Int> {
     return (this.first + other.first) to (this.second + other.second)
 }
 
-private operator fun List<MeasuredCell>.get(position: Pair<Int, Int>): MeasuredCell? {
+internal operator fun List<MeasuredCell>.get(position: Pair<Int, Int>): MeasuredCell? {
     return this.firstOrNull { position in it }
 }
 
-private operator fun MeasuredCell.contains(position: Pair<Int, Int>): Boolean {
+internal operator fun MeasuredCell.contains(position: Pair<Int, Int>): Boolean {
     return position.first in (startRowIndex until endRowIndex) &&
         position.second in (startColumnIndex until endColumnIndex)
 }

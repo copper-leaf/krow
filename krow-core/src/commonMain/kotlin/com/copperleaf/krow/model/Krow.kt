@@ -31,8 +31,15 @@ data class TableSpec(
         return measureRange(start, span, -1)
     }
 
+    fun measureLine(startIndex: Int): TableSpecMeasurement {
+        return measureRange(startIndex, 1, -1)
+    }
+
     private fun measureRange(start: String, span: Int, totalSizeAdjust: Int): TableSpecMeasurement {
         val startIndex = names.indexOf(start)
+        return measureRange(startIndex, span, totalSizeAdjust)
+    }
+    private fun measureRange(startIndex: Int, span: Int, totalSizeAdjust: Int): TableSpecMeasurement {
         val endIndex = startIndex + span
 
         val sizesSublist = sizes.subList(startIndex, endIndex)
