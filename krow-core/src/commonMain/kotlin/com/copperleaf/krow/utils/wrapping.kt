@@ -108,6 +108,7 @@ private fun WrapToken.handleToken(
     }
 }
 
+@Suppress("UNUSED_PARAMETER", "UNUSED")
 private fun WrapToken.Newline.handleNewlineToken(
     maxWidth: Int,
     cursor: Int
@@ -117,6 +118,7 @@ private fun WrapToken.Newline.handleNewlineToken(
     )
 }
 
+@Suppress("UNUSED_PARAMETER", "UNUSED")
 private fun WrapToken.Space.handleSpaceToken(
     maxWidth: Int,
     cursor: Int
@@ -154,6 +156,7 @@ private fun String.canFitOnLine(
     return length <= spaceLeftOnLine
 }
 
+@Suppress("UNUSED_PARAMETER")
 private fun String.canFitOnNextLine(
     maxWidth: Int,
     cursor: Int

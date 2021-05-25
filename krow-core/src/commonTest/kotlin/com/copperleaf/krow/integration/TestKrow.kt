@@ -30,9 +30,11 @@ class TestKrow {
                 }
             }
             row("row1") {
-                cells("1-1 colspans all 3 and has much more content than would normally fit within this single cell " +
+                cells(
+                    "1-1 colspans all 3 and has much more content than would normally fit within this single cell " +
                         "so it must wrap several rows in order to fit but is still constrained by the available cell " +
-                        "widths") { colSpan = 3 }
+                        "widths"
+                ) { colSpan = 3 }
                 cells("create column and span rows") { rowSpan = 4 }
             }
             row("row2") {
@@ -178,8 +180,8 @@ class TestKrow {
 
             cell("row1", "col1") {
                 content = "1-1 colspans all 3 and has much more content than would normally fit within this single " +
-                        "cell so it must wrap several rows in order to fit but is still constrained by the available" +
-                        " cell widths"
+                    "cell so it must wrap several rows in order to fit but is still constrained by the available" +
+                    " cell widths"
                 colSpan = 3
             }
             cell("row1", "col4") {

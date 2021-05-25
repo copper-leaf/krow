@@ -24,7 +24,7 @@ class KrowCanvas private constructor(
      */
     private fun draw(line: Int, startColumn: Int, replacement: String) {
 //        try {
-            buffer[line] = buffer[line].replaceRange(startColumn, startColumn + replacement.length, replacement)
+        buffer[line] = buffer[line].replaceRange(startColumn, startColumn + replacement.length, replacement)
 //        }
 //        catch (e: Exception) {
 //            println("Crash attempting to draw '$replacement' at (line=$line, column=$startColumn):")

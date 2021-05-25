@@ -1,13 +1,11 @@
 package com.copperleaf.krow.formatters.ascii.internal
 
-import com.copperleaf.krow.model.Krow
 import com.copperleaf.krow.model.TableSpec
 import com.copperleaf.krow.utils.BorderSet
 import com.copperleaf.krow.utils.Drawable
 import com.copperleaf.krow.utils.KrowCanvas
 
-fun measureCorners(
-    table: Krow.Table,
+internal fun measureCorners(
     cells: List<MeasuredCell>,
     rowSpec: TableSpec,
     colSpec: TableSpec,
@@ -15,7 +13,6 @@ fun measureCorners(
     return (0..rowSpec.sizes.size).flatMapIndexed { tableRowBorderIndex, _ ->
         (0..colSpec.sizes.size).mapIndexed { tableCellBorderIndex, _ ->
             measureCorner(
-                table,
                 cells,
                 rowSpec,
                 colSpec,
@@ -27,7 +24,6 @@ fun measureCorners(
 }
 
 private fun measureCorner(
-    table: Krow.Table,
     cells: List<MeasuredCell>,
     rowSpec: TableSpec,
     colSpec: TableSpec,
@@ -71,10 +67,10 @@ private operator fun List<MeasuredCell>.get(position: Pair<Int, Int>): MeasuredC
 
 private operator fun MeasuredCell.contains(position: Pair<Int, Int>): Boolean {
     return position.first in (startRowIndex until endRowIndex) &&
-            position.second in (startColumnIndex until endColumnIndex)
+        position.second in (startColumnIndex until endColumnIndex)
 }
 
-data class MeasuredCorner(
+internal data class MeasuredCorner(
     val bufferLine: Int = 0,
     val bufferColumn: Int = 0,
 
@@ -83,7 +79,7 @@ data class MeasuredCorner(
     val leftCellsAreSame: Boolean,
     val rightCellsAreSame: Boolean,
 ) : Drawable {
-    fun brush(borderSet: BorderSet): Char? {
+    private fun brush(borderSet: BorderSet): Char? {
         if (topCellsAreSame && bottomCellsAreSame && leftCellsAreSame && rightCellsAreSame) {
             // all surrounding cells are the same, don't draw this point
             return null

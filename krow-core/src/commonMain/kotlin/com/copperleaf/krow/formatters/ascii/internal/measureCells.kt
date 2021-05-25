@@ -10,16 +10,15 @@ import com.copperleaf.krow.utils.BorderSet
 import com.copperleaf.krow.utils.Drawable
 import com.copperleaf.krow.utils.KrowCanvas
 
-fun measureCells(
-     table: Krow.Table,
-     rowSpec: TableSpec,
-     colSpec: TableSpec,
- ): List<MeasuredCell> {
+internal fun measureCells(
+    table: Krow.Table,
+    rowSpec: TableSpec,
+    colSpec: TableSpec,
+): List<MeasuredCell> {
     return table.visibleRows.flatMapIndexed { _, tableRow ->
         tableRow.cells.mapIndexed { _, tableCell ->
             measureCell(
                 cell = tableCell,
-                table = table,
                 rowSpec = rowSpec,
                 colSpec = colSpec
             )
@@ -28,7 +27,6 @@ fun measureCells(
 }
 
 private fun measureCell(
-    table: Krow.Table,
     cell: Krow.Cell,
     rowSpec: TableSpec,
     colSpec: TableSpec,
@@ -77,7 +75,7 @@ private fun measureCell(
     )
 }
 
-data class MeasuredCell(
+internal data class MeasuredCell(
     val cell: Krow.Cell,
 
     val heightMeasurement: TableSpecMeasurement,

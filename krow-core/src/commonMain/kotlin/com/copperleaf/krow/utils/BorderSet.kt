@@ -52,5 +52,4 @@ interface BorderSet {
 
     /** Vertical Line in center */
     val vc: Char get() = v
-
 }

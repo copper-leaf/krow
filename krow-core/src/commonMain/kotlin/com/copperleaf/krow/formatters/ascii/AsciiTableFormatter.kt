@@ -27,8 +27,8 @@ class AsciiTableFormatter(
         val measuredCells = measureCells(table, rowSpec, colSpec)
 
         //   d) iterate through grid's actual corner and edge positions and determine context for each location
-        val measuredCorners = measureCorners(table, measuredCells, rowSpec, colSpec)
-        val measuredEdges = measureEdges(table, measuredCells, rowSpec, colSpec)
+        val measuredCorners = measureCorners(measuredCells, rowSpec, colSpec)
+        val measuredEdges = measureEdges(measuredCells, rowSpec, colSpec)
 
         // ----- step 2: prepare canvas for drawing -----
         val totalWidth = colSpec.getFullMeasurement().totalSize

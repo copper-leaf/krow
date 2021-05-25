@@ -128,7 +128,7 @@ class KrowTableBuilderLayout {
         return grid[startRowId][startColumnId]
     }
 
-    fun getColumnName(index: Int):String  {
+    fun getColumnName(index: Int): String {
         return columns[index]
     }
     fun getCellAt(rowName: String, columnName: String): CellId {

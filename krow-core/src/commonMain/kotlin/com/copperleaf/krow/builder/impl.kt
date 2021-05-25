@@ -135,7 +135,7 @@ internal class HeaderRowScopeImpl(
             }
             .map { it.build() }
 
-        val actualRowCells = if(includeLeadingColumn) {
+        val actualRowCells = if (includeLeadingColumn) {
             val headerRowColumn = Krow.Cell(
                 data = "",
                 rowName = HEADER_ROW_NAME,
@@ -300,12 +300,12 @@ internal class BodyCellScopeImpl(
 ) : MutableBodyCellScope {
     override var colSpan: Int
         get() = initialColSpan
-        set(value) {
+        set(_) {
             error("colSpan cannot be changed after creation")
         }
     override var rowSpan: Int
         get() = initialRowSpan
-        set(value) {
+        set(_) {
             error("rowSpan cannot be changed after creation")
         }
 

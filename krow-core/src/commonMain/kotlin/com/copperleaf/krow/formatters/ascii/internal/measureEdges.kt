@@ -1,6 +1,5 @@
 package com.copperleaf.krow.formatters.ascii.internal
 
-import com.copperleaf.krow.model.Krow
 import com.copperleaf.krow.model.TableSpec
 import com.copperleaf.krow.utils.BorderSet
 import com.copperleaf.krow.utils.Drawable
@@ -8,8 +7,8 @@ import com.copperleaf.krow.utils.KrowCanvas
 
 // TODO: instead of getting borders from the cells, iterate across the positions in the table specs to compute each
 //  borders' contextual brush and prevent overdraw
-fun measureEdges(
-    table: Krow.Table,
+@Suppress("UNUSED_PARAMETER")
+internal fun measureEdges(
     cells: List<MeasuredCell>,
     rowSpec: TableSpec,
     colSpec: TableSpec,
@@ -55,8 +54,8 @@ private fun measureEdges(
     }
 }
 
-sealed class MeasuredEdge : Drawable {
-    class VerticalEdge(
+internal sealed class MeasuredEdge : Drawable {
+    internal class VerticalEdge(
         val row: Int,
         val column: Int,
         val height: Int,
@@ -67,7 +66,7 @@ sealed class MeasuredEdge : Drawable {
         }
     }
 
-    class HorizontalEdge(
+    internal data class HorizontalEdge(
         val row: Int,
         val column: Int,
         val width: Int,

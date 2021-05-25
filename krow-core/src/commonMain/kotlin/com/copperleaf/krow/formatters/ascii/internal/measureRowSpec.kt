@@ -5,7 +5,7 @@ import com.copperleaf.krow.model.Krow
 import com.copperleaf.krow.model.TableSpec
 import com.copperleaf.krow.model.toTableSpec
 
-fun measureRowSpec(
+internal fun measureRowSpec(
     table: Krow.Table,
     colSpec: TableSpec,
 ): TableSpec {

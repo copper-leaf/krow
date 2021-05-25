@@ -50,7 +50,7 @@ data class TableSpec(
     }
 }
 
-fun List<Pair<String, Int>>.toTableSpec() : TableSpec {
+fun List<Pair<String, Int>>.toTableSpec(): TableSpec {
     val names = this.map { it.first }
     val values = this.map { it.second }
 

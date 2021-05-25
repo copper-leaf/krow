@@ -5,7 +5,7 @@ import com.copperleaf.krow.model.Krow
 import com.copperleaf.krow.model.TableSpec
 import com.copperleaf.krow.model.toTableSpec
 
-fun measureColSpec(
+internal fun measureColSpec(
     table: Krow.Table,
 ): TableSpec {
     val cellsGroupedByColumn: Map<String, List<Krow.Cell>> = table.visibleRows
@@ -33,7 +33,7 @@ private fun measureColumnWidth(
 
     // auto-size column to the content width of the cells in this column that do not span multiple columns
     val cellsInColumnWithoutColSpan = cellsInColumn.filter { it.colSpan == 1 }
-    if(cellsInColumnWithoutColSpan.isNotEmpty()) {
+    if (cellsInColumnWithoutColSpan.isNotEmpty()) {
         return cellsInColumnWithoutColSpan
             .maxOf { cell: Krow.Cell -> cell.intrinsicWidthWithPadding }
     }
