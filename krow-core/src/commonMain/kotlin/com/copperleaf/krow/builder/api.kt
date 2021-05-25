@@ -20,8 +20,7 @@ interface TableScope {
     fun rows(vararg rows: Pair<String, List<String>>, block: MutableBodyCellScope.() -> Unit = {})
     fun rows(vararg rows: List<String>, block: MutableBodyCellScope.() -> Unit = {})
 
-    fun cell(columnName: String, rowName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope
-    fun cell(columnIndex: Int, rowIndex: Int, block: MutableBodyCellScope.() -> Unit): BodyCellScope
+    fun cell(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope
 }
 
 @TableMarker
@@ -42,6 +41,8 @@ interface BodyScope {
     fun row(rowName: String? = null, block: BodyRowScope.() -> Unit)
     fun rows(vararg rows: Pair<String, List<String>>, block: MutableBodyCellScope.() -> Unit = {})
     fun rows(vararg rows: List<String>, block: MutableBodyCellScope.() -> Unit = {})
+
+    fun cell(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope
 }
 
 @TableMarker

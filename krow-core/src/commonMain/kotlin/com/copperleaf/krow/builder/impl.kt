@@ -39,12 +39,8 @@ internal class TableScopeImpl(
         body.rows(*rows, block = block)
     }
 
-    override fun cell(columnName: String, rowName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
-        TODO()
-    }
-
-    override fun cell(columnIndex: Int, rowIndex: Int, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
-        TODO()
+    override fun cell(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+        return body.cell(rowName, columnName, block)
     }
 
     fun build(): Krow.Table {
@@ -192,6 +188,15 @@ internal class BodyScopeImpl(
                 cells(*rowCells.toTypedArray(), block = block)
             }
         }
+    }
+
+    override fun cell(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+        var cell: BodyCellScope? = null
+        row(rowName) {
+            cell = cell(columnName, block)
+        }
+
+        return cell!!
     }
 
     internal operator fun get(rowIndex: Int): BodyRowScopeImpl {

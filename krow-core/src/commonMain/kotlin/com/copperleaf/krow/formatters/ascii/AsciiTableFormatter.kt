@@ -16,20 +16,26 @@ class AsciiTableFormatter(
 ) : TableFormatter<String> {
 
     override fun print(table: Krow.Table): String {
-        // step 1: measurement
+        // ----- step 1: measurement -----
+        //   a) measure width of columns, based on hardcoded specification and natural width for content in each cell
         val colSpec = measureColSpec(table)
-        val rowSpec = measureRowSpec(table)
 
+        //   b) given column widths, determine actual height of each row, and use that setup rowSpec
+        val rowSpec = measureRowSpec(table, colSpec)
+
+        //   c) measure actual width of cells, given column-width constraints
         val measuredCells = measureCells(table, rowSpec, colSpec)
+
+        //   d) iterate through grid's actual corner and edge positions and determine context for each location
         val measuredCorners = measureCorners(table, measuredCells, rowSpec, colSpec)
         val measuredEdges = measureEdges(table, measuredCells, rowSpec, colSpec)
 
-        // step 2: prepare canvas for drawing
+        // ----- step 2: prepare canvas for drawing -----
         val totalWidth = colSpec.getFullMeasurement().totalSize
         val totalHeight = rowSpec.getFullMeasurement().totalSize
         val canvas = KrowCanvas(totalWidth, totalHeight)
 
-        // step 3: drawing
+        // ----- step 3: drawing -----
         measuredEdges.forEach { it.draw(canvas, borders) }
         measuredCorners.forEach { it.draw(canvas, borders) }
         measuredCells.forEach { it.draw(canvas, borders) }

@@ -11,277 +11,9 @@ import com.copperleaf.krow.utils.SingleBorder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-/* ktlint-disable max-line-length */
+@ExperimentalStdlibApi
 class TestKrow {
 
-    @Test
-    fun testLayout() {
-        val input = krow {
-            header {
-                column("col1") {  }
-            }
-            body {
-                row("row1") {
-                    cell("1-1") {  }
-                    cell("1-2") {  }
-                }
-            }
-        }
-        val underTest = AsciiTableFormatter(SingleBorder())
-        val output = underTest.print(input).trim()
-
-        println(output)
-    }
-
-    @Test
-    fun testBuilderStyles() {
-        // simple style
-        krow {
-            header {
-                column("col1")
-                column("col2")
-                column("col3")
-            }
-            row("row1") {
-                cell("1-1")
-                cell("1-2")
-                cell("1-3")
-            }
-            row("row1") {
-                cell("2-1")
-                cell("2-2")
-                cell("2-3")
-            }
-            row("row3") {
-                cell("3-1")
-                cell("3-2")
-                cell("3-3")
-            }
-        }
-        // end simple style
-
-        // verbose (HTML) style
-        krow {
-            header {
-                row {
-                    column("col1")
-                    column("col2")
-                    column("col3")
-                }
-            }
-            body {
-                row("row1") {
-                    cell("1-1")
-                    cell("1-2")
-                    cell("1-3")
-                }
-                row("row2") {
-                    cell("2-1")
-                    cell("2-2")
-                    cell("2-3")
-                }
-                row("row3") {
-                    cell("3-1")
-                    cell("3-2")
-                    cell("3-3")
-                }
-            }
-        }
-        // end verbose (HTML) style
-
-        // constraint style
-//        krow {
-//            cell("col1", "row1") { content = "1-1" }
-//            cell("col1", "row2") { content = "1-2" }
-//            cell("col1", "row3") { content = "1-3" }
-//
-//            cell("col2", "row1") { content = "2-1" }
-//            cell("col2", "row2") { content = "2-2" }
-//            cell("col2", "row3") { content = "2-3" }
-//
-//            cell("col3", "row1") { content = "3-1" }
-//            cell("col3", "row2") { content = "3-2" }
-//            cell("col3", "row3") { content = "3-3" }
-//        }
-        // end constraint style
-    }
-
-    @Test
-    fun testDefaultKrowTable() {
-        val input = krow {
-            headerColumns("col1", "col2", "col3")
-            rows(
-                "row1" to listOf("1-1", "1-2", "1-3"),
-                "row2" to listOf("2-1", "2-2", "2-3"),
-                "row3" to listOf("3-1", "3-2", "3-3"),
-            )
-        }
-        val underTest = AsciiTableFormatter(SingleBorder())
-        val output = underTest.print(input).trim()
-
-        val expected = """
-            +------+------+------+------+
-            |      | col1 | col2 | col3 |
-            +------+------+------+------+
-            | row1 | 1-1  | 1-2  | 1-3  |
-            +------+------+------+------+
-            | row2 | 2-1  | 2-2  | 2-3  |
-            +------+------+------+------+
-            | row3 | 3-1  | 3-2  | 3-3  |
-            +------+------+------+------+
-        """.trimIndent().trim()
-
-        assertEquals(expected, output)
-    }
-
-    @Test
-    fun testDefaultKrowTableWithoutLeadingColumn() {
-        val input = krow {
-            includeLeadingColumn = false
-
-            headerColumns("col1", "col2", "col3")
-            rows(
-                "row1" to listOf("1-1", "1-2", "1-3"),
-                "row2" to listOf("2-1", "2-2", "2-3"),
-                "row3" to listOf("3-1", "3-2", "3-3"),
-            )
-        }
-        val underTest = AsciiTableFormatter(SingleBorder())
-        val output = underTest.print(input).trim()
-
-        val expected = """
-            +------+------+------+
-            | col1 | col2 | col3 |
-            +------+------+------+
-            | 1-1  | 1-2  | 1-3  |
-            +------+------+------+
-            | 2-1  | 2-2  | 2-3  |
-            +------+------+------+
-            | 3-1  | 3-2  | 3-3  |
-            +------+------+------+
-        """.trimIndent().trim()
-
-        assertEquals(expected, output)
-    }
-
-    @Test
-    fun testDefaultKrowTableWithoutHeaderRow() {
-        val input = krow {
-            includeHeaderRow = false
-            headerColumns("col1", "col2", "col3")
-            rows(
-                "row1" to listOf("1-1", "1-2", "1-3"),
-                "row2" to listOf("2-1", "2-2", "2-3"),
-                "row3" to listOf("3-1", "3-2", "3-3"),
-            )
-        }
-        val underTest = AsciiTableFormatter(SingleBorder())
-        val output = underTest.print(input).trim()
-
-        val expected = """
-            +------+------+------+------+
-            | row1 | 1-1  | 1-2  | 1-3  |
-            +------+------+------+------+
-            | row2 | 2-1  | 2-2  | 2-3  |
-            +------+------+------+------+
-            | row3 | 3-1  | 3-2  | 3-3  |
-            +------+------+------+------+
-        """.trimIndent().trim()
-
-        assertEquals(expected, output)
-    }
-
-    @Test
-    fun testDefaultKrowTableWithoutLeadingColumnOrHeaderRow() {
-        val input = krow {
-            includeLeadingColumn = false
-            includeHeaderRow = false
-            headerColumns("col1", "col2", "col3")
-            rows(
-                "row1" to listOf("1-1", "1-2", "1-3"),
-                "row2" to listOf("2-1", "2-2", "2-3"),
-                "row3" to listOf("3-1", "3-2", "3-3"),
-            )
-        }
-        val underTest = AsciiTableFormatter(SingleBorder())
-        val output = underTest.print(input).trim()
-
-        val expected = """
-            +------+------+------+
-            | 1-1  | 1-2  | 1-3  |
-            +------+------+------+
-            | 2-1  | 2-2  | 2-3  |
-            +------+------+------+
-            | 3-1  | 3-2  | 3-3  |
-            +------+------+------+
-        """.trimIndent().trim()
-
-        assertEquals(expected, output)
-    }
-
-    @Test
-    fun testDefaultKrowTableWithColSpans() {
-        val input = krow {
-            headerColumns("col1", "col2", "col3")
-            row("row1") {
-                cells("1-1 colspans all 3") { colSpan = 3 }
-            }
-            row("row2") {
-                cells("2-1")
-                cells("2-2 colspan") { colSpan = 2 }
-            }
-            row("row3") { cells("3-1", "3-2", "3-3") }
-        }
-        val underTest = AsciiTableFormatter(SingleBorder())
-        val output = underTest.print(input).trim()
-
-        val expected = """
-            +------+------+------+------+
-            |      | col1 | col2 | col3 |
-            +------+------+------+------+
-            | row1 | 1-1 colspans all 3 |
-            +------+------+-------------+
-            | row2 | 2-1  | 2-2 colspan |
-            +------+------+------+------+
-            | row3 | 3-1  | 3-2  | 3-3  |
-            +------+------+------+------+
-        """.trimIndent().trim()
-
-        assertEquals(expected, output)
-    }
-
-    @Test
-    fun testDefaultKrowTableWithRowSpans() {
-        val input = krow {
-            headerColumns("col1", "col2", "col3")
-            row("row1") {
-                cells("1-1 colspans all 3") { colSpan = 3 }
-            }
-            row("row2") {
-                cells("2-1")
-                cells("2-2 colspan") { colSpan = 2; rowSpan = 2 }
-            }
-            row("row3") { cells("3-1") }
-        }
-        val underTest = AsciiTableFormatter(SingleBorder())
-        val output = underTest.print(input).trim()
-
-        val expected = """
-            +------+------+------+------+
-            |      | col1 | col2 | col3 |
-            +------+------+------+------+
-            | row1 | 1-1 colspans all 3 |
-            +------+------+-------------+
-            | row2 | 2-1  | 2-2 colspan |
-            +------+------+             |
-            | row3 | 3-1  |             |
-            +------+------+-------------+
-        """.trimIndent().trim()
-
-        assertEquals(expected, output)
-    }
-
-    @ExperimentalStdlibApi
     @Test
     fun testKrowTableAlignment() {
         val input = krow {
@@ -298,7 +30,9 @@ class TestKrow {
                 }
             }
             row("row1") {
-                cells("1-1 colspans all 3") { colSpan = 3 }
+                cells("1-1 colspans all 3 and has much more content than would normally fit within this single cell " +
+                        "so it must wrap several rows in order to fit but is still constrained by the available cell " +
+                        "widths") { colSpan = 3 }
                 cells("create column and span rows") { rowSpan = 4 }
             }
             row("row2") {
@@ -326,7 +60,12 @@ class TestKrow {
             ┌──────┬────────────┬───────────────┬──────┬─────────────────────────────┐
             │      │       col1 │ col2          │ col3 │ 4                           │
             ├──────┼────────────┴───────────────┴──────┼─────────────────────────────┤
-            │ row1 │                1-1 colspans all 3 │ create column and span rows │
+            │ row1 │   1-1 colspans all 3 and has much │ create column and span rows │
+            │      │  more content than would normally │                             │
+            │      │ fit within this single cell so it │                             │
+            │      │   must wrap several rows in order │                             │
+            │      │   to fit but is still constrained │                             │
+            │      │      by the available cell widths │                             │
             ├──────┼────────────┬──────────────────────┤                             │
             │ row2 │        2-1 │                      │                             │
             ├──────┼────────────┤                      │                             │
@@ -343,7 +82,12 @@ class TestKrow {
             ╔══════╦════════════╦═══════════════╦══════╦═════════════════════════════╗
             ║      ║       col1 ║ col2          ║ col3 ║ 4                           ║
             ╠══════╬════════════╩═══════════════╩══════╬═════════════════════════════╣
-            ║ row1 ║                1-1 colspans all 3 ║ create column and span rows ║
+            ║ row1 ║   1-1 colspans all 3 and has much ║ create column and span rows ║
+            ║      ║  more content than would normally ║                             ║
+            ║      ║ fit within this single cell so it ║                             ║
+            ║      ║   must wrap several rows in order ║                             ║
+            ║      ║   to fit but is still constrained ║                             ║
+            ║      ║      by the available cell widths ║                             ║
             ╠══════╬════════════╦══════════════════════╣                             ║
             ║ row2 ║        2-1 ║                      ║                             ║
             ╠══════╬════════════╣                      ║                             ║
@@ -360,7 +104,12 @@ class TestKrow {
             +------+------------+---------------+------+-----------------------------+
             |      |       col1 | col2          | col3 | 4                           |
             +------+------------+---------------+------+-----------------------------+
-            | row1 |                1-1 colspans all 3 | create column and span rows |
+            | row1 |   1-1 colspans all 3 and has much | create column and span rows |
+            |      |  more content than would normally |                             |
+            |      | fit within this single cell so it |                             |
+            |      |   must wrap several rows in order |                             |
+            |      |   to fit but is still constrained |                             |
+            |      |      by the available cell widths |                             |
             +------+------------+----------------------+                             |
             | row2 |        2-1 |                      |                             |
             +------+------------+                      |                             |
@@ -387,7 +136,164 @@ class TestKrow {
               <tbody>
               <tr>
                 <td>row1</td>
-                <td colspan="3">1-1 colspans all 3</td>
+                <td colspan="3">1-1 colspans all 3 and has much more content than would normally fit within this single cell so it must wrap several rows in order to fit but is still constrained by the available cell widths</td>
+                <td rowspan="4">create column and span rows</td>
+              </tr>
+              <tr>
+                <td>row2</td>
+                <td>2-1</td>
+                <td rowspan="2" colspan="2">2-2 colspan</td>
+              </tr>
+              <tr>
+                <td>row3</td>
+                <td>3-1</td>
+              </tr>
+              <tr>
+                <td>row4</td>
+                <td colspan="2">4-1</td>
+                <td>4-3</td>
+              </tr>
+              </tbody>
+            </table>
+            """.trimIndent(),
+            HtmlTableFormatter().print(input).trim()
+        )
+    }
+
+    @Test
+    fun testKrowTableConstraintPattern() {
+        val input = krow {
+            header {
+                column("col1") {
+                    width = 12
+                    horizontalAlignment = HorizontalAlignment.RIGHT
+                }
+                column("col2") {
+                    width = 15
+                    verticalAlignment = VerticalAlignment.BOTTOM
+                }
+                column("col3") {
+                }
+            }
+
+            cell("row1", "col1") {
+                content = "1-1 colspans all 3 and has much more content than would normally fit within this single " +
+                        "cell so it must wrap several rows in order to fit but is still constrained by the available" +
+                        " cell widths"
+                colSpan = 3
+            }
+            cell("row1", "col4") {
+                content = "create column and span rows"
+                rowSpan = 4
+            }
+
+            cell("row2", "col1") {
+                content = "2-1"
+            }
+            cell("row2", "col2") {
+                content = "2-2 colspan"
+                colSpan = 2
+                rowSpan = 2
+                horizontalAlignment = HorizontalAlignment.CENTER
+            }
+
+            cell("row3", "col1") {
+                content = "3-1"
+            }
+
+            cell("row4", "col1") {
+                content = "4-1"
+                horizontalAlignment = HorizontalAlignment.LEFT
+                colSpan = 2
+            }
+            cell("row4", "col3") {
+                content = "4-3"
+                horizontalAlignment = HorizontalAlignment.RIGHT
+            }
+        }
+
+        assertEquals(
+            """
+            ┌──────┬────────────┬───────────────┬──────┬─────────────────────────────┐
+            │      │       col1 │ col2          │ col3 │ 4                           │
+            ├──────┼────────────┴───────────────┴──────┼─────────────────────────────┤
+            │ row1 │   1-1 colspans all 3 and has much │ create column and span rows │
+            │      │  more content than would normally │                             │
+            │      │ fit within this single cell so it │                             │
+            │      │   must wrap several rows in order │                             │
+            │      │   to fit but is still constrained │                             │
+            │      │      by the available cell widths │                             │
+            ├──────┼────────────┬──────────────────────┤                             │
+            │ row2 │        2-1 │                      │                             │
+            ├──────┼────────────┤                      │                             │
+            │ row3 │        3-1 │     2-2 colspan      │                             │
+            ├──────┼────────────┴───────────────┬──────┤                             │
+            │ row4 │ 4-1                        │  4-3 │                             │
+            └──────┴────────────────────────────┴──────┴─────────────────────────────┘
+            """.trimIndent(),
+            AsciiTableFormatter(SingleBorder()).print(input).trim()
+        )
+
+        assertEquals(
+            """
+            ╔══════╦════════════╦═══════════════╦══════╦═════════════════════════════╗
+            ║      ║       col1 ║ col2          ║ col3 ║ 4                           ║
+            ╠══════╬════════════╩═══════════════╩══════╬═════════════════════════════╣
+            ║ row1 ║   1-1 colspans all 3 and has much ║ create column and span rows ║
+            ║      ║  more content than would normally ║                             ║
+            ║      ║ fit within this single cell so it ║                             ║
+            ║      ║   must wrap several rows in order ║                             ║
+            ║      ║   to fit but is still constrained ║                             ║
+            ║      ║      by the available cell widths ║                             ║
+            ╠══════╬════════════╦══════════════════════╣                             ║
+            ║ row2 ║        2-1 ║                      ║                             ║
+            ╠══════╬════════════╣                      ║                             ║
+            ║ row3 ║        3-1 ║     2-2 colspan      ║                             ║
+            ╠══════╬════════════╩═══════════════╦══════╣                             ║
+            ║ row4 ║ 4-1                        ║  4-3 ║                             ║
+            ╚══════╩════════════════════════════╩══════╩═════════════════════════════╝
+            """.trimIndent(),
+            AsciiTableFormatter(DoubleBorder()).print(input).trim()
+        )
+
+        assertEquals(
+            """
+            +------+------------+---------------+------+-----------------------------+
+            |      |       col1 | col2          | col3 | 4                           |
+            +------+------------+---------------+------+-----------------------------+
+            | row1 |   1-1 colspans all 3 and has much | create column and span rows |
+            |      |  more content than would normally |                             |
+            |      | fit within this single cell so it |                             |
+            |      |   must wrap several rows in order |                             |
+            |      |   to fit but is still constrained |                             |
+            |      |      by the available cell widths |                             |
+            +------+------------+----------------------+                             |
+            | row2 |        2-1 |                      |                             |
+            +------+------------+                      |                             |
+            | row3 |        3-1 |     2-2 colspan      |                             |
+            +------+------------+---------------+------+                             |
+            | row4 | 4-1                        |  4-3 |                             |
+            +------+----------------------------+------+-----------------------------+
+            """.trimIndent(),
+            AsciiTableFormatter(CrossingBorder()).print(input).trim()
+        )
+
+        assertEquals(
+            """
+            <table>
+              <thead>
+              <tr>
+                <th></th>
+                <th>col1</th>
+                <th>col2</th>
+                <th>col3</th>
+                <th>4</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>row1</td>
+                <td colspan="3">1-1 colspans all 3 and has much more content than would normally fit within this single cell so it must wrap several rows in order to fit but is still constrained by the available cell widths</td>
                 <td rowspan="4">create column and span rows</td>
               </tr>
               <tr>

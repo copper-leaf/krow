@@ -1,18 +1,33 @@
 package com.copperleaf.krow.formatters.ascii.internal
 
-import com.copperleaf.krow.formatters.ascii.intrinsicHeight
+import com.copperleaf.krow.formatters.ascii.measureContentHeight
 import com.copperleaf.krow.model.Krow
 import com.copperleaf.krow.model.TableSpec
 import com.copperleaf.krow.model.toTableSpec
 
-// TODO: measure cells first, and take the greatest height of all cells in a row
 fun measureRowSpec(
-     table: Krow.Table,
- ): TableSpec {
+    table: Krow.Table,
+    colSpec: TableSpec,
+): TableSpec {
     return table.visibleRows
-        .map { tableRow ->
-            val rowHeight = tableRow.cells.maxOf { it.intrinsicHeight }
-            tableRow.rowName to rowHeight
-        }
+        .map { tableRow -> tableRow.rowName to determineHeightOfRow(tableRow, colSpec) }
         .toTableSpec()
+}
+
+private fun determineHeightOfRow(
+    tableRow: Krow.Row,
+    colSpec: TableSpec,
+): Int {
+    return tableRow.cells.maxOf { determineActualHeightOfCell(it, colSpec) }
+}
+
+private fun determineActualHeightOfCell(
+    cell: Krow.Cell,
+    colSpec: TableSpec,
+): Int {
+    val measurement = colSpec.measureRange(cell.columnName, cell.colSpan)
+
+    val availableWidth = measurement.totalSize
+
+    return cell.measureContentHeight(availableWidth)
 }

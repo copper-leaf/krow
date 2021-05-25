@@ -29,3 +29,9 @@ fun Krow.Cell.printContentWithPadding(maxWidth: Int, height: Int): String {
             createLineOf(' ', padding) + it + createLineOf(' ', padding)
         }
 }
+
+fun Krow.Cell.measureContentHeight(maxWidth: Int): Int {
+    return data.wrap(maxWidth - (padding * 2), alignment = horizontalAlignment)
+        .lines()
+        .size
+}
