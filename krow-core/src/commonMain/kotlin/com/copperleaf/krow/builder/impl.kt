@@ -39,8 +39,8 @@ internal class TableScopeImpl(
         body.rows(*rows, block = block)
     }
 
-    override fun cell(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
-        return body.cell(rowName, columnName, block)
+    override fun cellAt(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+        return body.cellAt(rowName, columnName, block)
     }
 
     fun build(): Krow.Table {
@@ -190,10 +190,10 @@ internal class BodyScopeImpl(
         }
     }
 
-    override fun cell(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+    override fun cellAt(rowName: String, columnName: String, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
         var cell: BodyCellScope? = null
         row(rowName) {
-            cell = cell(columnName, block)
+            cell = cell(columnName = columnName, cellContent = "", block)
         }
 
         return cell!!
@@ -228,6 +228,27 @@ internal class BodyRowScopeImpl(
 
         val position = layout.placeCellInRow(
             rowName = rowName,
+            rowSpan = newCell.rowSpan,
+            colSpan = newCell.colSpan
+        )
+
+        val committedCell = newCell.commit(position.columnName)
+
+        cells.add(committedCell)
+
+        return committedCell
+    }
+
+    override fun cell(columnName: String, cellContent: String?, block: MutableBodyCellScope.() -> Unit): BodyCellScope {
+        val newCell = MutableBodyCellScopeImpl(
+            rowName = rowName,
+            content = cellContent ?: ""
+        )
+        newCell.block()
+
+        val position = layout.placeCellExact(
+            rowName = rowName,
+            columnName = columnName,
             rowSpan = newCell.rowSpan,
             colSpan = newCell.colSpan
         )

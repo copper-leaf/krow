@@ -103,6 +103,38 @@ class KrowTableBuilderLayout {
             grid[startRowId].first { !it.occupied }.columnIndex
         }
 
+        return placeExpandedCell(
+            startRowId = startRowId,
+            rowSpan = rowSpan,
+            startColumnId = startColumnId,
+            colSpan = colSpan
+        )
+    }
+
+    fun placeCellExact(rowName: String, columnName: String, rowSpan: Int, colSpan: Int): CellId {
+        val (_, startRowId) = getOrCreateRow(rowName)
+        val (_, startColumnId) = getOrCreateColumn(columnName)
+
+        // ensure this exact cell is not already occupied
+        val cell = getCellAt(rowName, columnName)
+        check(!cell.occupied) {
+            "Cell at position $cell is already occupied!"
+        }
+
+        return placeExpandedCell(
+            startRowId = startRowId,
+            rowSpan = rowSpan,
+            startColumnId = startColumnId,
+            colSpan = colSpan
+        )
+    }
+
+    private fun placeExpandedCell(
+        startRowId: Int,
+        rowSpan: Int,
+        startColumnId: Int,
+        colSpan: Int
+    ) : CellId {
         for (rowId in startRowId until (startRowId + rowSpan)) {
             // go through the rows and mark the cells as occupied, creating new rows as needed
             if (rowId > rows.lastIndex) {
@@ -131,6 +163,7 @@ class KrowTableBuilderLayout {
     fun getColumnName(index: Int): String {
         return columns[index]
     }
+
     fun getCellAt(rowName: String, columnName: String): CellId {
         val rowIndex = rows.indexOf(rowName)
         val columnIndex = columns.indexOf(columnName)

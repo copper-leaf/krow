@@ -5,8 +5,11 @@ import com.copperleaf.krow.utils.BorderSet
 import com.copperleaf.krow.utils.Drawable
 import com.copperleaf.krow.utils.KrowCanvas
 
-// TODO: instead of getting borders from the cells, iterate across the positions in the table specs to compute each
-//  borders' contextual brush and prevent overdraw
+/**
+ * Identify all unique edges of the table (line between any 2 cells, or between a cell and the edge of the table), and
+ * determine the exact buffer position and context of each corner to determine the specific ASCII characters to render
+ * for that line.
+ */
 @Suppress("UNUSED_PARAMETER")
 internal fun measureEdges(
     cells: List<MeasuredCell>,

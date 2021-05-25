@@ -10,6 +10,7 @@ import com.copperleaf.krow.utils.DoubleBorder
 import com.copperleaf.krow.utils.SingleBorder
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 @ExperimentalStdlibApi
 class TestKrow {
@@ -178,37 +179,37 @@ class TestKrow {
                 }
             }
 
-            cell("row1", "col1") {
+            cellAt("row1", "col1") {
                 content = "1-1 colspans all 3 and has much more content than would normally fit within this single " +
                     "cell so it must wrap several rows in order to fit but is still constrained by the available" +
                     " cell widths"
                 colSpan = 3
             }
-            cell("row1", "col4") {
+            cellAt("row1", "col4") {
                 content = "create column and span rows"
                 rowSpan = 4
             }
 
-            cell("row2", "col1") {
+            cellAt("row2", "col1") {
                 content = "2-1"
             }
-            cell("row2", "col2") {
+            cellAt("row2", "col2") {
                 content = "2-2 colspan"
                 colSpan = 2
                 rowSpan = 2
                 horizontalAlignment = HorizontalAlignment.CENTER
             }
 
-            cell("row3", "col1") {
+            cellAt("row3", "col1") {
                 content = "3-1"
             }
 
-            cell("row4", "col1") {
+            cellAt("row4", "col1") {
                 content = "4-1"
                 horizontalAlignment = HorizontalAlignment.LEFT
                 colSpan = 2
             }
-            cell("row4", "col3") {
+            cellAt("row4", "col3") {
                 content = "4-3"
                 horizontalAlignment = HorizontalAlignment.RIGHT
             }
@@ -317,5 +318,32 @@ class TestKrow {
             """.trimIndent(),
             HtmlTableFormatter().print(input).trim()
         )
+    }
+
+    @Test
+    fun testKrowTableFailsWhenSpansOverlap() {
+        assertFailsWith<IllegalStateException>(
+            message = "Cell at position (row3:3, col3:2)! is already occupied!"
+        ) {
+            krow {
+                header {
+                    columns("col1", "col2", "col3", "col4")
+                }
+                row("row1") { }
+                row("row2") { }
+                row("row3") { }
+                row("row4") { }
+
+                cellAt("row1", "col1") {
+                    rowSpan = 3
+                    colSpan = 3
+                }
+
+                cellAt("row3", "col3") {
+                    rowSpan = 2
+                    colSpan = 2
+                }
+            }.also { println(AsciiTableFormatter().print(it)) }
+        }
     }
 }

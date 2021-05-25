@@ -5,6 +5,9 @@ import com.copperleaf.krow.model.Krow
 import com.copperleaf.krow.model.TableSpec
 import com.copperleaf.krow.model.toTableSpec
 
+/**
+ * Given the general layout of cells in the table, determine how wide each column should be in ASCII characters.
+ */
 internal fun measureColSpec(
     table: Krow.Table,
 ): TableSpec {

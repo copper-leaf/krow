@@ -5,6 +5,10 @@ import com.copperleaf.krow.utils.BorderSet
 import com.copperleaf.krow.utils.Drawable
 import com.copperleaf.krow.utils.KrowCanvas
 
+/**
+ * Identify all unique corners of the table (the corner of any cell or cells), and determine the exact buffer position
+ * and context of each corner to determine the specific ASCII character to render at that corner or intersection.
+ */
 internal fun measureCorners(
     cells: List<MeasuredCell>,
     rowSpec: TableSpec,

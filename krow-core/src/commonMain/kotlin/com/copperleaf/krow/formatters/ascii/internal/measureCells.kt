@@ -10,6 +10,10 @@ import com.copperleaf.krow.utils.BorderSet
 import com.copperleaf.krow.utils.Drawable
 import com.copperleaf.krow.utils.KrowCanvas
 
+/**
+ * Given the actual width/height of the table in ASCII characters, determine the relevant positions in the buffer this
+ * cell will occupy.
+ */
 internal fun measureCells(
     table: Krow.Table,
     rowSpec: TableSpec,
