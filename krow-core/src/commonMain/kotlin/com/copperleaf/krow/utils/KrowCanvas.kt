@@ -1,8 +1,19 @@
 package com.copperleaf.krow.utils
 
-class KrowCanvas(
+interface Drawable {
+    fun draw(canvas: KrowCanvas, borderSet: BorderSet)
+}
+
+class KrowCanvas private constructor(
     val buffer: MutableList<String>
 ) {
+
+    constructor(width: Int, height: Int) : this(
+        createLinesOf(
+            createLineOf(' ', width),
+            height
+        ).toMutableList()
+    )
 
     override fun toString(): String {
         return buffer.joinToString(separator = "\n")

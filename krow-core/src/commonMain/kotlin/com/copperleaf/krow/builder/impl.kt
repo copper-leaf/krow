@@ -2,12 +2,9 @@ package com.copperleaf.krow.builder
 
 import com.copperleaf.krow.builder.KrowTableBuilderLayout.Companion.HEADER_ROW_NAME
 import com.copperleaf.krow.builder.KrowTableBuilderLayout.Companion.LEADING_COLUMN_NAME
-import com.copperleaf.krow.formatters.ascii.intrinsicHeight
-import com.copperleaf.krow.formatters.ascii.intrinsicWidthWithPadding
 import com.copperleaf.krow.model.HorizontalAlignment
 import com.copperleaf.krow.model.Krow
 import com.copperleaf.krow.model.VerticalAlignment
-import com.copperleaf.krow.model.toTableSpec
 
 internal class TableScopeImpl(
     private val layout: KrowTableBuilderLayout = KrowTableBuilderLayout(),
@@ -54,52 +51,12 @@ internal class TableScopeImpl(
         val headerRow = header.build(includeLeadingColumn)
         val bodyRows = body.build(header.headerRow, includeLeadingColumn)
 
-        val displayedRows: List<Krow.Row> = if (includeHeaderRow) {
-            listOf(headerRow) + bodyRows
-        } else {
-            bodyRows
-        }
-
-        val cellsGroupedByColumn: Map<String, List<Krow.Cell>> = displayedRows
-            .flatMap { it.cells }
-            .groupBy { it.columnName }
-
-        // calculate column widths
-        val colSpec = headerRow
-            .cells
-            .map { columnCell ->
-                val columnWidth = if (columnCell.width != null) {
-                    // column has fixed width
-                    columnCell.width
-                } else {
-                    // auto-size column to the content width of the cells in this column that do not span multiple columns
-                    val cellsInColumn = cellsGroupedByColumn[columnCell.columnName]!!
-                    val cellsInColumnWithoutColSpan = cellsInColumn.filter { it.colSpan == 1 }
-
-                    val maxWidthInColumn: Int = cellsInColumnWithoutColSpan
-                        .maxOf { cell: Krow.Cell -> cell.intrinsicWidthWithPadding }
-
-                    maxWidthInColumn
-                }
-
-                columnCell.columnName to columnWidth
-            }
-            .toTableSpec()
-
         // calculate row heights
-        val rowSpec = displayedRows
-            .map { tableRow ->
-                val rowHeight = tableRow.cells.maxOf { it.intrinsicHeight }
-                tableRow.rowName to rowHeight
-            }
-            .toTableSpec()
-
         return Krow.Table(
-            colSpec = colSpec,
-            rowSpec = rowSpec,
+            headerRow = headerRow,
+            bodyRows = bodyRows,
             includeHeaderRow = includeHeaderRow,
             includeLeadingColumn = includeLeadingColumn,
-            rows = displayedRows,
         )
     }
 }

@@ -15,10 +15,10 @@ class HtmlTableFormatter(attrs: HtmlAttributes = DefaultHtmlAttributes()) :
             .apply {
                 tag("table", id = tableId, classes = tableClasses, otherAttrs = tableAttrs) {
 
-                    val bodyRows = if (table.includeHeaderRow) {
+                    if (table.includeHeaderRow) {
                         tag("thead", indentTag = false) {
                             tag("tr", classes = trClasses) {
-                                table.rows.first().cells.forEachIndexed { index, cell ->
+                                table.headerRow.cells.forEachIndexed { index, cell ->
                                     val classes = buildList {
                                         addAll(thClasses)
                                         addAll(headerClasses)
@@ -30,13 +30,10 @@ class HtmlTableFormatter(attrs: HtmlAttributes = DefaultHtmlAttributes()) :
                                 }
                             }
                         }
-                        table.rows.drop(1)
-                    } else {
-                        table.rows
                     }
 
                     tag("tbody", indentTag = false) {
-                        bodyRows.forEach { row ->
+                        table.bodyRows.forEach { row ->
                             tag("tr", classes = trClasses) {
                                 row.cells.forEachIndexed { index, cell ->
                                     val classes = buildList {

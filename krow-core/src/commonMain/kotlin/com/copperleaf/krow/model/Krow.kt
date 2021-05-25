@@ -58,24 +58,23 @@ fun List<Pair<String, Int>>.toTableSpec() : TableSpec {
 }
 
 sealed class Krow {
-    abstract val children: List<Krow>
-
     data class Table(
-        val colSpec: TableSpec,
-        val rowSpec: TableSpec,
+        var headerRow: Row,
+        val bodyRows: List<Row>,
         var includeHeaderRow: Boolean,
         var includeLeadingColumn: Boolean,
-        val rows: List<Row>
     ) : Krow() {
-        override val children: List<Krow> get() = rows
+        val visibleRows: List<Krow.Row> = if (includeHeaderRow) {
+            listOf(headerRow) + bodyRows
+        } else {
+            bodyRows
+        }
     }
 
     data class Row(
         val rowName: String,
         val cells: List<Cell>
-    ) : Krow() {
-        override val children: List<Krow> get() = cells
-    }
+    ) : Krow()
 
     data class Cell(
         val data: String,
@@ -88,8 +87,6 @@ sealed class Krow {
         val horizontalAlignment: HorizontalAlignment = HorizontalAlignment.LEFT,
         val verticalAlignment: VerticalAlignment = VerticalAlignment.TOP,
     ) : Krow() {
-        override val children: List<Krow> = emptyList()
-
         override fun toString(): String {
             return "($rowName, $columnName): $data"
         }
