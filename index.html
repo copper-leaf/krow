@@ -1,0 +1,1454 @@
+
+
+<!DOCTYPE html>
+<html class="">
+<head>
+
+
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.21.1"/>
+<link rel="icon" href="https://copper-leaf.github.io/krow/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>Home</title>
+
+
+<meta name="description" content="A small DSL for generating tables in ASCII or HTML formats">
+
+
+
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/krow/Copper/24a60a9b/assets/css/bulma.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/krow/Copper/24a60a9b/assets/css/extraCss.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/krow/Copper/24a60a9b/assets/css/bulma-tooltip.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/krow/Copper/24a60a9b/assets/css/bulma-accordion.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/krow/assets/css/orchidSearch.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/krow/PrismJS/prism-themes/master/themes/prism-duotone-light.css"  />
+<!-- end:inject styles -->
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.21.1","baseUrl":"https://copper-leaf.github.io/krow","environment":"prod","version":"1.0.0"};
+</script>
+
+
+    <!-- start:inject meta-components [head] -->
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+    <!-- start:inject meta-components [head] -->
+    
+
+        
+            
+        
+
+        
+            
+        
+            
+        
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+
+
+<div class="columns is-marginless is-desktop">
+
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-mobile is-hidden-touch">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold is-fullheight">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <a href="https://copper-leaf.github.io/krow"><img src="https://copper-leaf.github.io/krow/assets/svg/orchid/logo_top_dark.svg" style="padding: 40px 40px 0 40px;"></a>
+  <p class="subtitle is-4 has-text-centered">A small DSL for generating tables in ASCII or HTML formats</p>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/krow 2049646260 -->
+  <a href="https://copper-leaf.github.io/krow" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/krow/changelog 17808347 -->
+  <a href="https://copper-leaf.github.io/krow/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-desktop">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold ">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <a href="https://copper-leaf.github.io/krow"><img src="https://copper-leaf.github.io/krow/assets/svg/orchid/logo_top_dark.svg" style="padding: 40px 40px 0 40px;"></a>
+  <p class="subtitle is-4 has-text-centered">A small DSL for generating tables in ASCII or HTML formats</p>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/krow 2049646260 -->
+  <a href="https://copper-leaf.github.io/krow" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/krow/changelog 17808347 -->
+  <a href="https://copper-leaf.github.io/krow/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+
+  <div class="column is-two-thirds-desktop is-three-quarters-widescreen is-four-fifths-fullhd is-paddingless column-main-right">
+  
+
+<nav
+  class="navbar is-white border-bottom"
+  role="navigation"
+  aria-label="main navigation"
+>
+  <div class="container">
+    <div class="navbar-brand is-marginless">
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu is-marginless" id="navbarMain">
+      <div class="navbar-start">
+      
+<div class="navbar-item">
+  <form id="search-input" data-orchid-search>
+    <div class="field is-marginless" id="search">
+      <div class="control has-icons-left input-control">
+        <input class="input" type="text" name="query" placeholder="Search Krow">
+
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+
+        <div id="search-progress" data-orchid-search-progress style="display: none;">
+          <div class="loader">Loading...</div>
+        </div>
+      </div>
+    </div>
+    <div id="search-results" data-orchid-search-results style="display: none;">
+      <div class="carat"></div>
+      <b>
+        Search Results
+        <i class="fa fa-times" aria-hidden="true" onclick="$('[data-orchid-search-results]').hide()"></i>
+      </b>
+      <ul></ul>
+    </div>
+  </form>
+</div>
+
+      
+
+  
+  
+    
+
+<a class="navbar-item " href="https://github.com/orchidhq/Orchid">
+Orchid
+</a>
+
+
+  
+
+  
+  
+    
+<div class="navbar-item has-dropdown is-hoverable">
+
+
+<a class="navbar-item " href="">
+Copper Leaf
+</a>
+
+
+  <div class="navbar-dropdown">
+  
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/common">
+Common
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/clog">
+Clog
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kudzu">
+Kudzu
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/trellis">
+Trellis
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/thistle">
+Thistle
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kodiak">
+Kodiak
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/krow">
+Krow
+</a>
+
+
+    
+  </div>
+</div>
+
+  
+
+
+      </div>
+
+      <div class="navbar-end">
+      
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf" title="Copper Leaf Home">
+    <i class="fas fa-home"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf/krow" title="Github">
+    <i class="fab fa-github"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://twitter.com/OrchidSSG" title="Twitter">
+    <i class="fab fa-twitter"></i>
+  </a>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+    <div class="textured container" style="width: 100%;">
+    
+    
+
+    
+    
+      <article style="position: relative; margin-top: 60px; margin-bottom: 60px;" role="main">
+      
+      
+        <div class="box">
+        
+
+<div class="columns">
+  <div class="column is-three-quarters-desktop">
+  
+    <!-- start:inject components -->
+    
+        
+            
+                
+                    
+                        <div class="content is-medium-tablet is-large-fullhd">
+<h1 id="krow"><a href="#krow" id="krow" class="anchor"></a>Krow</h1>
+<blockquote>
+<p>A small DSL for generating tables in ASCII or HTML formats</p>
+</blockquote>
+<p><img src="https://img.shields.io/github/v/release/copper-leaf/krow" alt="GitHub release (latest by date)" />
+<img src="https://img.shields.io/maven-central/v/io.github.copper-leaf/krow-core" alt="Maven Central" />
+<img src="https://img.shields.io/badge/Kotlin-1.4.32-orange" alt="Kotlin Version" /></p>
+<h2 id="overview"><a href="#overview" id="overview" class="anchor"></a>Overview</h2>
+<pre><code class="language-kotlin">val table = krow {
+    cell(&quot;col1&quot;, &quot;row1&quot;) { content = &quot;1-1&quot; }
+    cell(&quot;col1&quot;, &quot;row2&quot;) { content = &quot;1-2&quot; }
+
+    cell(&quot;col2&quot;, &quot;row1&quot;) { content = &quot;2-1&quot; }
+    cell(&quot;col2&quot;, &quot;row2&quot;) { content = &quot;2-2&quot; }
+
+    cell(&quot;col3&quot;, &quot;row1&quot;) { content = &quot;3-1&quot; }
+    cell(&quot;col3&quot;, &quot;row2&quot;) { content = &quot;3-2&quot; }
+
+    table {
+        wrapTextAt = 30
+        horizontalAlignment = HorizontalAlignment.CENTER
+        verticalAlignment = VerticalAlignment.TOP
+    }
+}
+</code></pre>
+<h2 id="installation"><a href="#installation" id="installation" class="anchor"></a>Installation</h2>
+<pre><code class="language-kotlin">repositories {
+    mavenCentral()
+}
+
+// for plain JVM or Android projects
+dependencies {
+    implementation(&quot;io.github.copper-leaf:krow-core:1.0.0&quot;)
+}
+
+// for multiplatform projects
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(&quot;io.github.copper-leaf:krow-core:1.0.0&quot;)
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="targets"><a href="#targets" id="targets" class="anchor"></a>Targets</h2>
+<p>Krow renders both ASCII and HTML as plain Strings, with no platform-specific formatting. Krow publishes artifacts for
+the following Kotlin targets.</p>
+<table>
+<thead>
+<tr><th>Platform</th></tr>
+</thead>
+<tbody>
+<tr><td>Android</td></tr>
+<tr><td>JVM</td></tr>
+<tr><td>iOS</td></tr>
+<tr><td>JS</td></tr>
+</tbody>
+</table>
+<h2 id="usage"><a href="#usage" id="usage" class="anchor"></a>Usage</h2>
+<p>Krow is a DSL for the layout and rendering of HTML-like tables. It supports table cells that can span both rows and
+columns, as well as several border styles to tweak the presentation of ASCII tables.</p>
+<h2 id="dsl"><a href="#dsl" id="dsl" class="anchor"></a>DSL</h2>
+<h3 id="header-columns"><a href="#header-columns" id="header-columns" class="anchor"></a>Header Columns</h3>
+<p>To build a table with 3 columns, such as:</p>
+<pre><code>val expected = &quot;&quot;&quot;
+    ┌──────┬──────────┬──────────┬──────────┐
+    │      │ column 1 │ column 2 │ column 3 │
+    ├──────┼──────────┼──────────┴──────────┤
+    │ row1 │ 1        │ 2                   │
+    └──────┴──────────┴─────────────────────┘
+&quot;&quot;&quot;.trimIndent()
+</code></pre>
+<p>all of the following styles are equivalent:</p>
+<div class="tabs">
+  <ul data-tabs="dsl_header">
+  
+    <li class="is-active"><a>table-header-columns1</a></li>
+  
+    <li ><a>table-header-columns2</a></li>
+  
+    <li ><a>table-header-columns3</a></li>
+  
+    <li ><a>table-header-columns4</a></li>
+  
+    <li ><a>table-header-columns5</a></li>
+  
+  </ul>
+</div>
+<div data-panes="dsl_header">
+
+  <div class="is-block tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    header {
+        row {
+            column("column 1")
+            column("column 2")
+            column("column 3")
+        }
+    }
+    body {
+        row("row1") {
+            cell("1")
+            cell("2") { colSpan = 2 }
+        }
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    header {
+        column("column 1")
+        column("column 2")
+        column("column 3")
+    }
+    body {
+        row("row1") {
+            cell("1")
+            cell("2") { colSpan = 2 }
+        }
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    header {
+        row {
+            columns("column 1", "column 2", "column 3")
+        }
+    }
+    body {
+        row("row1") {
+            cell("1")
+            cell("2") { colSpan = 2 }
+        }
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    header {
+        columns("column 1", "column 2", "column 3")
+    }
+    body {
+        row("row1") {
+            cell("1")
+            cell("2") { colSpan = 2 }
+        }
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    headerColumns("column 1", "column 2", "column 3")
+    body {
+        row("row1") {
+            cell("1")
+            cell("2") { colSpan = 2 }
+        }
+    }
+}</code></pre></div>
+
+</div>
+<h3 id="body-rows"><a href="#body-rows" id="body-rows" class="anchor"></a>Body Rows</h3>
+<p>To build a table with 2 columns, such as:</p>
+<pre><code>val expected = &quot;&quot;&quot;
+    ┌──────┬──────────┬──────────┬──────────┐
+    │      │ column 1 │ column 2 │ column 3 │
+    ├──────┼──────────┼──────────┼──────────┤
+    │ row1 │ 1        │ 2        │ 3        │
+    ├──────┼──────────┼──────────┼──────────┤
+    │ row2 │ a        │ b        │ c        │
+    └──────┴──────────┴──────────┴──────────┘
+&quot;&quot;&quot;.trimIndent()
+</code></pre>
+<p>all of the following styles are equivalent:</p>
+<div class="tabs">
+  <ul data-tabs="body_dsl">
+  
+    <li class="is-active"><a>table-body-rows1</a></li>
+  
+    <li ><a>table-body-rows2</a></li>
+  
+    <li ><a>table-body-rows3</a></li>
+  
+    <li ><a>table-body-rows4</a></li>
+  
+    <li ><a>table-body-rows5</a></li>
+  
+    <li ><a>table-body-rows6</a></li>
+  
+  </ul>
+</div>
+<div data-panes="body_dsl">
+
+  <div class="is-block tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    headerColumns("column 1", "column 2", "column 3")
+    body {
+        row("row1") {
+            cell("1")
+            cell("2")
+            cell("3")
+        }
+        row("row2") {
+            cell("a")
+            cell("b")
+            cell("c")
+        }
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    headerColumns("column 1", "column 2", "column 3")
+    body {
+        row("row1") {
+            cells("1", "2", "3")
+        }
+        row("row2") {
+            cells("a", "b", "c")
+        }
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    headerColumns("column 1", "column 2", "column 3")
+    body {
+        rows(
+            "row1" to listOf("1", "2", "3"),
+            "row2" to listOf("a", "b", "c")
+        )
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    headerColumns("column 1", "column 2", "column 3")
+    bodyRow("row1") {
+        cell("1")
+        cell("2")
+        cell("3")
+    }
+    bodyRow("row2") {
+        cell("a")
+        cell("b")
+        cell("c")
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    headerColumns("column 1", "column 2", "column 3")
+    bodyRow("row1") {
+        cells("1", "2", "3")
+    }
+    bodyRow("row2") {
+        cells("a", "b", "c")
+    }
+}</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre class="language-kotlin"><code class="language-kotlin">krow {
+    headerColumns("column 1", "column 2", "column 3")
+    bodyRows(
+        "row1" to listOf("1", "2", "3"),
+        "row2" to listOf("a", "b", "c")
+    )
+}</code></pre></div>
+
+</div>
+<h3 id="dynamic-layout"><a href="#dynamic-layout" id="dynamic-layout" class="anchor"></a>Dynamic Layout</h3>
+<p>The above snippets all assume a statically-defined layout of columns and rows, but the core layout engine of Krow allows
+you to build tables much more dynamically as well. Rather than manually defining columns and the names of rows, you can
+instead just define the content of the table, and it will expand and adapt to the content.</p>
+<p>The following are some examples of dynamically-laid out tables, and how they get rendered.</p>
+<h4 id="rows"><a href="#rows" id="rows" class="anchor"></a>Rows</h4>
+<p>By omitting a row name for each body row, the table will generate the row name as the row index.</p>
+<pre><code class="language-kotlin">val table = krow {
+    headerColumns(&quot;column 1&quot;, &quot;column 2&quot;, &quot;column 3&quot;)
+    bodyRow {
+        cells(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;)
+    }
+    bodyRow {
+        cells(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+    }
+}
+</code></pre>
+<pre><code>val expected = &quot;&quot;&quot;
+        ┌───┬──────────┬──────────┬──────────┐
+        │   │ column 1 │ column 2 │ column 3 │
+        ├───┼──────────┼──────────┼──────────┤
+        │ 1 │ 1        │ 2        │ 3        │
+        ├───┼──────────┼──────────┼──────────┤
+        │ 2 │ a        │ b        │ c        │
+        └───┴──────────┴──────────┴──────────┘
+&quot;&quot;&quot;.trimIndent()
+</code></pre>
+<h4 id="columns"><a href="#columns" id="columns" class="anchor"></a>Columns</h4>
+<p>Body cells align themselves to columns based on the space available in the row. If a cell is placed at an index that was
+not specified as a column, that column will be added at the end of the table, with the index of the column used as its
+column name.</p>
+<pre><code class="language-kotlin">val table = krow {
+    headerColumns(&quot;column 1&quot;, &quot;column 2&quot;, &quot;column 3&quot;)
+    bodyRow {
+        cells(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;)
+    }
+    bodyRow {
+        cells(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;)
+    }
+}
+</code></pre>
+<pre><code>val expected = &quot;&quot;&quot;
+    ┌───┬──────────┬──────────┬──────────┬───┬───┐
+    │   │ column 1 │ column 2 │ column 3 │ 4 │ 5 │
+    ├───┼──────────┼──────────┼──────────┼───┼───┤
+    │ 1 │ 1        │ 2        │ 3        │ 4 │ 5 │
+    ├───┼──────────┼──────────┼──────────┼───┼───┤
+    │ 2 │ a        │ b        │ c        │ d │ e │
+    └───┴──────────┴──────────┴──────────┴───┴───┘
+&quot;&quot;&quot;.trimIndent()
+</code></pre>
+<p>This can be expanded out such that manually specifying columns is entirely optional.</p>
+<pre><code class="language-kotlin">val table = krow {
+    bodyRow {
+        cells(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;)
+    }
+    bodyRow {
+        cells(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+    }
+}
+</code></pre>
+<pre><code>val expected = &quot;&quot;&quot;
+        ┌───┬───┬───┬───┐
+        │   │ 1 │ 2 │ 3 │
+        ├───┼───┼───┼───┤
+        │ 1 │ 1 │ 2 │ 3 │
+        ├───┼───┼───┼───┤
+        │ 2 │ a │ b │ c │
+        └───┴───┴───┴───┘
+&quot;&quot;&quot;.trimIndent()
+</code></pre>
+<h4 id="cells"><a href="#cells" id="cells" class="anchor"></a>Cells</h4>
+<p>If a previous cell in the row has a row span, a cell will be placed in the next available column within that row, adding
+columns as necessary.</p>
+<pre><code class="language-kotlin">val table = krow {
+    headerColumns(&quot;column 1&quot;, &quot;column 2&quot;, &quot;column 3&quot;)
+    bodyRow {
+        cell(&quot;1&quot;) { colSpan = 2 }
+        cell(&quot;2&quot;)
+        cell(&quot;3&quot;) { colSpan = 2 }
+    }
+    bodyRow {
+        cells(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;)
+    }
+}
+</code></pre>
+<pre><code>val expected = &quot;&quot;&quot;
+    ┌───┬──────────┬──────────┬──────────┬───┬───┐
+    │   │ column 1 │ column 2 │ column 3 │ 4 │ 5 │
+    ├───┼──────────┴──────────┼──────────┼───┴───┤
+    │ 1 │ 1                   │ 2        │ 3     │
+    ├───┼──────────┬──────────┼──────────┼───┬───┤
+    │ 2 │ a        │ b        │ c        │ d │ e │
+    └───┴──────────┴──────────┴──────────┴───┴───┘
+&quot;&quot;&quot;.trimIndent()
+</code></pre>
+<h4 id="building-with-coordinates"><a href="#building-with-coordinates" id="building-with-coordinates" class="anchor"></a>Building with Coordinates</h4>
+<p>Krow also includes a <code>cellAt</code> function which places and configures a cell at the specified row/column coordinates,
+rather than building it in-order with the normal row/column builders. As normal, the rows/columns will expand
+as-necessary to fully accept each cell as it is specified, with row and column spans.</p>
+<pre><code class="language-kotlin">val table = krow {
+    headerColumns(&quot;column 1&quot;, &quot;column 2&quot;, &quot;column 3&quot;)
+    cellAt(&quot;row1&quot;, &quot;column 1&quot;) {
+        colSpan = 2
+        content = &quot;1&quot;
+    }
+    cellAt(&quot;row1&quot;, &quot;column 3&quot;) {
+        content = &quot;2&quot;
+    }
+    cellAt(&quot;row1&quot;, &quot;column 4&quot;) {
+        colSpan = 2
+        content = &quot;3&quot;
+    }
+
+    cellAt(&quot;row2&quot;, &quot;column 1&quot;) {
+        content = &quot;a&quot;
+    }
+    cellAt(&quot;row2&quot;, &quot;column 2&quot;) {
+        content = &quot;b&quot;
+    }
+    cellAt(&quot;row2&quot;, &quot;column 3&quot;) {
+        content = &quot;c&quot;
+    }
+    cellAt(&quot;row2&quot;, &quot;column 4&quot;) {
+        content = &quot;d&quot;
+    }
+    cellAt(&quot;row2&quot;, &quot;5&quot;) {
+        content = &quot;e&quot;
+    }
+}
+</code></pre>
+<pre><code>val expected = &quot;&quot;&quot;
+    ┌──────┬──────────┬──────────┬──────────┬──────────┬───┐
+    │      │ column 1 │ column 2 │ column 3 │ column 4 │ 5 │
+    ├──────┼──────────┴──────────┼──────────┼──────────┴───┤
+    │ row1 │ 1                   │ 2        │ 3            │
+    ├──────┼──────────┬──────────┼──────────┼──────────┬───┤
+    │ row2 │ a        │ b        │ c        │ d        │ e │
+    └──────┴──────────┴──────────┴──────────┴──────────┴───┘
+&quot;&quot;&quot;.trimIndent()
+</code></pre>
+<p>If a cell already exists at these coordinates, it will allow you to customize the attributes of that cell, rather than
+attempting to create a new one. This makes it also useful for building the table structure with the row/column builders,
+then tweaking some of the content or styling of individual cells afterward.</p>
+<pre><code class="language-kotlin">val table = krow {
+    headerColumns(&quot;column 1&quot;, &quot;column 2&quot;, &quot;column 3&quot;)
+    bodyRow {
+        cells(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;)
+    }
+    bodyRow {
+        cells(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+    }
+
+    cellAt(&quot;2&quot;, &quot;column 2&quot;) { content = &quot;overridden with cellAt&quot; }
+}
+</code></pre>
+<pre><code>val expected = &quot;&quot;&quot;
+    ┌───┬──────────┬────────────────────────┬──────────┐
+    │   │ column 1 │ column 2               │ column 3 │
+    ├───┼──────────┼────────────────────────┼──────────┤
+    │ 1 │ 1        │ 2                      │ 3        │
+    ├───┼──────────┼────────────────────────┼──────────┤
+    │ 2 │ a        │ overridden with cellAt │ c        │
+    └───┴──────────┴────────────────────────┴──────────┘
+&quot;&quot;&quot;.trimIndent()
+</code></pre>
+<p>Be careful when using this layout DSL that the cell configurations do not overlap, which will throw an exception. It is
+also an error to attempt to change the rowSpan or colSpan after the cell has been created.</p>
+<h2 id="rendering"><a href="#rendering" id="rendering" class="anchor"></a>Rendering</h2>
+<p>Krow tables can be rendered either as ASCII tables, using a custom layout/rendering algorithm, or as HTML text to be
+displayed in a browser. So far, all examples have been shown using the ASCII renderer.</p>
+<h3 id="ascii"><a href="#ascii" id="ascii" class="anchor"></a>ASCII</h3>
+<p>Tables are rendered to ASCII with the <code>AsciiTableFormatter</code>. You can customize row widths and choose whether to display
+the header row or leading column.</p>
+<pre><code class="language-kotlin">val borders = DoubleBorder()
+val table = krow {
+    // ...
+}
+AsciiTableFormatter(borders).print(table)
+</code></pre>
+<pre><code class="language-kotlin">krow {
+    header {
+        row {
+            column(&quot;column 1&quot;)
+            column(&quot;column 2&quot;) { width = 16 }
+            column(&quot;column 3&quot;)
+        }
+    }
+    bodyRow(&quot;row1&quot;) { cells(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;) }
+    bodyRow(&quot;row2&quot;) { cells(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;) }
+
+    cellAt(&quot;row1&quot;, &quot;column 2&quot;) {
+        content = &quot;This is some long string which should wrap at the &quot; +
+            &quot;appropriate width, which will also chop down reallyreallyreallyreallyreallylong &quot; +
+            &quot;words if needed&quot;
+    }
+}
+</code></pre>
+<pre><code>┌──────┬──────────┬────────────────┬──────────┐
+│      │ column 1 │ column 2       │ column 3 │
+├──────┼──────────┼────────────────┼──────────┤
+│ row1 │ 1        │ This is some   │ 3        │
+│      │          │ long string    │          │
+│      │          │ which should   │          │
+│      │          │ wrap at the    │          │
+│      │          │ appropriate    │          │
+│      │          │ width, which   │          │
+│      │          │ will also chop │          │
+│      │          │ down reallyre- │          │
+│      │          │ allyreallyrea- │          │
+│      │          │ llyreallylong  │          │
+│      │          │ words if       │          │
+│      │          │ needed         │          │
+├──────┼──────────┼────────────────┼──────────┤
+│ row2 │ a        │ b              │ c        │
+└──────┴──────────┴────────────────┴──────────┘
+</code></pre>
+<pre><code class="language-kotlin">krow {
+    includeHeaderRow = false
+    header {
+        row {
+            column(&quot;column 1&quot;)
+            column(&quot;column 2&quot;) { width = 16 }
+            column(&quot;column 3&quot;)
+        }
+    }
+    bodyRow(&quot;row1&quot;) { cells(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;) }
+    bodyRow(&quot;row2&quot;) { cells(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;) }
+
+    cellAt(&quot;row1&quot;, &quot;column 2&quot;) {
+        content = &quot;This is some long string which should wrap at the &quot; +
+            &quot;appropriate width, which will also chop down reallyreallyreallyreallyreallylong &quot; +
+            &quot;words if needed&quot;
+    }
+}
+</code></pre>
+<pre><code>┌──────┬───┬────────────────┬───┐
+│ row1 │ 1 │ This is some   │ 3 │
+│      │   │ long string    │   │
+│      │   │ which should   │   │
+│      │   │ wrap at the    │   │
+│      │   │ appropriate    │   │
+│      │   │ width, which   │   │
+│      │   │ will also chop │   │
+│      │   │ down reallyre- │   │
+│      │   │ allyreallyrea- │   │
+│      │   │ llyreallylong  │   │
+│      │   │ words if       │   │
+│      │   │ needed         │   │
+├──────┼───┼────────────────┼───┤
+│ row2 │ a │ b              │ c │
+└──────┴───┴────────────────┴───┘
+</code></pre>
+<pre><code class="language-kotlin">krow {
+    includeLeadingColumn = false
+    header {
+        row {
+            column(&quot;column 1&quot;)
+            column(&quot;column 2&quot;) { width = 16 }
+            column(&quot;column 3&quot;)
+        }
+    }
+    bodyRow(&quot;row1&quot;) { cells(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;) }
+    bodyRow(&quot;row2&quot;) { cells(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;) }
+
+    cellAt(&quot;row1&quot;, &quot;column 2&quot;) {
+        content = &quot;This is some long string which should wrap at the &quot; +
+            &quot;appropriate width, which will also chop down reallyreallyreallyreallyreallylong &quot; +
+            &quot;words if needed&quot;
+    }
+}
+</code></pre>
+<pre><code>┌──────────┬────────────────┬──────────┐
+│ column 1 │ column 2       │ column 3 │
+├──────────┼────────────────┼──────────┤
+│ 1        │ This is some   │ 3        │
+│          │ long string    │          │
+│          │ which should   │          │
+│          │ wrap at the    │          │
+│          │ appropriate    │          │
+│          │ width, which   │          │
+│          │ will also chop │          │
+│          │ down reallyre- │          │
+│          │ allyreallyrea- │          │
+│          │ llyreallylong  │          │
+│          │ words if       │          │
+│          │ needed         │          │
+├──────────┼────────────────┼──────────┤
+│ a        │ b              │ c        │
+└──────────┴────────────────┴──────────┘
+</code></pre>
+<p>ASCII tables can be customized with several border styles. Currently, you can only apply a single border style to the
+entire table, but in the future I plan on adding support for styling the header row or leading column differently, or
+even applying custom border styles to individual cells.</p>
+<div class="tabs">
+  <ul data-tabs="ascii_rendered">
+  
+    <li class="is-active"><a>table-ascii-crossing</a></li>
+  
+    <li ><a>table-ascii-double</a></li>
+  
+    <li ><a>table-ascii-rounded-dashed</a></li>
+  
+    <li ><a>table-ascii-single</a></li>
+  
+    <li ><a>table-ascii-single-thick</a></li>
+  
+  </ul>
+</div>
+<div data-panes="ascii_rendered">
+
+  <div class="is-block tab-hidden content is-medium-tablet is-large-fullhd"><pre><code>+------+----------+----------+----------+
+|      | column 1 | column 2 | column 3 |
++------+----------+----------+----------+
+| row1 | 1        | 2                   |
++------+----------+                     |
+| row2 | a        |                     |
++------+----------+---------------------+</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre><code>╔══════╦══════════╦══════════╦══════════╗
+║      ║ column 1 ║ column 2 ║ column 3 ║
+╠══════╬══════════╬══════════╩══════════╣
+║ row1 ║ 1        ║ 2                   ║
+╠══════╬══════════╣                     ║
+║ row2 ║ a        ║                     ║
+╚══════╩══════════╩═════════════════════╝</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre><code>╭╌╌╌╌╌╌┬╌╌╌╌╌╌╌╌╌╌┬╌╌╌╌╌╌╌╌╌╌┬╌╌╌╌╌╌╌╌╌╌╮
+╎      ╎ column 1 ╎ column 2 ╎ column 3 ╎
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┴╌╌╌╌╌╌╌╌╌╌┤
+╎ row1 ╎ 1        ╎ 2                   ╎
+├╌╌╌╌╌╌┼╌╌╌╌╌╌╌╌╌╌┤                     ╎
+╎ row2 ╎ a        ╎                     ╎
+╰╌╌╌╌╌╌┴╌╌╌╌╌╌╌╌╌╌┴╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╯</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre><code>┌──────┬──────────┬──────────┬──────────┐
+│      │ column 1 │ column 2 │ column 3 │
+├──────┼──────────┼──────────┴──────────┤
+│ row1 │ 1        │ 2                   │
+├──────┼──────────┤                     │
+│ row2 │ a        │                     │
+└──────┴──────────┴─────────────────────┘</code></pre></div>
+
+  <div class=" tab-hidden content is-medium-tablet is-large-fullhd"><pre><code>┏━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+┃      ┃ column 1 ┃ column 2 ┃ column 3 ┃
+┣━━━━━━╋━━━━━━━━━━╋━━━━━━━━━━┻━━━━━━━━━━┫
+┃ row1 ┃ 1        ┃ 2                   ┃
+┣━━━━━━╋━━━━━━━━━━┫                     ┃
+┃ row2 ┃ a        ┃                     ┃
+┗━━━━━━┻━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━┛</code></pre></div>
+
+</div>
+<h3 id="html"><a href="#html" id="html" class="anchor"></a>HTML</h3>
+<p>Tables are rendered to ASCII with the <code>HtmlTableFormatter</code>.</p>
+<pre><code class="language-kotlin">val table = krow {
+    // ...
+}
+HtmlTableFormatter().print(table)
+</code></pre>
+<p>Example output:</p>
+<pre><code class="language-html">&lt;table&gt;
+  &lt;thead&gt;
+  &lt;tr&gt;
+    &lt;th&gt;&lt;/th&gt;
+    &lt;th&gt;column 1&lt;/th&gt;
+    &lt;th&gt;column 2&lt;/th&gt;
+    &lt;th&gt;column 3&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+  &lt;tr&gt;
+    &lt;td&gt;row1&lt;/td&gt;
+    &lt;td&gt;1&lt;/td&gt;
+    &lt;td rowspan=&quot;2&quot; colspan=&quot;2&quot;&gt;2&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;row2&lt;/td&gt;
+    &lt;td&gt;a&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+</code></pre>
+<table>
+  <thead>
+  <tr>
+    <th></th>
+    <th>column 1</th>
+    <th>column 2</th>
+    <th>column 3</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>row1</td>
+    <td>1</td>
+    <td rowspan="2" colspan="2">2</td>
+  </tr>
+  <tr>
+    <td>row2</td>
+    <td>a</td>
+  </tr>
+  </tbody>
+</table>
+
+</div>
+
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+  </div>
+  
+    <div class="column is-one-quarter is-hidden-touch">
+      <div class="sticky-menu" style="position: sticky; top: 30px;">
+  
+  
+    
+<p class="menu-label">In This Page</p>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#overview" class="">
+  
+  Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#installation" class="">
+  
+  Installation
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#targets" class="">
+  
+  Targets
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#usage" class="">
+  
+  Usage
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#dsl" class="">
+  
+  DSL
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#header-columns" class="">
+  
+  Header Columns
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#body-rows" class="">
+  
+  Body Rows
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#dynamic-layout" class="">
+  
+  Dynamic Layout
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#rendering" class="">
+  
+  Rendering
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#ascii" class="">
+  
+  ASCII
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/krow 542019831 -->
+  <!-- menuItem.page=  -->
+  <a href="#html" class="">
+  
+  HTML
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+      
+      </article>
+    
+      <div class="grow"></div>
+      <div class="page-footer">
+      
+        <nav class="pagination is-rounded footer-pagination" role="navigation" aria-label="pagination">
+
+  <a class="pagination-previous" disabled>
+    <span class="inner">
+      <span class="icon"><i class="fas fa-chevron-left"></i></span>
+      Previous
+    </span>
+  </a>
+
+
+
+  <a class="pagination-next" disabled>
+    <span class="inner">
+      Next
+      <span class="icon"><i class="fas fa-chevron-right"></i></span>
+    </span>
+  </a>
+
+</nav>
+
+<footer class="footer border-top">
+  <div class="content is-small">
+  <p>
+  Site proudly built with <a href="https://orchid.run/">Orchid</a>.<br>
+</p>
+
+  </div>
+</footer>
+
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+
+<!-- start:inject scripts -->
+<script defer data-search-pseudo-elements="true" src="https://copper-leaf.github.io/krow/Copper/24a60a9b/releases/v5.4.0/js/all.js"></script>
+<script  src="https://copper-leaf.github.io/krow/Copper/24a60a9b/assets/js/bulma.js"></script>
+<script  src="https://copper-leaf.github.io/krow/Copper/24a60a9b/assets/js/bulma-accordion.min.js"></script>
+<script  src="https://copper-leaf.github.io/krow/Copper/24a60a9b/assets/js/bulma-tabs.js"></script>
+<script  src="https://copper-leaf.github.io/krow/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script  src="https://copper-leaf.github.io/krow/lunr/lunr.js"></script>
+<script  src="https://copper-leaf.github.io/krow/assets/js/orchidSearch.js"></script>
+<script  src="https://copper-leaf.github.io/krow/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script  src="https://copper-leaf.github.io/krow/ajax/libs/prism/1.17.1/components/prism-kotlin.min.js"></script>
+<script  src="https://copper-leaf.github.io/krow/ajax/libs/prism/1.17.1/components/prism-java.min.js"></script>
+<script  src="https://copper-leaf.github.io/krow/ajax/libs/prism/1.17.1/components/prism-groovy.min.js"></script>
+<!-- end:inject scripts -->
+
+
+</body>
+</html>
