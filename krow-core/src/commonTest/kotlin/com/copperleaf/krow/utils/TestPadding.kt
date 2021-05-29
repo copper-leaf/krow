@@ -21,11 +21,11 @@ class TestPadding {
 
         assertEquals(
             expected,
-            underTest.padTop(3, padChar = '+')
+            underTest.padTop(3, padChar = "+")
         )
         assertEquals(
             expected,
-            underTest.padVertical(3, padChar = '+', alignment = VerticalAlignment.BOTTOM)
+            underTest.padVertical(3, padChar = "+", alignment = VerticalAlignment.BOTTOM)
         )
     }
 
@@ -40,11 +40,11 @@ class TestPadding {
 
         assertEquals(
             expected,
-            underTest.padBottom(3, padChar = '+')
+            underTest.padBottom(3, padChar = "+")
         )
         assertEquals(
             expected,
-            underTest.padVertical(3, padChar = '+', alignment = VerticalAlignment.TOP)
+            underTest.padVertical(3, padChar = "+", alignment = VerticalAlignment.TOP)
         )
     }
 
@@ -59,11 +59,11 @@ class TestPadding {
 
         assertEquals(
             expected,
-            underTest.padCenterVertical(3, padChar = '+')
+            underTest.padCenterVertical(3, padChar = "+")
         )
         assertEquals(
             expected,
-            underTest.padVertical(3, padChar = '+', alignment = VerticalAlignment.CENTER)
+            underTest.padVertical(3, padChar = "+", alignment = VerticalAlignment.CENTER)
         )
     }
 
@@ -81,7 +81,7 @@ class TestPadding {
         )
         assertEquals(
             expected,
-            underTest.padHorizontal(6, padChar = '+', alignment = HorizontalAlignment.RIGHT)
+            underTest.padHorizontal(6, padChar = "+", alignment = HorizontalAlignment.RIGHT)
         )
     }
 
@@ -96,7 +96,7 @@ class TestPadding {
         )
         assertEquals(
             expected,
-            underTest.padHorizontal(6, padChar = '+', alignment = HorizontalAlignment.LEFT)
+            underTest.padHorizontal(6, padChar = "+", alignment = HorizontalAlignment.LEFT)
         )
     }
 
@@ -107,11 +107,11 @@ class TestPadding {
 
         assertEquals(
             expected,
-            underTest.padCenterHorizontal(6, padChar = '+')
+            underTest.padCenterHorizontal(6, padChar = "+")
         )
         assertEquals(
             expected,
-            underTest.padHorizontal(6, padChar = '+', alignment = HorizontalAlignment.CENTER)
+            underTest.padHorizontal(6, padChar = "+", alignment = HorizontalAlignment.CENTER)
         )
     }
 }

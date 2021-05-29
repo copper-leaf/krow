@@ -1,6 +1,6 @@
 # Krow
 
-> A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
+> A small DSL for generating tables in ASCII or HTML formats
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/copper-leaf/krow)
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.copper-leaf/krow-core)

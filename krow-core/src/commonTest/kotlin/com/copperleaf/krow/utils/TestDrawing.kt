@@ -11,7 +11,7 @@ class TestDrawing {
 
         assertEquals(
             expected,
-            createLineOf('+', 7)
+            createLineOf("+", 7)
         )
     }
 
@@ -40,7 +40,7 @@ class TestDrawing {
 
         assertEquals(
             expected,
-            createBlankLinesOf('+', width = 7, height = 3)
+            createBlankLinesOf("+", width = 7, height = 3)
         )
     }
 }

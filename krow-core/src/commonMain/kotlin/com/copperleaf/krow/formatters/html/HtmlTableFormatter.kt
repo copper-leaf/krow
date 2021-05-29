@@ -93,7 +93,7 @@ internal class KrowHtmlCanvas {
         }
 
         buffer.appendLine()
-        buffer.append("${createLineOf(' ', indent)}<$tagName")
+        buffer.append("${createLineOf(" ", indent)}<$tagName")
 
         allAttributes.forEach { (key, value) ->
             if (value.isNullOrBlank()) {
@@ -110,7 +110,7 @@ internal class KrowHtmlCanvas {
 
         if (newlineBeforeCloseTag) {
             buffer.appendLine()
-            buffer.append("${createLineOf(' ', indent)}</$tagName>")
+            buffer.append("${createLineOf(" ", indent)}</$tagName>")
         } else {
             buffer.append("</$tagName>")
         }

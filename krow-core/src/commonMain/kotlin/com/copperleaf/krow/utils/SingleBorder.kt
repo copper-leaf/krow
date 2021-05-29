@@ -1,19 +1,43 @@
 package com.copperleaf.krow.utils
 
-open class SingleBorder : BorderSet {
-
-    override val tl: Char get() = '┌'
-    override val ti: Char get() = '┬'
-    override val tr: Char get() = '┐'
-
-    override val cl: Char get() = '├'
-    override val ci: Char get() = '┼'
-    override val cr: Char get() = '┤'
-
-    override val bl: Char get() = '└'
-    override val bi: Char get() = '┴'
-    override val br: Char get() = '┘'
-
-    override val v: Char get() = '│'
-    override val h: Char get() = '─'
+class SingleBorder :
+    BorderSet,
+    BorderSetCorners by SingleBorder.SquareCorners(),
+    BorderSetEdges by SingleBorder.SolidEdges(),
+    BorderSetIntersections by SingleBorder.Intersections() {
+    class SquareCorners : BorderSetCorners {
+        override val topLeftCorner: String = "┌"
+        override val topRightCorner: String = "┐"
+        override val bottomLeftCorner: String = "└"
+        override val bottomRightCorner: String = "┘"
+    }
+    class RoundedCorners : BorderSetCorners {
+        override val topLeftCorner: String = "╭"
+        override val topRightCorner: String = "╮"
+        override val bottomLeftCorner: String = "╰"
+        override val bottomRightCorner: String = "╯"
+    }
+    class SolidEdges : BorderSetEdges {
+        override val verticalEdge: String = "│"
+        override val horizontalEdge: String = "─"
+    }
+    class Dashed2Edges : BorderSetEdges {
+        override val verticalEdge: String = "╎"
+        override val horizontalEdge: String = "╌"
+    }
+    class Dashed3Edges : BorderSetEdges {
+        override val verticalEdge: String = "┆"
+        override val horizontalEdge: String = "┄"
+    }
+    class Dashed4Edges : BorderSetEdges {
+        override val verticalEdge: String = "┊"
+        override val horizontalEdge: String = "┈"
+    }
+    class Intersections : BorderSetIntersections {
+        override val topIntersection: String = "┬"
+        override val leftIntersection: String = "├"
+        override val insideIntersection: String = "┼"
+        override val rightIntersection: String = "┤"
+        override val bottomIntersection: String = "┴"
+    }
 }

@@ -185,24 +185,35 @@ internal class BodyRowScopeImpl(
         cellContent: String?,
         block: MutableBodyCellScope.() -> Unit
     ): BodyCellScope {
-        val newCell = MutableBodyCellScopeImpl(
-            rowName = rowName,
-            content = cellContent ?: ""
-        )
-        newCell.block()
+        return try {
+            val position = layout.getCellAt(
+                rowName = rowName,
+                columnName = columnName,
+            )
+            // cell exists, configure existing one
+            cells.first { it.columnName == columnName }.apply(block)
+        } catch (e: Exception) {
+            // cell does not exist, create and add a new one
 
-        val position = layout.placeCellExact(
-            rowName = rowName,
-            columnName = columnName,
-            rowSpan = newCell.rowSpan,
-            colSpan = newCell.colSpan
-        )
+            val newCell = MutableBodyCellScopeImpl(
+                rowName = rowName,
+                content = cellContent ?: ""
+            )
+            newCell.block()
 
-        val committedCell = newCell.commit(position.columnName)
+            val position = layout.placeCellExact(
+                rowName = rowName,
+                columnName = columnName,
+                rowSpan = newCell.rowSpan,
+                colSpan = newCell.colSpan
+            )
 
-        cells.add(committedCell)
+            val committedCell = newCell.commit(position.columnName)
 
-        return committedCell
+            cells.add(committedCell)
+
+            committedCell
+        }
     }
 
     internal operator fun get(columnIndex: Int): BodyCellScopeImpl {

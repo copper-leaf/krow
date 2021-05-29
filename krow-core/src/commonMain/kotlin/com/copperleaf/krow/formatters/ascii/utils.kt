@@ -23,10 +23,10 @@ val Krow.Cell.intrinsicHeight: Int get() = data.lines().size
 
 fun Krow.Cell.printContentWithPadding(maxWidth: Int, height: Int): String {
     return data.wrap(maxWidth - (padding * 2), alignment = horizontalAlignment)
-        .padVertical(height, alignment = verticalAlignment, padChar = ' ')
+        .padVertical(height, alignment = verticalAlignment, padChar = " ")
         .lines()
         .joinToString(separator = "\n") {
-            createLineOf(' ', padding) + it + createLineOf(' ', padding)
+            createLineOf(" ", padding) + it + createLineOf(" ", padding)
         }
 }
 

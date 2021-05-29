@@ -1,3 +1,8 @@
+## 1.0.0 - 2021-05-29
+
+- Completely rewrites ASCII table algorithm and DSL implementation to support row and column spans
+- Adds more ASCII border styles
+
 ## 0.1.12 - 2021-04-15
 
 - Updates build scripts

@@ -13,7 +13,7 @@ class TestWrapping {
 
         assertEquals(
             expected,
-            underTest.wrap(7, padChar = '+')
+            underTest.wrap(7, padChar = "+")
         )
     }
 
@@ -24,7 +24,7 @@ class TestWrapping {
 
         assertEquals(
             expected,
-            underTest.wrap(7, padChar = '+')
+            underTest.wrap(7, padChar = "+")
         )
     }
 
@@ -39,7 +39,7 @@ class TestWrapping {
 
         assertEquals(
             expected,
-            underTest.wrap(7, padChar = '+')
+            underTest.wrap(7, padChar = "+")
         )
     }
 
@@ -54,7 +54,7 @@ class TestWrapping {
 
         assertEquals(
             expected,
-            underTest.wrap(7, padChar = '+', alignment = HorizontalAlignment.RIGHT)
+            underTest.wrap(7, padChar = "+", alignment = HorizontalAlignment.RIGHT)
         )
     }
 
@@ -69,7 +69,7 @@ class TestWrapping {
 
         assertEquals(
             expected,
-            underTest.wrap(8, padChar = '+', alignment = HorizontalAlignment.CENTER)
+            underTest.wrap(8, padChar = "+", alignment = HorizontalAlignment.CENTER)
         )
     }
 
@@ -85,7 +85,7 @@ class TestWrapping {
 
         assertEquals(
             expected,
-            underTest.wrap(7, padChar = '+')
+            underTest.wrap(7, padChar = "+")
         )
     }
 
@@ -99,7 +99,7 @@ class TestWrapping {
             |fourf-
             |ives++
             """.trimMargin(),
-            "one two three fourfives".wrap(6, padChar = '+')
+            "one two three fourfives".wrap(6, padChar = "+")
         )
         assertEquals(
             """
@@ -108,7 +108,7 @@ class TestWrapping {
             |fourfi-
             |ves++++
             """.trimMargin(),
-            "one two three fourfives".wrap(7, padChar = '+')
+            "one two three fourfives".wrap(7, padChar = "+")
         )
 
         assertEquals(
@@ -117,7 +117,7 @@ class TestWrapping {
             |three f-
             |ourfives
             """.trimMargin(),
-            "one two three fourfives".wrap(8, padChar = '+')
+            "one two three fourfives".wrap(8, padChar = "+")
         )
 
         assertEquals(
@@ -129,7 +129,7 @@ class TestWrapping {
             |neightn-
             |ine+++++
             """.trimMargin(),
-            "one two three fourfivesixseveneightnine".wrap(8, padChar = '+')
+            "one two three fourfivesixseveneightnine".wrap(8, padChar = "+")
         )
     }
 

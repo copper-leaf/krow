@@ -123,18 +123,18 @@ internal sealed class MeasuredEdge : Drawable {
         val leftAndRightCellsAreSame: Boolean,
     ) : MeasuredEdge() {
 
-        private fun brush(borderSet: BorderSet): Char? {
+        private fun brush(borderSet: BorderSet): String? {
             if (leftAndRightCellsAreSame) {
                 return null
             }
             if (leftCellMissing) {
-                return borderSet.vl
+                return borderSet.verticalLeftEdge
             }
             if (rightCellMissing) {
-                return borderSet.vl
+                return borderSet.verticalLeftEdge
             }
 
-            return borderSet.v
+            return borderSet.verticalEdge
         }
 
         override fun draw(canvas: KrowCanvas, borderSet: BorderSet) {
@@ -159,18 +159,18 @@ internal sealed class MeasuredEdge : Drawable {
         val topAndBottomCellsAreSame: Boolean,
     ) : MeasuredEdge() {
 
-        private fun brush(borderSet: BorderSet): Char? {
+        private fun brush(borderSet: BorderSet): String? {
             if (topAndBottomCellsAreSame) {
                 return null
             }
             if (topCellMissing) {
-                return borderSet.th
+                return borderSet.horizontalTopEdge
             }
             if (bottomCellMissing) {
-                return borderSet.bh
+                return borderSet.horizontalBottomEdge
             }
 
-            return borderSet.h
+            return borderSet.horizontalEdge
         }
 
         override fun draw(canvas: KrowCanvas, borderSet: BorderSet) {

@@ -1,55 +1,73 @@
 package com.copperleaf.krow.utils
 
-interface BorderSet {
+interface BorderSet : BorderSetCorners, BorderSetEdges, BorderSetIntersections
 
+open class BordersOf(
+    cornersDelegate: BorderSetCorners,
+    edgesDelegate: BorderSetEdges,
+    intersectionsDelegate: BorderSetIntersections,
+) : BorderSet,
+    BorderSetCorners by cornersDelegate,
+    BorderSetEdges by edgesDelegate,
+    BorderSetIntersections by intersectionsDelegate
+
+interface BorderSetCorners {
     /** Top-Left Corner */
-    val tl: Char
-
-    /** Top Intersection */
-    val ti: Char
+    val topLeftCorner: String
 
     /** Top-Right Corner */
-    val tr: Char
-
-    /** Center Left-Side Intersection */
-    val cl: Char
-
-    /** Center Intersection */
-    val ci: Char
-
-    /** Center Right-Side Intersection */
-    val cr: Char
+    val topRightCorner: String
 
     /** Bottom-Left Corner */
-    val bl: Char
-
-    /** Bottom Intersection */
-    val bi: Char
+    val bottomLeftCorner: String
 
     /** Bottom-Corner Corner */
-    val br: Char
+    val bottomRightCorner: String
+}
 
+interface BorderSetEdges : BorderSetHorizontalEdges, BorderSetVerticalEdges
+
+interface BorderSetHorizontalEdges {
     /** Default horizontal border */
-    val h: Char
-
-    /** Default vertical border */
-    val v: Char
+    val horizontalEdge: String
 
     /** Top Horizontal Line */
-    val th: Char get() = h
+    val horizontalTopEdge: String get() = horizontalEdge
 
     /** Center Horizontal Line */
-    val ch: Char get() = h
+    val horizontalInsideEdge: String get() = horizontalEdge
 
     /** Bottom Horizontal Line */
-    val bh: Char get() = h
+    val horizontalBottomEdge: String get() = horizontalEdge
+}
+
+interface BorderSetVerticalEdges {
+    /** Default vertical border */
+    val verticalEdge: String
 
     /** Vertical Line on left edge */
-    val vl: Char get() = v
+    val verticalLeftEdge: String get() = verticalEdge
 
     /** Vertical Line on right edge */
-    val vr: Char get() = v
+    val verticalRightEdge: String get() = verticalEdge
 
     /** Vertical Line in center */
-    val vc: Char get() = v
+    val verticalInsideEdge: String get() = verticalEdge
+}
+
+interface BorderSetIntersections {
+    /** Top Intersection */
+    val topIntersection: String
+
+    /** Center Left-Side Intersection */
+    val leftIntersection: String
+
+    /** Center Intersection */
+    val insideIntersection: String
+
+    /** Center Right-Side Intersection */
+    val rightIntersection: String
+
+    /** Bottom Intersection */
+    val bottomIntersection: String
 }

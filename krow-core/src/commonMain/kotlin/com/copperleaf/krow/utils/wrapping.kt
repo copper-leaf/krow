@@ -47,7 +47,7 @@ private fun String.tokenize(): List<WrapToken> {
 // TODO: handle words that are need to be broken down into more than 2 lines
 fun String?.wrap(
     maxWidth: Int,
-    padChar: Char = ' ',
+    padChar: String = " ",
     alignment: HorizontalAlignment = HorizontalAlignment.LEFT
 ): String {
     if (this.isNullOrBlank()) return createLineOf(padChar, maxWidth)

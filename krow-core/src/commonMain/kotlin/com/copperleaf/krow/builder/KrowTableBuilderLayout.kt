@@ -66,7 +66,7 @@ class KrowTableBuilderLayout {
 
     fun getOrCreateRow(rowName: String?): Pair<Boolean, Int> {
         // if rowName is null, add a new row with a name of the next index
-        val actualRowName = rowName ?: (rows.lastIndex + 2).toString()
+        val actualRowName = rowName ?: (rows.lastIndex + 1).toString()
 
         val isNew = if (!rows.contains(actualRowName)) {
             // we do not have this row already. Add the row and then recompute the layout

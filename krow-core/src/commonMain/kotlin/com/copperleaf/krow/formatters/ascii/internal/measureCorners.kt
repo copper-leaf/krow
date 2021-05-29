@@ -83,45 +83,45 @@ internal data class MeasuredCorner(
     val leftCellsAreSame: Boolean,
     val rightCellsAreSame: Boolean,
 ) : Drawable {
-    private fun brush(borderSet: BorderSet): Char? {
+    private fun brush(borderSet: BorderSet): String? {
         if (topCellsAreSame && bottomCellsAreSame && leftCellsAreSame && rightCellsAreSame) {
             // all surrounding cells are the same, don't draw this point
             return null
         }
         if (topCellsAreSame && bottomCellsAreSame) {
             // we are between two horizontally-expanded cells, use a horizontal rule
-            return borderSet.h
+            return borderSet.horizontalEdge
         }
         if (leftCellsAreSame && rightCellsAreSame) {
             // we are between two vertically-expanded cells, use a vertical rule
-            return borderSet.v
+            return borderSet.verticalEdge
         }
         if (topCellsAreSame && leftCellsAreSame) {
-            return borderSet.tl
+            return borderSet.topLeftCorner
         }
         if (topCellsAreSame && rightCellsAreSame) {
-            return borderSet.tr
+            return borderSet.topRightCorner
         }
         if (bottomCellsAreSame && leftCellsAreSame) {
-            return borderSet.bl
+            return borderSet.bottomLeftCorner
         }
         if (bottomCellsAreSame && rightCellsAreSame) {
-            return borderSet.br
+            return borderSet.bottomRightCorner
         }
         if (topCellsAreSame) {
-            return borderSet.ti
+            return borderSet.topIntersection
         }
         if (bottomCellsAreSame) {
-            return borderSet.bi
+            return borderSet.bottomIntersection
         }
         if (leftCellsAreSame) {
-            return borderSet.cl
+            return borderSet.leftIntersection
         }
         if (rightCellsAreSame) {
-            return borderSet.cr
+            return borderSet.rightIntersection
         }
 
-        return borderSet.ci
+        return borderSet.insideIntersection
     }
 
     override fun draw(canvas: KrowCanvas, borderSet: BorderSet) {

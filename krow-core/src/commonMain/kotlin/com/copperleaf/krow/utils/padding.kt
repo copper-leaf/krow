@@ -8,7 +8,7 @@ import kotlin.math.floor
 // Vertical Alignment
 // ---------------------------------------------------------------------------------------------------------------------
 
-fun String.padTop(height: Int, padChar: Char = ' '): String {
+fun String.padTop(height: Int, padChar: String = " "): String {
     val contentLines = this.lines().toMutableList()
     val width = contentLines.maxOf { it.length }
     val heightToAdd = height - contentLines.size
@@ -19,7 +19,7 @@ fun String.padTop(height: Int, padChar: Char = ' '): String {
         ).joinToString(separator = "\n")
 }
 
-fun String.padBottom(height: Int, padChar: Char = ' '): String {
+fun String.padBottom(height: Int, padChar: String = " "): String {
     val contentLines = this.lines().toMutableList()
     val width = contentLines.maxOf { it.length }
     val heightToAdd = height - contentLines.size
@@ -30,7 +30,7 @@ fun String.padBottom(height: Int, padChar: Char = ' '): String {
         ).joinToString(separator = "\n")
 }
 
-fun String.padCenterVertical(height: Int, padChar: Char = ' '): String {
+fun String.padCenterVertical(height: Int, padChar: String = " "): String {
     val contentLines = this.lines().toMutableList()
     val width = contentLines.maxOf { it.length }
     val heightToAdd = height - contentLines.size
@@ -46,7 +46,7 @@ fun String.padCenterVertical(height: Int, padChar: Char = ' '): String {
 
 fun String.padVertical(
     height: Int,
-    padChar: Char = ' ',
+    padChar: String = " ",
     alignment: VerticalAlignment = VerticalAlignment.TOP
 ): String {
     return when (alignment) {
@@ -61,15 +61,15 @@ fun String.padVertical(
 
 fun String.padHorizontal(
     width: Int,
-    padChar: Char,
+    padChar: String,
     alignment: HorizontalAlignment = HorizontalAlignment.LEFT
 ): String {
     return when (alignment) {
         HorizontalAlignment.LEFT -> {
-            padEnd(width, padChar)
+            padEnd(width, padChar.first())
         }
         HorizontalAlignment.RIGHT -> {
-            padStart(width, padChar)
+            padStart(width, padChar.first())
         }
         HorizontalAlignment.CENTER -> {
             padCenterHorizontal(width, padChar)
@@ -77,7 +77,7 @@ fun String.padHorizontal(
     }
 }
 
-fun String.padCenterHorizontal(size: Int, padChar: Char = ' '): String {
+fun String.padCenterHorizontal(size: Int, padChar: String = " "): String {
     var str = this
     if (size <= 0) {
         return str
@@ -87,7 +87,7 @@ fun String.padCenterHorizontal(size: Int, padChar: Char = ' '): String {
     if (pads <= 0) {
         return str
     }
-    str = str.padStart(strLen + pads / 2, padChar)
-    str = str.padEnd(size, padChar)
+    str = str.padStart(strLen + pads / 2, padChar.first())
+    str = str.padEnd(size, padChar.first())
     return str
 }

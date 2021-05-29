@@ -3,7 +3,7 @@ site:
   baseUrl: 'https://copper-leaf.github.io/krow/'
   about:
     siteName: Krow
-    siteDescription: A small library for generating tables in ASCII or HTML formats, built with Kotlin's type-safe builders
+    siteDescription: A small DSL for generating tables in ASCII or HTML formats
 
 theme:
   social:
@@ -74,7 +74,7 @@ snippets:
         type: 'embedded'
         recursive: true
         baseDirs:
-          - './../../../../krow-core/'
+          - './../../../../krow-core/src/commonTest/kotlin'
 
 services:
   publications:

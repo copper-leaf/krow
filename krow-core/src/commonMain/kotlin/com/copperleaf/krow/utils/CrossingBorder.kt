@@ -1,19 +1,25 @@
 package com.copperleaf.krow.utils
 
-open class CrossingBorder : BorderSet {
-
-    override val tl: Char get() = '+'
-    override val ti: Char get() = '+'
-    override val tr: Char get() = '+'
-
-    override val cl: Char get() = '+'
-    override val ci: Char get() = '+'
-    override val cr: Char get() = '+'
-
-    override val bl: Char get() = '+'
-    override val bi: Char get() = '+'
-    override val br: Char get() = '+'
-
-    override val v: Char get() = '|'
-    override val h: Char get() = '-'
+class CrossingBorder :
+    BorderSet,
+    BorderSetCorners by CrossingBorder.Corners(),
+    BorderSetEdges by CrossingBorder.Edges(),
+    BorderSetIntersections by CrossingBorder.Intersections() {
+    class Corners : BorderSetCorners {
+        override val topLeftCorner: String = "+"
+        override val topRightCorner: String = "+"
+        override val bottomLeftCorner: String = "+"
+        override val bottomRightCorner: String = "+"
+    }
+    class Edges : BorderSetEdges {
+        override val verticalEdge: String = "|"
+        override val horizontalEdge: String = "-"
+    }
+    class Intersections : BorderSetIntersections {
+        override val topIntersection: String = "+"
+        override val leftIntersection: String = "+"
+        override val insideIntersection: String = "+"
+        override val rightIntersection: String = "+"
+        override val bottomIntersection: String = "+"
+    }
 }

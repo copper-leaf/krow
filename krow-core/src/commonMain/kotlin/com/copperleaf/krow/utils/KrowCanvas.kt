@@ -10,7 +10,7 @@ class KrowCanvas private constructor(
 
     constructor(width: Int, height: Int) : this(
         createLinesOf(
-            createLineOf(' ', width),
+            createLineOf(" ", width),
             height
         ).toMutableList()
     )
@@ -36,7 +36,7 @@ class KrowCanvas private constructor(
         line: Int,
         column: Int,
         length: Int,
-        horizontal: Char,
+        horizontal: String,
     ) {
         draw(
             line,
@@ -49,10 +49,10 @@ class KrowCanvas private constructor(
         line: Int,
         column: Int,
         height: Int,
-        vertical: Char,
+        vertical: String,
     ) {
         repeat(height) {
-            draw(line + it, column, vertical.toString())
+            draw(line + it, column, vertical)
         }
     }
 
@@ -69,8 +69,8 @@ class KrowCanvas private constructor(
     fun drawPoint(
         line: Int,
         column: Int,
-        point: Char,
+        point: String,
     ) {
-        draw(line, column, point.toString())
+        draw(line, column, point)
     }
 }
