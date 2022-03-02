@@ -1,4 +1,5 @@
-> This library has been archived, switch to [JakeWharton/picnic](https://github.com/JakeWharton/picnic) for a replacement library.
+> # IMPORTANT
+> This library has been archived and will be receiving no further updates. Please switch to [JakeWharton/picnic](https://github.com/JakeWharton/picnic) for a replacement library.
 
 # Krow
 
