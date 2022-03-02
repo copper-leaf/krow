@@ -1,3 +1,5 @@
+> This library has been archived, switch to [JakeWharton/picnic](https://github.com/JakeWharton/picnic) for a replacement library.
+
 # Krow
 
 > A small DSL for generating tables in ASCII or HTML formats
